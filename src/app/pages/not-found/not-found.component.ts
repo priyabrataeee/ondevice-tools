@@ -52,6 +52,10 @@ export class NotFoundComponent implements OnInit {
       title: 'Page Not Found',
       description: 'The page you were looking for does not exist. Browse all free OnDevice Tools utilities instead.',
       path: '/404',
+      // `/404/` is prerendered so Cloudflare can copy it to `404.html`. The
+      // route itself can still be fetched with 200, however, so it must not
+      // become a thin, indexable duplicate in a crawler's URL inventory.
+      noindex: true,
     });
   }
 }

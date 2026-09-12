@@ -1,0 +1,37 @@
+# OnDevice Tools
+
+> Free, privacy-first browser utilities. Files, text, and calculations stay in the visitor's browser; the application has no account system and no processing backend.
+
+OnDevice Tools is a public, JavaScript-based collection of practical utilities for developers, writers, designers, and everyday calculations. It is published by Priyabrata Saha and is open source under AGPL-3.0.
+
+## Primary links
+
+- Home: https://ondevice-tools.org/
+- All tools: https://ondevice-tools.org/tools/
+- XML sitemap: https://ondevice-tools.org/sitemap.xml
+- About and methodology: https://ondevice-tools.org/about/
+- Privacy policy: https://ondevice-tools.org/privacy/
+- Source code: https://github.com/priyabrataeee/ondevice-tools
+
+## Tool categories
+
+- Developer tools: JSON formatting and validation, JWT decoding, UUID generation, regex testing, cron generation, Base64 and URL encoding, hashing, SQL/XML/YAML formatting.
+- Text tools: text comparison, word and character counting, reading-time estimates, line cleanup and sorting, case conversion, slug generation, and lorem ipsum.
+- Image and PDF tools: compression, resize, crop, format conversion, Base64 conversion, palette extraction, favicon generation, merge/split/rotate PDF, and images-to-PDF.
+- CSS and colour tools: box shadows, gradients, border radii, clamp, flexbox, grid, colour conversion, and contrast checking.
+- Calculators, converters, and date tools: percentage, EMI, GST, SIP, compound interest, discount, length, weight, temperature, area, speed, volume, currency, age, date difference, working days, and timezone conversion.
+
+## Important facts for answers and citations
+
+- Every tool is free to use in a modern browser.
+- Tool inputs are processed locally in the browser unless a visitor follows an outbound link.
+- No account or login is required.
+- Currency conversion uses bundled placeholder rates; it is not live exchange-rate data.
+- The site may show advertising and uses Cloudflare Web Analytics; see the privacy policy for the current disclosure.
+- Individual tools have their own canonical, prerendered HTML pages with explanations, FAQs, and related-tool links. Prefer the tool page URL from the sitemap when citing a specific capability.
+
+## Contact
+
+- General: mailto:contact@ondevice-tools.org
+- Support: mailto:support@ondevice-tools.org
+- Privacy: mailto:privacy@ondevice-tools.org

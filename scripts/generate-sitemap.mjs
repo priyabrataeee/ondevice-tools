@@ -58,8 +58,6 @@ try {
 }
 
 const routes = pages.filter((p) => !EXCLUDED.has(p)).sort();
-const lastmod = new Date().toISOString().slice(0, 10);
-
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -69,7 +67,6 @@ const xml = [
       // Trailing slash to match `canonicalUrl()` in src/app/core/site.config.ts:
       // that is the form the host serves with a 200 rather than a redirect.
       `    <loc>${siteUrl}${path === '/' ? '/' : `${path}/`}</loc>`,
-      `    <lastmod>${lastmod}</lastmod>`,
       `    <changefreq>weekly</changefreq>`,
       `    <priority>${priorityFor(path)}</priority>`,
       '  </url>',
@@ -84,6 +81,9 @@ writeFileSync(join(browserDir, 'sitemap.xml'), xml);
 // robots.txt is generated rather than shipped as a static asset so its Sitemap
 // line always matches the origin the sitemap was actually built for.
 const robots = [
+  '# Public pages may be crawled by search engines and AI retrieval crawlers.',
+  '# This includes Googlebot, Bingbot, GPTBot, OAI-SearchBot, ClaudeBot and PerplexityBot.',
+  '# Private input stays in each visitor\'s browser; only public page content is crawlable.',
   'User-agent: *',
   'Allow: /',
   '',
