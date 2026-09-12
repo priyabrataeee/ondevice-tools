@@ -213,7 +213,6 @@ export class PrivacyComponent implements OnInit {
       description:
         'What OnDevice Tools does and does not collect. Your files are processed in your browser and never uploaded; advertising and analytics are disclosed in full.',
       path: '/privacy',
-      keywords: ['privacy policy', 'cookies', 'adsense', 'client-side', 'data protection'],
     });
   }
 }

@@ -121,7 +121,6 @@ export class ContactComponent implements OnInit {
       description:
         'How to reach OnDevice Tools with bug reports, tool requests, corrections and advertising enquiries.',
       path: '/contact',
-      keywords: ['contact', 'support', 'bug report', 'feedback'],
     });
   }
 }

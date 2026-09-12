@@ -15,7 +15,6 @@ export interface SeoConfig {
   /** Page title without the site suffix. */
   title: string;
   description: string;
-  keywords?: string[];
   /** Path beginning with a slash, e.g. `/tools/json-formatter`. */
   path: string;
   image?: string;
@@ -28,6 +27,14 @@ export interface SeoConfig {
   noindex?: boolean;
 }
 
+/**
+ * No `<meta name="keywords">` is emitted anywhere in this service.
+ *
+ * Google has ignored that tag for indexing and ranking for years, and Bing has
+ * said it can read as a spam signal, so it was pure page weight across every
+ * route. The `keywords` array on each registry entry is NOT dead, though — it
+ * feeds the ranked search and command palette in `ToolService.score()`.
+ */
 const LD_ATTR = 'data-qt-ld';
 
 @Injectable({ providedIn: 'root' })
@@ -44,10 +51,6 @@ export class SeoService {
 
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: config.description });
-    this.meta.updateTag({
-      name: 'keywords',
-      content: (config.keywords ?? []).join(', '),
-    });
 
     this.meta.updateTag({ property: 'og:title', content: fullTitle });
     this.meta.updateTag({ property: 'og:description', content: config.description });
@@ -84,15 +87,6 @@ export class SeoService {
     this.apply({
       title: `${tool.name} — Free, Nothing Uploaded`,
       description: tool.description,
-      keywords: [
-        tool.name.toLowerCase(),
-        ...tool.keywords,
-        'free',
-        'online',
-        'offline',
-        'no upload',
-        'in browser',
-      ],
       path,
       structuredData: [
         {

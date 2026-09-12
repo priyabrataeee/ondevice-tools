@@ -91,7 +91,6 @@ export class CategoryComponent implements OnInit {
         title: `${category.name} — ${tools.length} Free Online Tools`,
         description: `${category.description} All ${tools.length} tools run entirely in your browser with no uploads.`,
         path: `/category/${category.id}`,
-        keywords: [category.name.toLowerCase(), ...tools.slice(0, 8).map((t) => t.name.toLowerCase())],
         structuredData: [
           {
             '@type': 'CollectionPage',

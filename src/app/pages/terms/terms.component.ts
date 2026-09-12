@@ -139,7 +139,6 @@ export class TermsComponent implements OnInit {
       description:
         'Terms of use for OnDevice Tools: free browser-based utilities provided as is, with no account, no stored data and no warranty on results.',
       path: '/terms',
-      keywords: ['terms of use', 'terms and conditions', 'disclaimer', 'legal'],
     });
   }
 }

@@ -106,7 +106,6 @@ export class AllToolsComponent implements OnInit {
       title: `All ${this.total} Free Online Tools`,
       description: `Browse all ${this.total} free OnDevice Tools utilities — developer, text, image, PDF, CSS, colour, calculator, converter and date tools that run entirely in your browser.`,
       path: '/tools',
-      keywords: ['all tools', 'free online tools', 'browser utilities', 'tool directory'],
     });
 
     // Support deep links such as /tools?q=json from the site search action.

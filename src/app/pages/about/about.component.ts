@@ -164,7 +164,6 @@ export class AboutComponent implements OnInit {
       title: 'About',
       description: `Who builds OnDevice Tools, how ${this.toolCount} browser-based utilities run without a server, and how the site is funded.`,
       path: '/about',
-      keywords: ['about', 'client-side tools', 'no upload', 'privacy first', 'how it works'],
     });
   }
 }

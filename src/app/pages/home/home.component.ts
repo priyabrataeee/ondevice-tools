@@ -274,14 +274,6 @@ export class HomeComponent implements OnInit {
       title: `${this.toolCount} Free Browser Tools`,
       description: SITE_DESCRIPTION,
       path: '/',
-      keywords: [
-        'free online tools',
-        'browser tools',
-        'json formatter',
-        'image compressor',
-        'unit converter',
-        'developer utilities',
-      ],
     });
   }
 
