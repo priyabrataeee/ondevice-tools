@@ -201,6 +201,9 @@ const csp = [
   `worker-src 'self'`,
   `manifest-src 'self'`,
   ...(adsEnabled ? [`frame-src ${AD_FRAME_HOSTS.join(' ')}`] : []),
+  // Google increasingly renders ads in fenced frames (Privacy Sandbox), which
+  // frame-src does not govern. Without this directive those units never load.
+  ...(adsEnabled ? [`fenced-frame-src https:`] : []),
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'none'`,

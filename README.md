@@ -60,8 +60,7 @@ one tool and runs it locally.
 
 The heavy lifting uses capabilities browsers already ship: **Canvas** for image compression and
 resizing, the **File API** for reading files you choose, **Web Crypto** for hashing, and the
-built-in parsers for JSON, XML and YAML. Longer jobs run in a **Web Worker** so the page stays
-responsive. None of that involves a network request.
+built-in parsers for JSON, XML and YAML. None of that involves a network request.
 
 ## An honest note on funding
 

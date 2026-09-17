@@ -12,6 +12,8 @@
  * a page never ends up with a section of padding written to fill a template.
  */
 
+import { MORE_TOOL_CONTENT } from './tool-content-more';
+
 export interface ToolContent {
   /**
    * What actually executes on the visitor's device — named APIs, real limits.
@@ -279,5 +281,5 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
 
 /** Extra copy for a tool, or undefined where the registry entry is enough. */
 export function contentFor(toolId: string): ToolContent | undefined {
-  return TOOL_CONTENT[toolId];
+  return TOOL_CONTENT[toolId] ?? MORE_TOOL_CONTENT[toolId];
 }

@@ -37,6 +37,37 @@ export interface SeoConfig {
  */
 const LD_ATTR = 'data-qt-ld';
 
+/** Search results truncate titles at roughly 60 characters. */
+const TITLE_MAX = 60;
+const DESCRIPTION_MAX = 160;
+
+/**
+ * Keeps the site-name suffix only when the whole title still fits, so the
+ * distinctive part of a long tool title is never the part that gets cut.
+ */
+function composeTitle(path: string, title: string): string {
+  if (path === '/') return `${SITE_NAME} — ${title}`;
+  const withSuffix = `${title} | ${SITE_NAME}`;
+  return withSuffix.length <= TITLE_MAX ? withSuffix : title;
+}
+
+/** Longest tool-title variant that fits once the suffix rule above is applied. */
+function toolTitle(name: string): string {
+  const variants = [`${name} — Free, Nothing Uploaded`, `${name} — Free, No Upload`];
+  return (
+    variants.find((v) => `${v} | ${SITE_NAME}`.length <= TITLE_MAX) ??
+    variants.find((v) => v.length <= TITLE_MAX) ??
+    name
+  );
+}
+
+/** Truncates at a word boundary so snippets never end mid-word. */
+function fitDescription(text: string): string {
+  if (text.length <= DESCRIPTION_MAX) return text;
+  const cut = text.slice(0, DESCRIPTION_MAX - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+}
+
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly title = inject(Title);
@@ -44,16 +75,16 @@ export class SeoService {
   private readonly document = inject(DOCUMENT);
 
   apply(config: SeoConfig): void {
-    const fullTitle =
-      config.path === '/' ? `${SITE_NAME} — ${config.title}` : `${config.title} | ${SITE_NAME}`;
+    const fullTitle = composeTitle(config.path, config.title);
+    const description = fitDescription(config.description);
     const url = canonicalUrl(config.path);
     const image = config.image ?? SITE_OG_IMAGE;
 
     this.title.setTitle(fullTitle);
-    this.meta.updateTag({ name: 'description', content: config.description });
+    this.meta.updateTag({ name: 'description', content: description });
 
     this.meta.updateTag({ property: 'og:title', content: fullTitle });
-    this.meta.updateTag({ property: 'og:description', content: config.description });
+    this.meta.updateTag({ property: 'og:description', content: description });
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
@@ -61,7 +92,7 @@ export class SeoService {
 
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: fullTitle });
-    this.meta.updateTag({ name: 'twitter:description', content: config.description });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     // Reset on every navigation: this is a single-page app, so a tag left over
@@ -85,8 +116,11 @@ export class SeoService {
     const url = canonicalUrl(path);
 
     this.apply({
-      title: `${tool.name} — Free, Nothing Uploaded`,
-      description: tool.description,
+      title: toolTitle(tool.name),
+      // Registry blurbs are written for cards (~50–70 chars). The meta
+      // description gets the site's differentiator appended so it lands in the
+      // 120–160 range search results actually display.
+      description: `${tool.description} Free and private — runs entirely in your browser, nothing is uploaded.`,
       path,
       structuredData: [
         {

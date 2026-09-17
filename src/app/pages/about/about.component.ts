@@ -49,9 +49,8 @@ import { ToolService } from '../../core/tool.service';
         <p>
           The heavy lifting uses capabilities browsers already ship: the Canvas API for image
           compression and resizing, the File API for reading files you choose, Web Crypto for
-          hashing, and the built-in JSON and text parsers for the developer tools. Longer jobs run
-          in a Web Worker so the page stays responsive. Nothing about that pipeline involves a
-          network request.
+          hashing, pdf-lib for the PDF tools, and the built-in JSON and text parsers for the
+          developer tools. Nothing about that pipeline involves a network request.
         </p>
         <p>
           A service worker caches the app after your first visit, so the tools keep working with

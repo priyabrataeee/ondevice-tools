@@ -61,7 +61,11 @@ export class AdSlotComponent {
   /** Ad unit id from the AdSense dashboard (the `data-ad-slot` value). */
   readonly slot = input.required<string>();
   readonly format = input('auto');
-  readonly fullWidth = input(true);
+  /**
+   * Off by default: full-width responsive units escape their container on
+   * mobile and push the page wider than the viewport.
+   */
+  readonly fullWidth = input(false);
   /** Space reserved before the unit loads. Match it to the unit's usual height. */
   readonly minHeight = input(280);
 

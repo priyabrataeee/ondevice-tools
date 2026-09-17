@@ -20,6 +20,7 @@
     "finalize": "npm run generate:sitemap && npm run prepare:cloudflare",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
+    "indexnow": "node scripts/indexnow.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
