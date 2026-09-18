@@ -41,6 +41,32 @@ function findPages(dir, pages = []) {
   return pages;
 }
 
+/**
+ * Per-tool ship dates, read from the registry.
+ *
+ * A sitemap where every URL claims it changed today teaches a crawler nothing,
+ * so tool pages report the date the tool actually shipped and everything else
+ * reports the build date.
+ */
+const toolDates = (() => {
+  const dir = join(root, 'src', 'app', 'core', 'data', 'tools');
+  const dates = new Map();
+  for (const file of readdirSync(dir)) {
+    const source = readFileSync(join(dir, file), 'utf8');
+    const entry = /id: '([^']+)'[\s\S]*?added: '([0-9-]+)'/g;
+    let match;
+    while ((match = entry.exec(source)) !== null) dates.set(match[1], match[2]);
+  }
+  return dates;
+})();
+
+const buildDate = new Date().toISOString().slice(0, 10);
+
+function lastmodFor(path) {
+  const id = path.startsWith('/tools/') ? path.slice('/tools/'.length) : '';
+  return toolDates.get(id) ?? buildDate;
+}
+
 function priorityFor(path) {
   if (path === '/') return '1.0';
   if (path === '/tools') return '0.9';
@@ -67,6 +93,7 @@ const xml = [
       // Trailing slash to match `canonicalUrl()` in src/app/core/site.config.ts:
       // that is the form the host serves with a 200 rather than a redirect.
       `    <loc>${siteUrl}${path === '/' ? '/' : `${path}/`}</loc>`,
+      `    <lastmod>${lastmodFor(path)}</lastmod>`,
       `    <changefreq>weekly</changefreq>`,
       `    <priority>${priorityFor(path)}</priority>`,
       '  </url>',

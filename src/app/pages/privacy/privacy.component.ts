@@ -147,10 +147,6 @@ import { ADS_ENABLED, CF_ANALYTICS_TOKEN, DONATION_URL, EMAIL } from '../../core
         <h2>Other third-party requests</h2>
         <ul>
           <li>
-            <strong>Google Fonts</strong> serves the site's typeface. Blocking it changes nothing
-            except the font.
-          </li>
-          <li>
             <strong>Cloudflare</strong> serves every page as our host and, as with any web host,
             processes the network request itself.
           </li>

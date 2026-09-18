@@ -12,6 +12,7 @@ import {
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
+import { trailingSlashUrlProvider } from './core/trailing-slash-url-serializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +26,8 @@ export const appConfig: ApplicationConfig = {
       withRouterConfig({ paramsInheritanceStrategy: 'always' }),
     ),
     provideClientHydration(withEventReplay()),
+    // Emit internal hrefs with the trailing slash the host serves with a 200,
+    // so crawlers stop following a 307 on every link.
+    trailingSlashUrlProvider,
   ],
 };

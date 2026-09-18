@@ -17,16 +17,17 @@
     <link rel="manifest" href="manifest.webmanifest" />
 
     <!--
-      Loaded as an ordinary stylesheet rather than with the `media="print"
-      onload` swap trick: that relies on an inline event handler, which the
-      production Content-Security-Policy blocks, leaving the font permanently
-      inactive. `display=swap` keeps text visible while the font downloads.
+      Inter is self-hosted (see src/fonts.css). No third-party font request is
+      made, which keeps the CSP free of external style and font hosts and means
+      nothing is fetched from another origin before a visitor consents.
     -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="preload"
+      href="fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     />
 
     <!--
@@ -55,7 +56,9 @@
     <app-root></app-root>
     <noscript>
       <div style="padding: 2rem; font-family: system-ui, sans-serif">
-        <h1>JavaScript is required</h1>
+        <p style="font-size: 1.5rem; font-weight: 700; margin: 0 0 0.5rem">
+          JavaScript is required
+        </p>
         <p>
           OnDevice Tools runs entirely in your browser, so it needs JavaScript enabled. No data is ever
           sent to a server.

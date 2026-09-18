@@ -2,11 +2,13 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import {
+  EMAIL,
   SITE_AUTHOR,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_OG_IMAGE,
   SITE_URL,
+  SOURCE_URL,
   canonicalUrl,
 } from './site.config';
 import { Tool } from './tool.types';
@@ -53,7 +55,11 @@ function composeTitle(path: string, title: string): string {
 
 /** Longest tool-title variant that fits once the suffix rule above is applied. */
 function toolTitle(name: string): string {
-  const variants = [`${name} — Free, Nothing Uploaded`, `${name} — Free, No Upload`];
+  const variants = [
+    `${name} Online — Free, No Upload`,
+    `${name} — Free, No Upload`,
+    `${name} Online — Free`,
+  ];
   return (
     variants.find((v) => `${v} | ${SITE_NAME}`.length <= TITLE_MAX) ??
     variants.find((v) => v.length <= TITLE_MAX) ??
@@ -134,6 +140,10 @@ export class SeoService {
           offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
           isAccessibleForFree: true,
           publisher: { '@id': `${SITE_URL}/#organization` },
+          // Crawlers and LLMs both use freshness signals; the registry already
+          // records when each tool shipped.
+          datePublished: tool.added,
+          dateModified: tool.added,
         },
         {
           '@type': 'BreadcrumbList',
@@ -178,7 +188,14 @@ export class SeoService {
       url: canonicalUrl('/'),
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/icons/icon-512.png` },
       description: SITE_DESCRIPTION,
-      founder: { '@type': 'Person', name: SITE_AUTHOR },
+      founder: { '@type': 'Person', name: SITE_AUTHOR, url: SOURCE_URL },
+      sameAs: [SOURCE_URL],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: EMAIL.support,
+        url: canonicalUrl('/contact'),
+      },
     };
   }
 

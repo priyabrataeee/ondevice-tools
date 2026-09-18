@@ -193,8 +193,8 @@ const csp = [
   `script-src ${scriptSrc}`,
   // Angular inlines critical CSS and server-renders [style.x] bindings as style
   // attributes, both of which require unsafe-inline for styles specifically.
-  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `font-src 'self' https://fonts.gstatic.com`,
+  `style-src 'self' 'unsafe-inline'`,
+  `font-src 'self'`,
   // data: for Base64 previews, blob: for canvas and PDF output.
   `img-src ${imgSrc}`,
   `connect-src ${connectSrc}`,

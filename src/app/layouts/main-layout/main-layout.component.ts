@@ -168,9 +168,9 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
             <div class="grid grid-cols-2 gap-6 sm:grid-cols-3">
               @for (group of footerGroups(); track group.title) {
                 <div>
-                  <h2 class="mb-3 text-xs font-semibold tracking-wider text-faint uppercase">
+                  <p class="mb-3 text-xs font-semibold tracking-wider text-faint uppercase">
                     {{ group.title }}
-                  </h2>
+                  </p>
                   <ul class="space-y-2">
                     @for (item of group.items; track item.path) {
                       <li>

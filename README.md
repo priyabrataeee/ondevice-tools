@@ -296,11 +296,10 @@ inventory.
 
 Clearing site data removes all three, and every tool behaves identically without them.
 
-**Third-party requests**, all of them:
+**Third-party requests**, all of them (Inter is self-hosted, so the typeface is not one):
 
 | Origin | Purpose | Cookies |
 | --- | --- | --- |
-| `fonts.googleapis.com` / `fonts.gstatic.com` | Inter typeface | no |
 | `pagead2.googlesyndication.com` + Google ad hosts | AdSense — funds the site | yes |
 | `static.cloudflareinsights.com` | Cloudflare Web Analytics — aggregate page views | no |
 
