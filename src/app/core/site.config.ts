@@ -96,11 +96,20 @@ export const SITE_FOUNDED = '2026';
 /**
  * Cloudflare Web Analytics beacon token.
  *
- * Cookieless and per-site rather than per-visitor, which is why it is used here
- * instead of Google Analytics — the privacy page makes that claim explicitly.
- * Empty means no beacon is loaded and no analytics host is allowed by the CSP.
+ * Cookieless and per-site rather than per-visitor. It runs alongside GA4 below
+ * and covers visitors whose blockers stop Google's tag. Empty means no beacon is
+ * loaded and no Cloudflare analytics host is allowed by the CSP.
  */
 export const CF_ANALYTICS_TOKEN = '9e856e8367e44f9e82e6ba782845890c';
+
+/**
+ * Google Analytics 4 measurement id.
+ *
+ * Unlike the Cloudflare beacon, GA4 sets first-party cookies (_ga, _ga_*) and
+ * is a Google product, so the privacy page discloses it separately. Empty means
+ * no gtag.js is loaded and no Google Analytics host is allowed by the CSP.
+ */
+export const GA_MEASUREMENT_ID = 'G-42L42CSCG1';
 
 /**
  * Ad unit ids from the AdSense dashboard (the `data-ad-slot` values).

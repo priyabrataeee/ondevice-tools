@@ -70,6 +70,17 @@ const adsenseClient = readConst('ADSENSE_CLIENT');
 const adsEnabled = adsenseClient.startsWith('ca-pub-');
 const analyticsToken = readConst('CF_ANALYTICS_TOKEN');
 const analyticsEnabled = analyticsToken.length > 0;
+const gaId = readConst('GA_MEASUREMENT_ID');
+const gaEnabled = gaId.startsWith('G-');
+
+/** Hosts gtag.js loads from and reports to. */
+const GA_SCRIPT_HOSTS = ['https://www.googletagmanager.com'];
+const GA_CONNECT_HOSTS = [
+  'https://www.google-analytics.com',
+  'https://analytics.google.com',
+  'https://stats.g.doubleclick.net',
+  'https://www.googletagmanager.com',
+];
 
 /**
  * Hosts Google's ad stack fetches from. Google does not publish a stable,
@@ -175,18 +186,24 @@ const scriptSrc = [
   ...ownScripts,
   ...(adsEnabled ? AD_SCRIPT_HOSTS : []),
   ...(analyticsEnabled ? ['https://static.cloudflareinsights.com'] : []),
+  ...(gaEnabled ? GA_SCRIPT_HOSTS : []),
 ].join(' ');
 
 const connectSrc = [
   "'self'",
   ...(adsEnabled ? AD_CONNECT_HOSTS : []),
   ...(analyticsEnabled ? ['https://cloudflareinsights.com'] : []),
+  ...(gaEnabled ? GA_CONNECT_HOSTS : []),
 ].join(' ');
 
 // Ad creatives are served from a long tail of advertiser CDNs that cannot be
 // enumerated, so the image policy has to widen to https: once ads are on. It
 // stays pinned to 'self' otherwise.
-const imgSrc = adsEnabled ? `'self' data: blob: https:` : `'self' data: blob:`;
+// GA4 still falls back to pixel requests in some browsers, so its hosts are
+// allowed for images too when ads have not already widened this to https:.
+const imgSrc = adsEnabled
+  ? `'self' data: blob: https:`
+  : `'self' data: blob:${gaEnabled ? ' ' + GA_CONNECT_HOSTS.join(' ') : ''}`;
 
 const csp = [
   `default-src 'self'`,
@@ -369,4 +386,9 @@ console.log(
   analyticsEnabled
     ? '  Cloudflare Web Analytics ON: beacon host allowed in CSP.'
     : '  Cloudflare Web Analytics OFF. Set CF_ANALYTICS_TOKEN in site.config.ts.',
+);
+console.log(
+  gaEnabled
+    ? `  Google Analytics ON (${gaId}): gtag hosts allowed in CSP.`
+    : '  Google Analytics OFF. Set GA_MEASUREMENT_ID in site.config.ts.',
 );

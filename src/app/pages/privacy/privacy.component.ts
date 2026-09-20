@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo.service';
-import { ADS_ENABLED, CF_ANALYTICS_TOKEN, DONATION_URL, EMAIL } from '../../core/site.config';
+import {
+  ADS_ENABLED,
+  CF_ANALYTICS_TOKEN,
+  DONATION_URL,
+  EMAIL,
+  GA_MEASUREMENT_ID,
+} from '../../core/site.config';
 
 @Component({
   selector: 'app-privacy',
@@ -131,16 +137,34 @@ import { ADS_ENABLED, CF_ANALYTICS_TOKEN, DONATION_URL, EMAIL } from '../../core
         }
 
         <h2>Analytics</h2>
-        @if (analyticsEnabled) {
+        @if (analyticsEnabled || gaEnabled) {
+          <p>Two measurement tools run on this site, and they differ in what they do:</p>
+          <ul>
+            @if (analyticsEnabled) {
+              <li>
+                <strong>Cloudflare Web Analytics</strong> — cookieless. It records page views and
+                referrers in aggregate and does not identify you or follow you across sites.
+              </li>
+            }
+            @if (gaEnabled) {
+              <li>
+                <strong>Google Analytics 4</strong> — sets first-party cookies (named
+                <code>_ga</code> and <code>_ga_*</code>) to recognise a returning browser and
+                measure which pages and tools get used. File downloads and form interactions are
+                switched off, so those events are not collected.
+              </li>
+            }
+          </ul>
           <p>
-            Aggregate traffic measurement is done with Cloudflare Web Analytics, which is cookieless
-            and does not fingerprint or track individuals across sites. It records page views and
-            referrers in aggregate. There is no Google Analytics on this site.
+            Both measure the visit, not the work. Neither can see what you type into a tool, which
+            file you opened or what a tool produced, because that content never leaves your device.
+            Clearing your site data removes the analytics cookies, and blocking either script leaves
+            every tool working exactly as before.
           </p>
         } @else {
           <p>
-            There is no analytics script on this site at all — no Google Analytics, no product
-            analytics, nothing that records your visit on our behalf.
+            There is no analytics script on this site at all — nothing that records your visit on
+            our behalf.
           </p>
         }
 
@@ -202,6 +226,7 @@ export class PrivacyComponent implements OnInit {
    */
   protected readonly adsEnabled = ADS_ENABLED;
   protected readonly analyticsEnabled = CF_ANALYTICS_TOKEN.length > 0;
+  protected readonly gaEnabled = GA_MEASUREMENT_ID.startsWith('G-');
 
   ngOnInit(): void {
     this.seo.apply({

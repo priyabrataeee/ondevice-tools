@@ -302,6 +302,7 @@ Clearing site data removes all three, and every tool behaves identically without
 | --- | --- | --- |
 | `pagead2.googlesyndication.com` + Google ad hosts | AdSense — funds the site | yes |
 | `static.cloudflareinsights.com` | Cloudflare Web Analytics — aggregate page views | no |
+| `www.googletagmanager.com` / `www.google-analytics.com` | Google Analytics 4 — page and tool usage | yes (`_ga`, `_ga_*`) |
 
 Once the service worker has cached the app, the tools work offline with none of the above.
 

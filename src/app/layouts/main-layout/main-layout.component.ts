@@ -171,7 +171,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                   <p class="mb-3 text-xs font-semibold tracking-wider text-faint uppercase">
                     {{ group.title }}
                   </p>
-                  <ul class="space-y-2">
+                  <ul class="space-y-1">
                     @for (item of group.items; track item.path) {
                       <li>
                         @if (item.external) {
@@ -179,13 +179,13 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                             [href]="item.path"
                             target="_blank"
                             rel="noopener nofollow"
-                            class="text-sm text-muted transition-colors hover:text-fg"
+                            class="inline-block py-1 text-sm text-muted transition-colors hover:text-fg"
                             >{{ item.label }}</a
                           >
                         } @else {
                           <a
                             [routerLink]="item.path"
-                            class="text-sm text-muted transition-colors hover:text-fg"
+                            class="inline-block py-1 text-sm text-muted transition-colors hover:text-fg"
                             >{{ item.label }}</a
                           >
                         }
