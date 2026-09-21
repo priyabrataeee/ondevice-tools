@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { AnalyticsService } from '../../../core/analytics.service';
 import { ToastService } from '../../../core/toast.service';
 import { CopyButtonComponent } from '../copy-button/copy-button.component';
 import { IconComponent } from '../icon/icon.component';
@@ -57,6 +66,28 @@ export class ResultPanelComponent {
   readonly meta = input('');
 
   private readonly toast = inject(ToastService);
+  private readonly analytics = inject(AnalyticsService);
+  private readonly document = inject(DOCUMENT);
+
+  /** Reported once per page: the signal is "this tool worked", not "how often". */
+  private reported = false;
+
+  constructor() {
+    effect(() => {
+      if (this.reported || !this.value()) return;
+      this.reported = true;
+      this.analytics.trackToolComplete(this.toolIdFromPath());
+    });
+  }
+
+  /**
+   * The tool id comes from the URL rather than an input, so every existing
+   * caller of this component reports without needing to pass anything.
+   */
+  private toolIdFromPath(): string {
+    const match = /\/tools\/([a-z0-9-]+)/.exec(this.document.location?.pathname ?? '');
+    return match ? match[1] : 'unknown';
+  }
 
   protected readonly hasValue = computed(() => this.value().length > 0);
 

@@ -2,12 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  PLATFORM_ID,
+  afterNextRender,
   computed,
   effect,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { CommandPaletteService } from '../../../core/command-palette.service';
 import { ToolService } from '../../../core/tool.service';
@@ -48,7 +51,7 @@ import { IconComponent } from '../icon/icon.component';
               #searchInput
               type="text"
               class="w-full border-none bg-transparent py-4 text-base text-fg outline-none placeholder:text-faint"
-              placeholder="Search tools, categories, keywords…"
+              [placeholder]="placeholder()"
               autocomplete="off"
               spellcheck="false"
               role="combobox"
@@ -113,6 +116,20 @@ import { IconComponent } from '../icon/icon.component';
   `,
 })
 export class CommandPaletteComponent {
+  /**
+   * True on phone-width screens. Starts false so the prerendered HTML carries
+   * the full placeholder, then corrects itself once the browser can measure.
+   */
+  private readonly narrow = signal(false);
+
+  /**
+   * The long form is cut off in the ~340px field a 375px phone leaves after
+   * padding, so narrow screens get a version that fits.
+   */
+  protected readonly placeholder = computed(() =>
+    this.narrow() ? 'Search tools…' : 'Search tools, categories, keywords…',
+  );
+
   protected readonly palette = inject(CommandPaletteService);
   private readonly toolService = inject(ToolService);
   private readonly router = inject(Router);
@@ -120,6 +137,7 @@ export class CommandPaletteComponent {
   protected readonly query = signal('');
   protected readonly activeIndex = signal(0);
   private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   protected readonly results = computed<Tool[]>(() => {
     const q = this.query();
@@ -196,4 +214,12 @@ export class CommandPaletteComponent {
     this.palette.close();
     void this.router.navigate(['/tools', tool.id]);
   }
+
+  /** Kept out of the template so the placeholder never reflows mid-typing. */
+  private readonly watchWidth = afterNextRender(() => {
+    if (!this.isBrowser) return;
+    const query = window.matchMedia('(max-width: 480px)');
+    this.narrow.set(query.matches);
+    query.addEventListener('change', (event) => this.narrow.set(event.matches));
+  });
 }
