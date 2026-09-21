@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommandPaletteService } from '../../core/command-palette.service';
+import { ConsentService } from '../../core/consent.service';
 import { DONATION_URL, LICENSE_NAME, SOURCE_URL } from '../../core/site.config';
 import { ThemeService } from '../../core/theme.service';
 import { ToolService } from '../../core/tool.service';
@@ -209,6 +210,15 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                 class="underline transition-colors hover:text-fg"
                 >Open source ({{ licenseName }})</a
               >.
+              @if (consent.canManage()) {
+                <button
+                  type="button"
+                  class="underline transition-colors hover:text-fg"
+                  (click)="consent.openPrivacyChoices()"
+                >
+                  Your privacy choices
+                </button>
+              }
             </p>
             <p class="flex items-center gap-1.5">
               <app-icon name="lock" class="h-3.5 w-3.5" />
@@ -222,6 +232,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 })
 export class MainLayoutComponent {
   protected readonly theme = inject(ThemeService);
+  protected readonly consent = inject(ConsentService);
   protected readonly palette = inject(CommandPaletteService);
   private readonly toolService = inject(ToolService);
 

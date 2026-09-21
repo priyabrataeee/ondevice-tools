@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo.service';
+import { ConsentService } from '../../core/consent.service';
 import {
   ADS_ENABLED,
   CF_ANALYTICS_TOKEN,
@@ -186,6 +187,60 @@ import {
           personal information from them.
         </p>
 
+        <h2>Where you are changes what happens</h2>
+        <p>
+          Privacy law treats storage differently on either side of the Atlantic, and the site
+          follows each rather than applying one rule everywhere.
+        </p>
+        <ul>
+          <li>
+            <strong>EEA, UK and Switzerland — opt in.</strong> Advertising and analytics storage
+            start <em>denied</em>. Nothing is stored and no personalised advertising signal is sent
+            until you agree through the consent dialog. Declining is a normal outcome: every tool
+            keeps working, and the site simply measures less.
+          </li>
+          <li>
+            <strong>United States — opt out.</strong> Storage starts granted, and you can opt out
+            at any time. Several state laws — California's CPRA and the Virginia, Colorado,
+            Connecticut, Utah and Texas equivalents — treat a browser-level signal as a binding
+            request, which is honoured below.
+          </li>
+          <li>
+            <strong>Everywhere else</strong> follows the same opt-out model as the United States.
+          </li>
+        </ul>
+
+        <h3>Global Privacy Control</h3>
+        <p>
+          If your browser or an extension sends
+          <a href="https://globalprivacycontrol.org/" target="_blank" rel="noopener nofollow"
+            >Global Privacy Control</a
+          >, this site reads it and turns off advertising storage, advertising identifiers and ad
+          personalisation automatically — no banner to find, no button to press. Cookieless,
+          aggregate analytics continues, because GPC concerns the sale and sharing of personal
+          information for advertising rather than first-party measurement.
+        </p>
+        @if (consent.optedOutBySignal()) {
+          <p><strong>Your browser is sending that signal now, and it has been applied.</strong></p>
+        }
+
+        <h3>Changing your mind</h3>
+        <p>
+          @if (consent.canManage()) {
+            Use
+            <button type="button" class="underline" (click)="consent.openPrivacyChoices()">
+              Your privacy choices
+            </button>
+            here or in the footer of any page to reopen the consent dialog and change or withdraw
+            what you chose.
+          } @else {
+            The consent dialog can be reopened from the "Your privacy choices" link in the footer
+            wherever advertising consent applies to your region.
+          }
+          Clearing your browser's site data for this site also resets every choice, along with the
+          analytics and advertising cookies themselves.
+        </p>
+
         <h2>Your rights</h2>
         <p>
           We hold no account, no profile and no database of users, so there is nothing for us to
@@ -227,6 +282,7 @@ export class PrivacyComponent implements OnInit {
   protected readonly adsEnabled = ADS_ENABLED;
   protected readonly analyticsEnabled = CF_ANALYTICS_TOKEN.length > 0;
   protected readonly gaEnabled = GA_MEASUREMENT_ID.startsWith('G-');
+  protected readonly consent = inject(ConsentService);
 
   ngOnInit(): void {
     this.seo.apply({
