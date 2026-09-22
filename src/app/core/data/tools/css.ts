@@ -7,7 +7,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Design CSS box shadows visually, including layered and inset shadows.',
     category: 'css',
     icon: 'shadow',
-    keywords: ['drop shadow', 'elevation', 'inset', 'material shadow'],
+    keywords: ['drop shadow', 'elevation', 'inset', 'material shadow', 'css box shadow generator', 'box shadow css'],
     added: '2026-01-14',
     popular: true,
     faqs: [
@@ -26,7 +26,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Build linear, radial and conic gradients with unlimited color stops.',
     category: 'css',
     icon: 'gradient',
-    keywords: ['linear gradient', 'radial', 'conic', 'background', 'color stops'],
+    keywords: ['linear gradient', 'radial', 'conic', 'background', 'color stops', 'css gradient generator', 'linear gradient css', 'gradient background'],
     added: '2026-01-14',
     popular: true,
     trending: true,
@@ -46,7 +46,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Craft rounded and organic shapes with per-corner border radius control.',
     category: 'css',
     icon: 'corner',
-    keywords: ['rounded corners', 'blob', 'squircle', 'elliptical'],
+    keywords: ['rounded corners', 'blob', 'squircle', 'elliptical', 'border radius css', 'rounded corners css'],
     added: '2026-02-12',
     faqs: [
       { q: 'What does the slash in the shorthand mean?', a: 'Values before the slash are horizontal radii and values after it are vertical radii, which is how you make elliptical rather than circular corners.' },
@@ -64,7 +64,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Generate fluid typography and spacing with clamp() and viewport units.',
     category: 'css',
     icon: 'ruler',
-    keywords: ['fluid typography', 'responsive', 'vw', 'rem', 'min max'],
+    keywords: ['fluid typography', 'responsive', 'vw', 'rem', 'min max', 'css clamp calculator', 'fluid typography calculator'],
     added: '2026-02-28',
     trending: true,
     faqs: [
@@ -83,7 +83,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Learn and generate flexbox layouts with every property visualised.',
     category: 'css',
     icon: 'columns',
-    keywords: ['flex', 'justify content', 'align items', 'layout', 'flex-wrap'],
+    keywords: ['flex', 'justify content', 'align items', 'layout', 'flex-wrap', 'flexbox generator', 'css flexbox playground'],
     added: '2026-03-08',
     faqs: [
       { q: 'What is the difference between justify-content and align-items?', a: 'justify-content distributes items along the main axis, align-items positions them on the cross axis. Flex direction decides which axis is which.' },
@@ -101,7 +101,7 @@ export const CSS_TOOLS: Tool[] = [
     description: 'Compose CSS Grid layouts visually and export the code.',
     category: 'css',
     icon: 'grid',
-    keywords: ['grid template', 'columns', 'rows', 'gap', 'layout', 'fr'],
+    keywords: ['grid template', 'columns', 'rows', 'gap', 'layout', 'fr', 'css grid generator', 'grid layout generator'],
     added: '2026-03-08',
     faqs: [
       { q: 'What is the fr unit?', a: 'A fraction of the free space left after fixed-size tracks are laid out. Two tracks of 1fr each take half the remaining space.' },

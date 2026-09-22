@@ -7,7 +7,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Compare two texts and see every added, removed and changed line highlighted.',
     category: 'text',
     icon: 'compare',
-    keywords: ['diff', 'text diff', 'difference checker', 'compare files', 'side by side', 'merge'],
+    keywords: ['diff', 'text diff', 'difference checker', 'compare files', 'side by side', 'merge', 'compare two texts', 'diff checker', 'difference between two files'],
     added: '2026-09-01',
     popular: true,
     trending: true,
@@ -27,10 +27,11 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Count words, characters, sentences and paragraphs as you type.',
     category: 'text',
     icon: 'text',
-    keywords: ['word count', 'character count', 'essay', 'paragraph'],
+    keywords: ['word count', 'character count', 'essay', 'paragraph', 'count words', 'essay word counter', 'character and word count'],
     added: '2026-01-12',
     popular: true,
     faqs: [
+      { q: 'How many words is a 500 word essay?', a: 'The counter shows the exact figure as you type, along with characters, sentences and paragraphs, so you can check against a limit before submitting.' },
       { q: 'How is a word defined?', a: 'A word is any run of characters separated by whitespace, which matches how word processors count.' },
       { q: 'Does it count characters with and without spaces?', a: 'Yes, both totals are shown, which is what most academic and publishing guidelines ask for.' },
       { q: 'Is my text stored?', a: 'No. Everything is counted in your browser and nothing is saved or transmitted.' },
@@ -46,7 +47,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Count characters with live limits for tweets, meta tags and SMS.',
     category: 'text',
     icon: 'type',
-    keywords: ['letter count', 'sms', 'twitter', 'meta description', 'limit'],
+    keywords: ['letter count', 'sms', 'twitter', 'meta description', 'limit', 'character count', 'letter counter', 'count characters'],
     added: '2026-01-20',
     faqs: [
       { q: 'Why do emoji count as more than one character?', a: 'A JavaScript string counts UTF-16 code units. Many emoji use two, and some use several joined together, so both the code-unit count and the visible grapheme count are shown.' },
@@ -64,7 +65,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Estimate how long an article takes to read or speak aloud.',
     category: 'text',
     icon: 'timer',
-    keywords: ['read time', 'speech', 'blog', 'words per minute'],
+    keywords: ['read time', 'speech', 'blog', 'words per minute', 'reading time calculator', 'how long to read'],
     added: '2026-01-25',
     faqs: [
       { q: 'What reading speed is used?', a: 'The default is 225 words per minute for silent reading, which is the commonly cited average for adults reading non-technical prose. You can change it.' },
@@ -82,7 +83,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Delete repeated lines from a list, with optional case-insensitive matching.',
     category: 'text',
     icon: 'filter',
-    keywords: ['dedupe', 'unique lines', 'distinct', 'list'],
+    keywords: ['dedupe', 'unique lines', 'distinct', 'list', 'remove duplicates', 'dedupe list', 'delete duplicate lines'],
     added: '2026-02-05',
     faqs: [
       { q: 'Is the original order kept?', a: 'Yes. The first occurrence of each line stays in place and later duplicates are removed.' },
@@ -100,7 +101,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Sort text alphabetically, numerically, by length or at random.',
     category: 'text',
     icon: 'sort',
-    keywords: ['alphabetize', 'order', 'natural sort', 'shuffle', 'reverse'],
+    keywords: ['alphabetize', 'order', 'natural sort', 'shuffle', 'reverse', 'sort list alphabetically', 'alphabetize list', 'sort text online'],
     added: '2026-02-05',
     faqs: [
       { q: 'What is natural sorting?', a: 'It compares embedded numbers by value, so item2 sorts before item10 instead of after it.' },
@@ -118,7 +119,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Reverse text by character, by word or by line.',
     category: 'text',
     icon: 'arrows',
-    keywords: ['backwards', 'mirror', 'flip', 'reverse string'],
+    keywords: ['backwards', 'mirror', 'flip', 'reverse string', 'reverse text', 'backwards text'],
     added: '2026-02-10',
     faqs: [
       { q: 'Does it handle emoji correctly?', a: 'Yes. Reversal works on grapheme clusters rather than raw code units, so emoji and combined characters are not broken apart.' },
@@ -136,11 +137,12 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Convert text between upper, lower, title, camel, snake and kebab case.',
     category: 'text',
     icon: 'letter-case',
-    keywords: ['uppercase', 'lowercase', 'title case', 'camelcase', 'snake_case', 'kebab-case'],
+    keywords: ['uppercase', 'lowercase', 'title case', 'camelcase', 'snake_case', 'kebab-case', 'uppercase converter', 'lowercase converter', 'title case converter', 'camel case', 'snake case'],
     added: '2026-01-20',
     popular: true,
     trending: true,
     faqs: [
+      { q: 'How do I convert text to title case?', a: 'Pick title case. Significant words are capitalised while short articles and prepositions are left lowercase. camelCase, PascalCase, snake_case and kebab-case are also available.' },
       { q: 'Which words stay lowercase in title case?', a: 'Short articles, conjunctions and prepositions are kept lowercase unless they start or end the title, following common style guides.' },
       { q: 'What is sentence case?', a: 'Only the first letter of each sentence is capitalised, along with any word you already wrote in capitals such as an acronym.' },
       { q: 'Does camelCase handle existing separators?', a: 'Yes. Spaces, hyphens, underscores and existing case boundaries are all treated as word breaks.' },
@@ -156,7 +158,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Turn any title into a clean, URL-safe slug.',
     category: 'text',
     icon: 'link',
-    keywords: ['permalink', 'url slug', 'seo', 'transliterate'],
+    keywords: ['permalink', 'url slug', 'seo', 'transliterate', 'url slug generator', 'seo slug', 'permalink generator'],
     added: '2026-02-18',
     faqs: [
       { q: 'What happens to accented characters?', a: 'They are transliterated to their closest ASCII equivalent, so a title with an accented e produces a plain e in the slug.' },
@@ -174,7 +176,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Generate placeholder paragraphs, sentences or words for mockups.',
     category: 'text',
     icon: 'paragraph',
-    keywords: ['placeholder text', 'dummy text', 'filler', 'mockup'],
+    keywords: ['placeholder text', 'dummy text', 'filler', 'mockup', 'lorem ipsum generator', 'dummy text generator'],
     added: '2026-01-30',
     popular: true,
     faqs: [
@@ -193,7 +195,7 @@ export const TEXT_TOOLS: Tool[] = [
     description: 'Clean up double spaces, trailing whitespace and blank lines.',
     category: 'text',
     icon: 'broom',
-    keywords: ['trim', 'whitespace', 'clean text', 'tidy'],
+    keywords: ['trim', 'whitespace', 'clean text', 'tidy', 'remove extra spaces', 'trim whitespace', 'clean up text'],
     added: '2026-02-10',
     faqs: [
       { q: 'What exactly is removed?', a: 'Whichever options you enable: repeated spaces collapse to one, leading and trailing whitespace goes, tabs convert to spaces and repeated blank lines collapse.' },

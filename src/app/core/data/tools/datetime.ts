@@ -7,10 +7,11 @@ export const DATETIME_TOOLS: Tool[] = [
     description: 'Calculate exact age in years, months, days, hours and minutes.',
     category: 'datetime',
     icon: 'cake',
-    keywords: ['birthday', 'date of birth', 'how old', 'years old'],
+    keywords: ['birthday', 'date of birth', 'how old', 'years old', 'age calculator', 'how old am i', 'date of birth calculator', 'age in years months days'],
     added: '2026-01-26',
     popular: true,
     faqs: [
+      { q: 'How do I work out my exact age?', a: 'Enter your date of birth. The result is counted in calendar years, months and days rather than by dividing total days, which is how age is defined legally.' },
       { q: 'How are leap years handled?', a: 'Calendar arithmetic is used rather than a fixed 365-day year, so leap days are counted correctly.' },
       { q: 'What happens on 29 February birthdays?', a: 'In non-leap years the anniversary is treated as 1 March, which is the most common civil convention.' },
       { q: 'Can I calculate age at a past or future date?', a: 'Yes, change the "as of" date to any date you like.' },
@@ -26,7 +27,7 @@ export const DATETIME_TOOLS: Tool[] = [
     description: 'Count the days, weeks and months between any two dates.',
     category: 'datetime',
     icon: 'calendar',
-    keywords: ['days between', 'duration', 'date range', 'countdown'],
+    keywords: ['days between', 'duration', 'date range', 'countdown', 'days between dates', 'date calculator', 'days until', 'date duration'],
     added: '2026-01-26',
     faqs: [
       { q: 'Is the end date included?', a: 'By default the difference is exclusive of the end date. There is a toggle to count both endpoints inclusively.' },
@@ -44,7 +45,7 @@ export const DATETIME_TOOLS: Tool[] = [
     description: 'Count business days between dates, excluding weekends and holidays.',
     category: 'datetime',
     icon: 'calendar-check',
-    keywords: ['business days', 'weekdays', 'holidays', 'project', 'sla'],
+    keywords: ['business days', 'weekdays', 'holidays', 'project', 'sla', 'business days calculator', 'working days between dates', 'weekday calculator'],
     added: '2026-02-04',
     faqs: [
       { q: 'Which days count as the weekend?', a: 'Saturday and Sunday by default, and you can change which days are non-working to match a different week.' },
@@ -62,10 +63,11 @@ export const DATETIME_TOOLS: Tool[] = [
     description: 'Convert a time across time zones with automatic DST handling.',
     category: 'datetime',
     icon: 'globe',
-    keywords: ['utc', 'gmt', 'meeting', 'world clock', 'dst'],
+    keywords: ['utc', 'gmt', 'meeting', 'world clock', 'dst', 'time zone converter', 'ist to est', 'utc to ist', 'meeting time'],
     added: '2026-03-22',
     trending: true,
     faqs: [
+      { q: 'How do I convert IST to EST?', a: 'Pick the two zones and a date. IST is UTC+5:30 year round, while the US Eastern zone shifts between EST and EDT, so the difference changes with the date. The converter applies the correct offset for the day you choose.' },
       { q: 'Is daylight saving handled?', a: 'Yes. Conversion uses the browser IANA time zone database, so the correct offset for that specific date is applied.' },
       { q: 'Why does the offset change with the date?', a: 'Because many zones shift by an hour seasonally. Converting a meeting in March can give a different result than the same meeting in July.' },
       { q: 'Which zones are available?', a: 'Every IANA zone your browser supports, searchable by city name.' },

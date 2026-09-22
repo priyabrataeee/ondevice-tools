@@ -7,10 +7,12 @@ export const COLOR_TOOLS: Tool[] = [
     description: 'Convert between HEX, RGB, HSL, HSB and CMYK with a live preview.',
     category: 'color',
     icon: 'palette',
-    keywords: ['hex to rgb', 'hsl', 'cmyk', 'color picker', 'rgba'],
+    keywords: ['hex to rgb', 'hsl', 'cmyk', 'color picker', 'rgba', 'rgb to hex', 'hex to hsl', 'hsl to hex', 'rgb to hsl', 'color code converter'],
     added: '2026-02-26',
     popular: true,
     faqs: [
+      { q: 'How do I convert HEX to RGB?', a: 'Each pair of hex digits is one channel in base 16. #FF8800 is red 255, green 136, blue 0. The conversion is exact and reversible.' },
+      { q: 'What is HSL used for?', a: 'It matches how people describe colour changes. Making something slightly darker is one lightness adjustment in HSL, but requires changing all three RGB channels by unequal amounts.' },
       { q: 'What is the difference between HSL and HSB?', a: 'Both use hue and saturation, but HSL varies lightness towards white and black, while HSB varies brightness towards black only. Design tools usually show HSB.' },
       { q: 'Is CMYK accurate for print?', a: 'The conversion here is the standard naive formula. Real print work needs an ICC profile for the specific press and paper.' },
       { q: 'Does it support alpha?', a: 'Yes. Set an alpha value and the RGBA, HSLA and eight-digit hex forms are all produced.' },
@@ -26,7 +28,7 @@ export const COLOR_TOOLS: Tool[] = [
     description: 'Check text contrast against WCAG AA and AAA accessibility levels.',
     category: 'color',
     icon: 'contrast',
-    keywords: ['wcag', 'accessibility', 'a11y', 'contrast ratio', 'readable'],
+    keywords: ['wcag', 'accessibility', 'a11y', 'contrast ratio', 'readable', 'contrast checker', 'wcag contrast', 'colour contrast ratio', 'accessible colors'],
     added: '2026-02-26',
     trending: true,
     faqs: [

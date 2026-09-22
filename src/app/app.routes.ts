@@ -244,6 +244,13 @@ export const routes: Routes = [
       // Image tools
       // ---------------------------------------------------------------------
       {
+        path: 'tools/qr-code-generator',
+        loadComponent: () =>
+          import('./tools/image/qr-code-generator/qr-code-generator.component').then(
+            (m) => m.QrCodeGeneratorComponent,
+          ),
+      },
+      {
         path: 'tools/image-compressor',
         loadComponent: () =>
           import('./tools/image/image-compressor/image-compressor.component').then(

@@ -1,6 +1,6 @@
 # OnDevice Tools
 
-**63 free browser tools that never upload your data.**
+**64 free browser tools that never upload your data.**
 
 [**ondevice-tools.org**](https://ondevice-tools.org) &nbsp;·&nbsp;
 [How it works](#how-it-works) &nbsp;·&nbsp;
@@ -44,7 +44,7 @@ tool still works. Software that genuinely uploads your data cannot run on a plan
 | --- | --- |
 | **Developer** | JSON / XML / YAML / SQL formatters, Base64 and URL encoders, JWT decoder, hashing, live regex tester, cron builder |
 | **Text** | Diff and compare, word and character counts, case conversion, slugs, sorting, deduplication |
-| **Image** | Compress, resize, crop, convert, extract palettes, generate favicons — all via Canvas |
+| **Image** | Compress, resize, crop, convert, extract palettes, generate favicons, QR codes |
 | **PDF** | Merge, split, rotate, build from images |
 | **CSS & colour** | Shadow, gradient, grid and flexbox generators, colour conversion, WCAG contrast checking |
 | **Calculators** | Percentages, EMI, SIP, GST, compound interest, unit conversion, date arithmetic |
@@ -54,7 +54,7 @@ mode, and a PWA install.
 
 ## How it works
 
-Each of the 63 tools is prerendered to plain HTML at build time and served as a static file from a
+Each of the 64 tools is prerendered to plain HTML at build time and served as a static file from a
 CDN — the same way an image is served. Opening a tool downloads a small JavaScript bundle for that
 one tool and runs it locally.
 

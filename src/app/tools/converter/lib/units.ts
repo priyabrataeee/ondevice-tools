@@ -55,6 +55,10 @@ export const AREA: UnitGroup = {
     { id: 'in2', name: 'Square inch', symbol: 'in²', factor: 0.00064516 },
     { id: 'ft2', name: 'Square foot', symbol: 'ft²', factor: 0.09290304 },
     { id: 'yd2', name: 'Square yard', symbol: 'yd²', factor: 0.83612736 },
+    // Gaj is the common North Indian name for the square yard and is exactly
+    // equal to it. Bigha is deliberately absent: it varies by state (and by
+    // district within some states), so a single factor would be wrong.
+    { id: 'gaj', name: 'Gaj (square yard)', symbol: 'gaj', factor: 0.83612736 },
     { id: 'ac', name: 'Acre', symbol: 'ac', factor: 4046.8564224 },
     { id: 'mi2', name: 'Square mile', symbol: 'mi²', factor: 2589988.110336 },
   ],

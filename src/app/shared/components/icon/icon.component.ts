@@ -119,6 +119,12 @@ const ICONS: Record<string, IconShape> = {
   contrast: { circles: [[12, 12, 9]], paths: ['M12 3a9 9 0 0 1 0 18z'] },
   star: { paths: ['M12 3.5l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 10l6.1-.9z'] },
   heart: { paths: ['M12 20.5S4.5 16 4.5 10.8A4.3 4.3 0 0 1 12 7.9a4.3 4.3 0 0 1 7.5 2.9C19.5 16 12 20.5 12 20.5z'] },
+  qr: {
+    paths: [
+      'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z',
+      'M14 14h2v2h-2zM18 14h2v2h-2zM16 16h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z',
+    ],
+  },
   coffee: {
     paths: [
       'M4 9h13v5.5a4.5 4.5 0 0 1-4.5 4.5h-4A4.5 4.5 0 0 1 4 14.5V9z',

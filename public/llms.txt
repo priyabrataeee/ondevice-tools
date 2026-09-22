@@ -17,7 +17,7 @@ OnDevice Tools is a public, JavaScript-based collection of practical utilities f
 
 - Developer tools: JSON formatting and validation, JWT decoding, UUID generation, regex testing, cron generation, Base64 and URL encoding, hashing, SQL/XML/YAML formatting.
 - Text tools: text comparison, word and character counting, reading-time estimates, line cleanup and sorting, case conversion, slug generation, and lorem ipsum.
-- Image and PDF tools: compression, resize, crop, format conversion, Base64 conversion, palette extraction, favicon generation, merge/split/rotate PDF, and images-to-PDF.
+- Image and PDF tools: compression, resize, crop, format conversion, Base64 conversion, palette extraction, favicon generation, QR code generation, merge/split/rotate PDF, and images-to-PDF.
 - CSS and colour tools: box shadows, gradients, border radii, clamp, flexbox, grid, colour conversion, and contrast checking.
 - Calculators, converters, and date tools: percentage, EMI, GST, SIP, compound interest, discount, length, weight, temperature, area, speed, volume, currency, age, date difference, working days, and timezone conversion.
 

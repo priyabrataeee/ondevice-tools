@@ -6,6 +6,19 @@ import type { ToolContent } from './tool-content';
  * (see the matching registry entry and component) — nothing aspirational.
  */
 export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
+  'qr-code-generator': {
+    howItWorks: [
+      'Your text is encoded into the QR pattern entirely in your browser. The encoder picks the smallest version — the grid size — that can hold your value at the error correction level you chose, adds the Reed-Solomon recovery data that lets a damaged code still be read, and lays out the finder squares in three corners that tell a scanner where the code is and which way up it sits.',
+      'The result is produced as SVG, so it stays sharp at any size, and the PNG download rasterises that same vector at the pixel size you set. Nothing is uploaded: the link, Wi-Fi password or contact details you encode never leave the page, which matters more here than for most tools because a Wi-Fi QR code contains your network password in plain text.',
+    ],
+    useCases: [
+      'Putting a link to a menu, form or page on a printed poster or flyer.',
+      'Sharing Wi-Fi access with guests without reading a long password aloud.',
+      'Adding a vCard contact code to a business card or email signature.',
+      'Generating codes for a private or internal URL that should not pass through a third-party generator.',
+    ],
+  },
+
   // ---------------------------------------------------------------- calculators
   'emi-calculator': {
     howItWorks: [
