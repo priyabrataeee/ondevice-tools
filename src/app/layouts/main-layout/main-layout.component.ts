@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommandPaletteService } from '../../core/command-palette.service';
+import { BackgroundMotionService } from '../../core/background-motion.service';
 import { ConsentService } from '../../core/consent.service';
 import { DONATION_URL, LICENSE_NAME, SOURCE_URL } from '../../core/site.config';
 import { ThemeService } from '../../core/theme.service';
 import { ToolService } from '../../core/tool.service';
 import { CommandPaletteComponent } from '../../shared/components/command-palette/command-palette.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { BackgroundComponent } from '../../shared/components/background/background.component';
 import { ToastContainerComponent } from '../../shared/components/toast/toast-container.component';
 
 @Component({
@@ -19,6 +21,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
     IconComponent,
     CommandPaletteComponent,
     ToastContainerComponent,
+    BackgroundComponent,
   ],
   template: `
     <a
@@ -28,19 +31,20 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
       Skip to content
     </a>
 
+    <app-background />
     <app-command-palette />
     <app-toast-container />
 
-    <div class="flex min-h-screen flex-col bg-bg text-fg">
+    <div class="flex min-h-screen flex-col text-fg">
       <header class="glass sticky top-0 z-40 border-x-0 border-t-0">
-        <div class="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
-          <a routerLink="/" class="flex shrink-0 items-center gap-2">
+        <div class="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
+          <a routerLink="/" class="flex shrink-0 items-center gap-2" aria-label="OnDevice Tools home">
             <span
               class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-brand-fg"
             >
               <app-icon name="bolt" class="h-4.5 w-4.5" />
             </span>
-            <span class="text-lg font-bold tracking-tight">
+            <span class="text-base font-bold tracking-tight max-[359px]:hidden sm:text-lg">
               OnDevice <span class="text-brand">Tools</span>
             </span>
           </a>
@@ -51,17 +55,17 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                 [routerLink]="link.path"
                 routerLinkActive="text-fg bg-surface-strong"
                 [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-                class="rounded-lg px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-fg"
+                class="rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap text-muted transition-colors hover:text-fg"
               >
                 {{ link.label }}
               </a>
             }
           </nav>
 
-          <div class="ml-auto flex items-center gap-2">
+          <div class="ml-auto flex items-center gap-0.5 sm:gap-2">
             <button
               type="button"
-              class="hidden items-center gap-2 rounded-lg border border-line bg-bg-subtle px-3 py-1.5 text-sm text-faint transition-colors hover:border-line-strong hover:text-fg sm:flex"
+              class="hidden items-center gap-2 rounded-lg border border-line bg-bg-subtle px-3 py-1.5 text-sm text-faint transition-colors hover:border-line-strong hover:text-fg lg:flex"
               (click)="palette.open()"
             >
               <app-icon name="search" class="h-4 w-4" />
@@ -71,7 +75,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 
             <button
               type="button"
-              class="btn btn-ghost h-9 w-9 !p-0 sm:hidden"
+              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9 lg:hidden"
               (click)="palette.open()"
               aria-label="Search tools"
             >
@@ -82,7 +86,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="hidden items-center gap-2 rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-semibold text-amber-950 transition-colors hover:bg-amber-300 sm:inline-flex"
+              class="hidden items-center gap-2 rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-semibold text-amber-950 transition-colors hover:bg-amber-300 lg:inline-flex"
             >
               <app-icon name="coffee" class="h-4 w-4" />
               Buy me a coffee
@@ -92,7 +96,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-400 text-amber-950 transition-colors hover:bg-amber-300 sm:hidden"
+              class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-400 text-amber-950 transition-colors hover:bg-amber-300 sm:h-9 sm:w-9 lg:hidden"
               aria-label="Buy me a coffee"
             >
               <app-icon name="coffee" class="h-4.5 w-4.5" />
@@ -100,7 +104,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 
             <button
               type="button"
-              class="btn btn-ghost h-9 w-9 !p-0"
+              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9"
               (click)="theme.toggle()"
               [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
             >
@@ -109,7 +113,17 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 
             <button
               type="button"
-              class="btn btn-ghost h-9 w-9 !p-0 md:hidden"
+              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9"
+              (click)="motion.toggle()"
+              [attr.aria-label]="motion.paused() ? 'Play background animation' : 'Pause background animation'"
+              [attr.title]="motion.paused() ? 'Play background animation' : 'Pause background animation'"
+            >
+              <app-icon [name]="motion.paused() ? 'play' : 'pause'" class="h-4.5 w-4.5" />
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9 md:hidden"
               (click)="mobileOpen.set(!mobileOpen())"
               [attr.aria-expanded]="mobileOpen()"
               aria-label="Toggle navigation menu"
@@ -148,7 +162,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
         <router-outlet />
       </main>
 
-      <footer class="mt-16 border-t border-line bg-bg-subtle">
+      <footer class="mt-16 border-t border-line bg-surface backdrop-blur-md">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <div class="grid gap-10 md:grid-cols-[1.5fr_2fr]">
             <div>
@@ -232,6 +246,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 })
 export class MainLayoutComponent {
   protected readonly theme = inject(ThemeService);
+  protected readonly motion = inject(BackgroundMotionService);
   protected readonly consent = inject(ConsentService);
   protected readonly palette = inject(CommandPaletteService);
   private readonly toolService = inject(ToolService);

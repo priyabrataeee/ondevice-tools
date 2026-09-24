@@ -100,10 +100,14 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Paints the overscroll area, and stands in for the animated
+     * background until its canvas mounts. */
+    background-color: var(--qt-bg);
   }
 
   body {
-    background-color: var(--qt-bg);
+    /* Transparent so the fixed canvas behind the page shows through. */
+    background-color: transparent;
     color: var(--qt-fg);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
