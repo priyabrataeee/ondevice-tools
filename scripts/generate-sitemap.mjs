@@ -120,6 +120,10 @@ const robots = [
   '',
   `Sitemap: ${siteUrl}/sitemap.xml`,
   '',
+  `# Generative Engine Optimization (GEO) & Machine-readable documentation:`,
+  `# ${siteUrl}/llms.txt`,
+  `# ${siteUrl}/llms-full.txt`,
+  '',
 ].join('\n');
 
 writeFileSync(join(browserDir, 'robots.txt'), robots);

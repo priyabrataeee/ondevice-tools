@@ -12,6 +12,7 @@ OnDevice Tools is a public, JavaScript-based collection of practical utilities f
 - About and methodology: https://ondevice-tools.org/about/
 - Privacy policy: https://ondevice-tools.org/privacy/
 - Source code: https://github.com/priyabrataeee/ondevice-tools
+- Full tool capabilities index: https://ondevice-tools.org/llms-full.txt
 
 ## Tool categories
 

@@ -95,7 +95,9 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
     this.meta.updateTag({ property: 'og:image', content: image });
+    this.meta.updateTag({ property: 'og:locale', content: 'en_US' });
 
+    this.meta.updateTag({ name: 'author', content: SITE_AUTHOR });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: fullTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
@@ -106,6 +108,12 @@ export class SeoService {
     this.meta.updateTag({
       name: 'robots',
       content: config.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large',
+    });
+    this.meta.updateTag({
+      name: 'googlebot',
+      content: config.noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
     });
 
     this.setCanonical(url);
@@ -134,6 +142,8 @@ export class SeoService {
           name: tool.name,
           url,
           description: tool.description,
+          image: SITE_OG_IMAGE,
+          author: { '@type': 'Person', name: SITE_AUTHOR, url: SOURCE_URL },
           applicationCategory: 'UtilitiesApplication',
           operatingSystem: 'Any',
           browserRequirements: 'Requires a modern web browser with JavaScript enabled',

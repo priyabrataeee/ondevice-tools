@@ -17,7 +17,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build && npm run finalize",
-    "finalize": "npm run generate:sitemap && npm run prepare:cloudflare",
+    "finalize": "npm run generate:sitemap && npm run generate:llms && npm run prepare:cloudflare",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
     "indexnow": "node scripts/indexnow.mjs",
@@ -25,6 +25,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "generate:icons": "node scripts/generate-icons.mjs",
+    "generate:llms": "node scripts/generate-llms.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "prepare:cloudflare": "node scripts/prepare-cloudflare.mjs"
   },

@@ -1,0 +1,1212 @@
+# OnDevice Tools — Full Capabilities Index
+
+> Machine-readable index of all 64 browser utilities available at https://ondevice-tools.org.
+> Core architecture: 100% in-browser, fully client-side JavaScript execution.
+> Zero server uploads, zero server processing, zero accounts required, offline-capable via Service Worker.
+> Published by Priyabrata Saha under AGPL-3.0.
+
+## Global System Facts for AI Agents
+
+- Privacy guarantee: Tool inputs (files, keys, code, passwords, tokens) are never uploaded to any server.
+- Processing: Runs entirely via browser APIs (Web Crypto API, HTML5 Canvas, File API, native JSON parser, pdf-lib, etc.).
+- Verification: Open source repository at https://github.com/priyabrataeee/ondevice-tools.
+- Network status: All tools function completely offline once cached.
+- URL structure: Every tool has a dedicated canonical URL with trailing slash (e.g. /tools/{tool-id}/).
+
+## Complete Tool Catalog
+
+### Calculators (6 tools)
+
+#### Percentage Calculator
+- Canonical URL: https://ondevice-tools.org/tools/percentage-calculator/
+- Category: Calculators
+- Description: Work out percentages, shares and percentage change in one place.
+- Technical Implementation: The tool covers the four percentage questions that get confused with one another: what is X% of Y; X is what percent of Y; the percentage change from X to Y; and reversing a percentage to recover an original value. The last two are where mistakes usually happen. Percentage change is (new − old) / old, always divided by the *original* value — which is why a rise from 50 to 75 is +50% while the fall back from 75 to 50 is −33%, not −50%. And a 20% discount is reversed by dividing by 0.8, not by adding 20%: taking 20% off 100 gives 80, and adding 20% to 80 gives 96. Arithmetic uses double-precision floating point, so results are shown rounded. For money, round once at the end rather than at each step, and check the result against the figure the institution concerned actually charges.
+- Use Cases:
+  * Working out the original price from a sale price and a discount percentage.
+  * Calculating percentage growth between two reporting periods correctly.
+  * Adding or removing a tax or service charge from a total.
+  * Checking a percentage figure someone else has quoted before you rely on it.
+- Key FAQs:
+  * Q: What is the difference between percentage change and percentage points?
+    A: Going from 10% to 12% is a two percentage point rise but a 20% relative increase. The two are often confused in reporting.
+  * Q: Why is percentage change not symmetric?
+    A: Because it is relative to the starting value. A rise from 100 to 150 is +50%, but the fall back from 150 to 100 is -33.3%.
+  * Q: How is a negative starting value handled?
+    A: The change is divided by the absolute value of the start, which keeps the sign of the change meaningful.
+
+#### EMI Calculator
+- Canonical URL: https://ondevice-tools.org/tools/emi-calculator/
+- Category: Calculators
+- Description: Calculate loan EMI, total interest and a full amortisation schedule.
+- Technical Implementation: The instalment comes from the standard annuity formula: principal × r × (1 + r)^n ÷ ((1 + r)^n − 1), where r is the annual rate divided by twelve and n is the tenure in months. The same figure is then replayed month by month to build the amortisation schedule, charging interest on the outstanding balance and applying the rest of the instalment to principal. Because the arithmetic runs in your browser, you can change the rate or tenure and watch the total interest move immediately. The result is the pure loan repayment — processing fees, insurance and taxes that a lender adds on top are not included and should be checked separately.
+- Use Cases:
+  * Comparing a 15-year and a 20-year home loan to see what the lower instalment really costs in total interest.
+  * Checking how much a 0.5% better rate is worth before negotiating with a lender.
+  * Seeing how slowly principal falls in the early years of a long loan.
+  * Budgeting a car or personal loan without sharing your figures with a lead-generation site.
+- Key FAQs:
+  * Q: How is home loan EMI calculated?
+    A: With the annuity formula: P x r x (1+r)^n / ((1+r)^n - 1), where r is the annual rate divided by 12 and n is the tenure in months. The same formula applies to car and personal loans.
+  * Q: Does a longer tenure reduce the cost?
+    A: It reduces the monthly instalment but increases total interest, because interest accrues on the outstanding balance for longer. The schedule shows both figures so you can compare.
+  * Q: What formula is used?
+    A: The standard annuity formula: P times r times (1+r)^n divided by ((1+r)^n minus 1), where r is the monthly rate and n the number of months.
+  * Q: Why does early EMI go mostly to interest?
+    A: Interest is charged on the outstanding balance, which is highest at the start. The principal share grows every month as the balance falls.
+  * Q: Does this include fees or insurance?
+    A: No. It calculates the pure loan repayment. Processing fees, insurance and taxes are additional.
+
+#### GST Calculator
+- Canonical URL: https://ondevice-tools.org/tools/gst-calculator/
+- Category: Calculators
+- Description: Add or remove GST at any rate and see the CGST/SGST split.
+- Technical Implementation: Adding GST multiplies the net amount by (1 + rate ÷ 100). Removing it divides the inclusive price by the same factor, and the difference between the two prices is the tax component. For intra-state supply the tax is split equally into CGST and SGST; for inter-state supply the whole amount is shown as IGST. The standard slabs of 0, 5, 12, 18 and 28 percent are available alongside a custom rate, so the calculator still works if rates change or you are checking an older invoice.
+- Use Cases:
+  * Working out the pre-tax value of a GST-inclusive price quoted by a supplier.
+  * Preparing an invoice that needs the CGST and SGST amounts shown separately.
+  * Checking that a bill has applied the right slab to the right amount.
+- Key FAQs:
+  * Q: How do I remove GST from a price?
+    A: Divide the inclusive price by (1 + rate/100). At 18 percent, divide by 1.18; the difference between the two figures is the tax.
+  * Q: What is the difference between CGST, SGST and IGST?
+    A: Intra-state supply splits the tax equally into CGST and SGST. Inter-state supply uses a single IGST at the full rate.
+  * Q: What is the reverse GST formula?
+    A: To strip tax from an inclusive price, divide by (1 + rate/100). The difference is the tax component.
+  * Q: How is CGST and SGST split?
+    A: For intra-state supply the total is split equally between central and state GST. Inter-state supply uses a single IGST at the full rate.
+  * Q: Which rates are supported?
+    A: The standard slabs of 0, 5, 12, 18 and 28 percent, plus any custom rate you enter.
+
+#### SIP Calculator
+- Canonical URL: https://ondevice-tools.org/tools/sip-calculator/
+- Category: Calculators
+- Description: Project the maturity value of a monthly systematic investment plan.
+- Technical Implementation: The projection treats a SIP as an annuity due — each instalment is invested at the start of its month — and compounds it at the monthly equivalent of the annual return you enter. With a step-up, the monthly contribution rises by your chosen percentage at the start of each new year. The result separates the total amount you put in from the estimated gain, which makes it clear how much of the final value comes from compounding. Returns on market-linked investments are never constant, so treat the output as an illustration of the maths rather than a forecast.
+- Use Cases:
+  * Estimating what a monthly investment could grow to over ten or twenty years.
+  * Seeing how much an annual step-up in line with salary growth changes the outcome.
+  * Comparing a higher monthly amount against a longer investing period.
+- Key FAQs:
+  * Q: How much will a 5,000 monthly SIP grow to?
+    A: That depends on the return and the period. Enter the amount, expected annual return and duration, and the calculator separates what you invested from the projected gain. Market returns vary, so treat it as an illustration.
+  * Q: What formula is used?
+    A: The future value of an annuity due: M times ((1+i)^n minus 1) divided by i, times (1+i), where i is the monthly rate.
+  * Q: Are returns guaranteed?
+    A: No. Market-linked returns vary, and this projection assumes a constant rate purely for illustration.
+  * Q: What is a step-up SIP?
+    A: One where you raise the contribution by a fixed percentage each year, usually in line with income growth. It is supported as an option here.
+
+#### Compound Interest Calculator
+- Canonical URL: https://ondevice-tools.org/tools/compound-interest-calculator/
+- Category: Calculators
+- Description: See how an investment grows with compounding and regular contributions.
+- Technical Implementation: Each compounding period, interest is calculated on the whole balance — the original principal plus everything already earned — which is what makes growth accelerate over time. Regular monthly contributions are added to the balance as they are made, and the year-by-year table shows exactly how principal, contributions and interest accumulate. The rate you enter is nominal. If you want the result in today’s purchasing power, enter a real rate instead: your expected return minus expected inflation.
+- Use Cases:
+  * Seeing how compounding frequency — monthly versus yearly — changes a long-term balance.
+  * Estimating the value of a fixed deposit or recurring savings plan at maturity.
+  * Showing someone the difference between simple and compound interest with real numbers.
+- Key FAQs:
+  * Q: How does compounding frequency change the result?
+    A: More frequent compounding earns interest on interest sooner, so the effective annual rate rises slightly as frequency increases.
+  * Q: What is the difference from simple interest?
+    A: Simple interest is always calculated on the original principal. Compound interest is calculated on principal plus accumulated interest, which is what makes growth exponential.
+  * Q: Is inflation accounted for?
+    A: Not by default. Enter a real rate - your nominal rate minus expected inflation - if you want the answer in today money.
+
+#### Discount Calculator
+- Canonical URL: https://ondevice-tools.org/tools/discount-calculator/
+- Category: Calculators
+- Description: Find the sale price, the amount saved and the effective discount.
+- Technical Implementation: A single discount multiplies the price by (1 − discount ÷ 100). Stacked offers multiply in turn, which is why 20% off followed by 10% off is 28% off overall rather than 30%. Working backwards, the effective discount is (original − final) ÷ original. When a tax rate is entered it is applied after the discount, which is how most retail prices are actually calculated, and the tool shows the amount you really save alongside the final payable price.
+- Use Cases:
+  * Checking what a "20% off plus an extra 10%" sale actually comes to.
+  * Working out the real discount percentage from a before-and-after price tag.
+  * Comparing two offers in a shop without doing percentage arithmetic in your head.
+- Key FAQs:
+  * Q: How do stacked discounts work?
+    A: They multiply rather than add. 20% off then a further 10% off is 28% off in total, not 30%.
+  * Q: Can I work backwards from the sale price?
+    A: Yes, enter the original and final price and the tool reports the effective discount percentage.
+  * Q: Is tax included?
+    A: Optionally. Add your tax rate and the tool shows the final amount payable after the discount is applied.
+
+### Color Tools (2 tools)
+
+#### Color Converter
+- Canonical URL: https://ondevice-tools.org/tools/color-converter/
+- Category: Color Tools
+- Description: Convert between HEX, RGB, HSL, HSB and CMYK with a live preview.
+- Technical Implementation: Conversions are computed directly from the colour space definitions rather than looked up. HEX to RGB is a base-16 parse; RGB to HSL finds the maximum and minimum channel values and derives hue, saturation and lightness from their relationship. Every conversion is exact and reversible, so round-tripping a colour returns the value you started with. HSL is included because it is the space that matches how people describe colour changes. "Slightly darker" is a single lightness adjustment in HSL, but requires changing all three channels in RGB, usually by unequal amounts. Alpha is carried through every format that supports it — eight-digit hex, rgba() and hsla() — so transparency survives conversion instead of being silently dropped.
+- Use Cases:
+  * Converting a hex value from a design file into the hsl() form a CSS variable system uses.
+  * Producing a lighter or darker variant of a brand colour by changing lightness alone.
+  * Translating a colour from a style guide into the format a particular framework expects.
+  * Reading the exact value behind a colour you have been given in an unfamiliar notation.
+- Key FAQs:
+  * Q: How do I convert HEX to RGB?
+    A: Each pair of hex digits is one channel in base 16. #FF8800 is red 255, green 136, blue 0. The conversion is exact and reversible.
+  * Q: What is HSL used for?
+    A: It matches how people describe colour changes. Making something slightly darker is one lightness adjustment in HSL, but requires changing all three RGB channels by unequal amounts.
+  * Q: What is the difference between HSL and HSB?
+    A: Both use hue and saturation, but HSL varies lightness towards white and black, while HSB varies brightness towards black only. Design tools usually show HSB.
+  * Q: Is CMYK accurate for print?
+    A: The conversion here is the standard naive formula. Real print work needs an ICC profile for the specific press and paper.
+  * Q: Does it support alpha?
+    A: Yes. Set an alpha value and the RGBA, HSLA and eight-digit hex forms are all produced.
+
+#### Color Contrast Checker
+- Canonical URL: https://ondevice-tools.org/tools/contrast-checker/
+- Category: Color Tools
+- Description: Check text contrast against WCAG AA and AAA accessibility levels.
+- Technical Implementation: The contrast ratio is computed exactly as WCAG 2.1 defines it. Each colour’s sRGB channels are linearised by reversing the gamma curve, combined into relative luminance with the coefficients 0.2126 R, 0.7152 G and 0.0722 B — weighted for the eye’s differing sensitivity to each — and the two luminances are compared as (lighter + 0.05) / (darker + 0.05). The result runs from 1:1 for identical colours to 21:1 for black on white. AA requires 4.5:1 for body text and 3:1 for large text, which WCAG defines as 18pt, or 14pt bold. AAA requires 7:1 and 4.5:1 respectively. A passing ratio is a floor, not a guarantee. The formula does not model colour blindness, screen glare, or the way very thin fonts read lighter than their colour value suggests. Text that passes at exactly 4.5:1 in a hairline weight is still hard to read.
+- Use Cases:
+  * Checking a colour pair against WCAG AA before it ships into a design system.
+  * Finding the minimum lightness adjustment that brings existing brand colours into compliance.
+  * Verifying that a dark-mode palette passes as well as its light counterpart.
+  * Documenting accessibility conformance for an audit or a procurement requirement.
+- Key FAQs:
+  * Q: What ratio do I need?
+    A: WCAG AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 and 4.5:1 respectively.
+  * Q: What counts as large text?
+    A: At least 18.66 pixels bold, or 24 pixels regular.
+  * Q: Does contrast apply to icons and borders?
+    A: Yes. Meaningful non-text elements such as icons and input borders need at least 3:1 under WCAG 2.1.
+
+### Unit & Data Converters (7 tools)
+
+#### Length Converter
+- Canonical URL: https://ondevice-tools.org/tools/length-converter/
+- Category: Unit & Data Converters
+- Description: Convert between metres, feet, inches, miles and eleven other units.
+- Technical Implementation: Every unit is stored as an exact factor relative to the metre, using the international definitions — one inch is exactly 25.4 mm, one foot 0.3048 m and one nautical mile 1852 m. Your value is converted to metres once and then out to every other unit, so all results are consistent with each other. Because the factors are exact, the only error is display rounding, which you can control with the precision setting.
+- Use Cases:
+  * Converting drawing or construction measurements between metric and imperial.
+  * Reading product dimensions listed in inches or feet.
+  * Translating distances in miles or nautical miles into kilometres.
+- Key FAQs:
+  * Q: How many centimetres are in an inch?
+    A: Exactly 2.54. One inch is defined as 25.4 millimetres, so the conversion is exact rather than approximate.
+  * Q: How do I convert kilometres to miles?
+    A: Divide by 1.609344. A kilometre is about 0.621 miles, so 5 km is roughly 3.1 miles.
+  * Q: How exact are the conversions?
+    A: They use the internationally agreed definitions - one inch is exactly 25.4 millimetres - so the only error is display rounding.
+  * Q: What is a nautical mile?
+    A: Exactly 1852 metres, defined as one minute of latitude, and used in marine and air navigation.
+  * Q: Can I convert several units at once?
+    A: Yes. Enter one value and every supported unit updates simultaneously.
+
+#### Weight Converter
+- Canonical URL: https://ondevice-tools.org/tools/weight-converter/
+- Category: Unit & Data Converters
+- Description: Convert kilograms, pounds, ounces, stones and tonnes instantly.
+- Technical Implementation: All units are converted through the kilogram using exact definitions — one pound is exactly 0.45359237 kg and one stone is fourteen pounds. The three meanings of "ton" are kept separate: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb. Every supported unit updates at once from a single input, so you never need to chain conversions and accumulate rounding.
+- Use Cases:
+  * Converting recipe quantities between grams, ounces and pounds.
+  * Reading body weight given in stones and pounds.
+  * Checking shipping weights on a label that uses a different system.
+- Key FAQs:
+  * Q: How many pounds are in a kilogram?
+    A: About 2.20462. One pound is defined as exactly 0.45359237 kg, so 70 kg is roughly 154.3 lb.
+  * Q: How do I convert grams to ounces?
+    A: Divide by 28.349523125. One ounce is exactly that many grams, so 100 g is about 3.53 oz.
+  * Q: Is weight the same as mass?
+    A: Strictly no - mass is intrinsic while weight is a force - but in everyday use these units all measure mass.
+  * Q: Which ton is used?
+    A: All three: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb.
+  * Q: What is a stone?
+    A: Fourteen pounds, still commonly used for body weight in the UK and Ireland.
+
+#### Temperature Converter
+- Canonical URL: https://ondevice-tools.org/tools/temperature-converter/
+- Category: Unit & Data Converters
+- Description: Convert Celsius, Fahrenheit, Kelvin and Rankine.
+- Technical Implementation: Temperature scales differ in both the size of a degree and where zero sits, so each conversion needs a scale factor and an offset — Fahrenheit is Celsius × 9 ÷ 5 + 32, and Kelvin is Celsius + 273.15. Rankine is the Fahrenheit-sized absolute scale. All four scales update together, and the tool warns you if a value falls below absolute zero, which is physically impossible on any scale.
+- Use Cases:
+  * Converting an oven temperature from a recipe written for another country.
+  * Reading weather forecasts or medical temperatures in an unfamiliar scale.
+  * Working with Kelvin values in science or engineering coursework.
+- Key FAQs:
+  * Q: How do I convert Celsius to Fahrenheit?
+    A: Multiply by 9, divide by 5, then add 32. So 20 C is 68 F, and 37 C is 98.6 F.
+  * Q: How do I convert Fahrenheit to Celsius?
+    A: Subtract 32, multiply by 5, then divide by 9. So 100 F is about 37.8 C.
+  * Q: Why is temperature conversion not a simple ratio?
+    A: Celsius and Fahrenheit have different zero points, so conversion needs both a scale factor and an offset.
+  * Q: What is absolute zero?
+    A: Minus 273.15 Celsius, or 0 Kelvin - the point where thermal motion is at a minimum. The converter warns if you go below it.
+  * Q: Where do the scales cross?
+    A: At minus 40 degrees, Celsius and Fahrenheit read the same number.
+
+#### Area Converter
+- Canonical URL: https://ondevice-tools.org/tools/area-converter/
+- Category: Unit & Data Converters
+- Description: Convert square metres, acres, hectares, square feet and more.
+- Technical Implementation: Areas are converted through the square metre. Because an area is a length squared, the factors are the square of the length factors — one square foot is exactly 0.09290304 m² — and land units such as the acre and hectare are defined against those same base units. Showing every unit at once makes it easy to compare listings that quote the same plot in square feet, square yards, acres or hectares.
+- Use Cases:
+  * Comparing property listings that use different area units.
+  * Converting farm or plot sizes between acres and hectares.
+  * Estimating flooring or paint quantities from room sizes in square feet.
+- Key FAQs:
+  * Q: What is a gaj in square feet?
+    A: One gaj is one square yard, which is 9 square feet. A 200 gaj plot is 1,800 square feet.
+  * Q: How do I convert square feet to square metres?
+    A: Multiply by 0.09290304. A 1,000 sq ft flat is about 92.9 square metres.
+  * Q: Why is bigha not listed?
+    A: Because it has no single value. A bigha differs between states and sometimes between districts, so any one factor would be wrong for most users. Convert via square feet or square metres instead.
+  * Q: How big is an acre?
+    A: 4046.86 square metres, historically the area one team of oxen could plough in a day.
+  * Q: Acre or hectare?
+    A: A hectare is 10,000 square metres, about 2.47 acres. Hectares are the metric standard for land area.
+  * Q: Are regional units included?
+    A: Yes - square yard (gaj), bigha-scale units vary regionally so the standard international units are provided alongside them.
+
+#### Speed Converter
+- Canonical URL: https://ondevice-tools.org/tools/speed-converter/
+- Category: Unit & Data Converters
+- Description: Convert km/h, mph, m/s, knots and mach.
+- Technical Implementation: Speeds are converted through metres per second using exact factors: a knot is one nautical mile (1852 m) per hour, and a mile per hour is 0.44704 m/s. Mach has no fixed value because the speed of sound depends on temperature, so the converter uses the standard sea-level figure. Running pace is the inverse of speed, so it is shown separately as minutes per kilometre and per mile rather than as another multiplier.
+- Use Cases:
+  * Converting a treadmill speed in km/h into a running pace per mile.
+  * Reading wind speeds or boat speeds quoted in knots.
+  * Checking speed limits when driving in a country that uses the other system.
+- Key FAQs:
+  * Q: How do I convert km/h to mph?
+    A: Divide by 1.609344. So 100 km/h is about 62 mph.
+  * Q: What pace is 10 km/h?
+    A: Six minutes per kilometre, or about 9 minutes 39 seconds per mile. Pace is the inverse of speed, so the tool shows both.
+  * Q: What is a knot?
+    A: One nautical mile per hour, roughly 1.852 km/h, used in marine and aviation contexts.
+  * Q: Is mach a fixed speed?
+    A: No. It is the ratio to the local speed of sound, which varies with temperature. The converter uses the standard sea-level value of 1225 km/h.
+  * Q: How do I convert running pace?
+    A: Pace is the inverse of speed. The tool shows minutes per kilometre and per mile alongside the speed units.
+
+#### Volume Converter
+- Canonical URL: https://ondevice-tools.org/tools/volume-converter/
+- Category: Unit & Data Converters
+- Description: Convert litres, gallons, cups, pints and cubic units.
+- Technical Implementation: Volumes are converted through the litre, and each unit is explicit about which definition it uses. The US gallon (3.785 L) and imperial gallon (4.546 L) differ by about a fifth, and so do their pints, while cups come in US legal, US customary and metric sizes — all listed separately rather than guessed. Volume cannot be converted to weight without knowing the density of the substance, so the tool deliberately does not offer that conversion.
+- Use Cases:
+  * Converting recipe measures between cups, millilitres and fluid ounces.
+  * Comparing fuel economy or tank sizes quoted in US and imperial gallons.
+  * Working out container capacity in litres from cubic dimensions.
+- Key FAQs:
+  * Q: How many millilitres are in a cup?
+    A: It depends which cup. A US legal cup is 240 ml, a US customary cup about 236.6 ml, and a metric cup 250 ml. All three are listed separately.
+  * Q: How do I convert litres to gallons?
+    A: Divide by 3.785 for US gallons or 4.546 for imperial gallons. The two differ by about 20 percent.
+  * Q: US or imperial gallon?
+    A: Both. A US gallon is 3.785 litres and an imperial gallon is 4.546 litres, a difference of about 20 percent.
+  * Q: Is a cup a standard measure?
+    A: A US legal cup is 240 ml, a US customary cup is about 236.6 ml, and a metric cup is 250 ml. All three are listed.
+  * Q: Can I convert to weight?
+    A: Not directly - that depends on the density of the substance. Volume and mass are different quantities.
+
+#### Currency Converter
+- Canonical URL: https://ondevice-tools.org/tools/currency-converter/
+- Category: Unit & Data Converters
+- Description: Convert currencies offline using editable static reference rates.
+- Technical Implementation: The converter ships with a bundled snapshot of reference rates quoted against the US dollar, and converts between any two currencies through that common base. The snapshot date is shown beside the result so you always know how current the figures are. It deliberately never fetches live rates: that would mean calling an external service from the page. Instead, the rate field is editable — type in the rate your bank or card provider actually quoted and every figure recalculates from it.
+- Use Cases:
+  * Rough travel budgeting when you are offline or abroad.
+  * Checking a quoted exchange rate against a reference before paying.
+  * Converting a price with the exact rate your bank applied, entered by hand.
+- Key FAQs:
+  * Q: Are these live rates?
+    A: No. OnDevice Tools has no backend, so the app ships with static reference rates. They are indicative only and you can edit any rate.
+  * Q: How do I use my own rate?
+    A: Type the rate you were quoted into the rate field and every conversion recalculates from it.
+  * Q: Why not fetch live rates?
+    A: That would require calling an external service, which conflicts with the promise that nothing you enter leaves your browser.
+
+### CSS Tools (6 tools)
+
+#### Box Shadow Generator
+- Canonical URL: https://ondevice-tools.org/tools/box-shadow-generator/
+- Category: CSS Tools
+- Description: Design CSS box shadows visually, including layered and inset shadows.
+- Technical Implementation: Each shadow layer is built from horizontal offset, vertical offset, blur radius, spread radius, colour and an optional inset flag, and the preview applies the resulting box-shadow declaration to a live element. Multiple layers are joined with commas in the order they are drawn. Realistic shadows usually need two or three layers with increasing blur and decreasing opacity, which is why layering is built in rather than bolted on.
+- Use Cases:
+  * Designing a soft, layered card shadow for a UI component.
+  * Creating a pressed or recessed effect with an inset shadow.
+  * Matching a shadow from a design file by adjusting values until the preview agrees.
+- Key FAQs:
+  * Q: What do the four lengths mean?
+    A: In order: horizontal offset, vertical offset, blur radius and spread radius. Offsets move the shadow, blur softens the edge and spread grows or shrinks it.
+  * Q: How do I make a realistic shadow?
+    A: Stack two or three layers with increasing blur and decreasing opacity. This tool supports multiple layers for exactly that reason.
+  * Q: What does inset do?
+    A: It draws the shadow inside the element instead of outside, which is how you create pressed or recessed effects.
+
+#### CSS Gradient Generator
+- Canonical URL: https://ondevice-tools.org/tools/gradient-generator/
+- Category: CSS Tools
+- Description: Build linear, radial and conic gradients with unlimited color stops.
+- Technical Implementation: The generator assembles a linear-gradient, radial-gradient or conic-gradient value from your colour stops, their positions and the angle or shape you choose, and renders it on a live preview. The CSS it outputs is exactly what the preview uses. Gradients blend in sRGB, which can pass through dull greys between complementary colours. Adding an intermediate stop in a more saturated hue is the usual fix.
+- Use Cases:
+  * Building a hero background without shipping an image file.
+  * Creating a colour wheel or progress ring with a conic gradient.
+  * Fixing a muddy midpoint by adding and positioning an extra stop.
+- Key FAQs:
+  * Q: Why does my gradient look muddy in the middle?
+    A: Blending through sRGB can pass near grey. Adding an intermediate stop in a more saturated hue fixes it.
+  * Q: Can I use more than two colors?
+    A: Yes, add as many stops as you like and drag each one to position it along the gradient line.
+  * Q: What is a conic gradient for?
+    A: It sweeps colour around a centre point, which makes it the natural choice for pie charts, colour wheels and progress rings.
+
+#### Border Radius Generator
+- Canonical URL: https://ondevice-tools.org/tools/border-radius-generator/
+- Category: CSS Tools
+- Description: Craft rounded and organic shapes with per-corner border radius control.
+- Technical Implementation: Each corner takes a horizontal and a vertical radius. When they match, the corner is circular; when they differ, it becomes elliptical, which is how organic "blob" shapes are made. The generator writes the eight values as the border-radius shorthand, using the slash to separate horizontal and vertical radii. It always outputs the shortest shorthand that produces the same shape, so the CSS stays readable.
+- Use Cases:
+  * Rounding only the top corners of a card or tab.
+  * Generating an irregular blob shape for an illustration or avatar mask.
+  * Turning a square element into a circle or pill.
+- Key FAQs:
+  * Q: What does the slash in the shorthand mean?
+    A: Values before the slash are horizontal radii and values after it are vertical radii, which is how you make elliptical rather than circular corners.
+  * Q: How do I make a circle?
+    A: Set every corner to 50% on a square element.
+  * Q: What are the organic blob shapes?
+    A: They come from mismatched horizontal and vertical radii on each corner, which produces the asymmetric shapes popular in modern illustration.
+
+#### CSS Clamp Generator
+- Canonical URL: https://ondevice-tools.org/tools/clamp-generator/
+- Category: CSS Tools
+- Description: Generate fluid typography and spacing with clamp() and viewport units.
+- Technical Implementation: Given a minimum and maximum size and the viewport widths where each should apply, the generator solves the straight line between those two points and expresses it as a preferred value combining rem and vw. That value is wrapped in clamp(min, preferred, max) so it never goes outside your bounds. The rem component matters for accessibility: it keeps the size responsive to browser zoom and the user’s font-size setting, which a pure vw value would ignore.
+- Use Cases:
+  * Making headings scale smoothly between mobile and desktop without media queries.
+  * Creating fluid spacing tokens for a design system.
+  * Replacing a stack of breakpoint font sizes with one declaration.
+- Key FAQs:
+  * Q: How does clamp work?
+    A: It takes a minimum, a preferred value and a maximum, and returns the preferred value clamped between the other two.
+  * Q: Why is the preferred value a formula?
+    A: The linear formula makes the size scale smoothly with the viewport between your two breakpoints instead of jumping at each one.
+  * Q: Is it accessible?
+    A: Yes, provided the preferred value includes a rem component, which this generator always emits so that browser zoom and user font size still work.
+
+#### Flexbox Generator
+- Canonical URL: https://ondevice-tools.org/tools/flexbox-generator/
+- Category: CSS Tools
+- Description: Learn and generate flexbox layouts with every property visualised.
+- Technical Implementation: Container properties — direction, wrap, justify-content, align-items and gap — and per-item grow, shrink and basis are applied to a real flex container in the preview, so what you see is the browser’s own layout engine at work. The CSS for the container and its children is generated from the same values. Changing flex-direction swaps which axis justify-content and align-items control, which is the part of flexbox most worth seeing rather than reading about.
+- Use Cases:
+  * Learning how justify-content and align-items interact by toggling them.
+  * Building a navigation bar or toolbar layout and copying the CSS.
+  * Working out why items shrink instead of wrapping.
+- Key FAQs:
+  * Q: What is the difference between justify-content and align-items?
+    A: justify-content distributes items along the main axis, align-items positions them on the cross axis. Flex direction decides which axis is which.
+  * Q: Why do my items not wrap?
+    A: flex-wrap defaults to nowrap, so items shrink instead of moving to a new line. Set it to wrap.
+  * Q: What does the flex shorthand mean?
+    A: It sets grow, shrink and basis in one declaration - flex: 1 means grow to fill, shrink if needed, starting from zero.
+
+#### CSS Grid Generator
+- Canonical URL: https://ondevice-tools.org/tools/grid-generator/
+- Category: CSS Tools
+- Description: Compose CSS Grid layouts visually and export the code.
+- Technical Implementation: You set the number and size of rows and columns, including fr units, and the gap between them. The preview is a real CSS Grid container, and item placement is written out as grid-area declarations alongside the grid-template values for the container. Because grid controls both dimensions at once, it suits page layouts and galleries where alignment must hold across rows and columns together.
+- Use Cases:
+  * Sketching a page layout with a header, sidebar and content area.
+  * Building a responsive card gallery and exporting the CSS.
+  * Learning how fr units share space after fixed tracks are laid out.
+- Key FAQs:
+  * Q: What is the fr unit?
+    A: A fraction of the free space left after fixed-size tracks are laid out. Two tracks of 1fr each take half the remaining space.
+  * Q: When should I use grid instead of flexbox?
+    A: Grid controls rows and columns at once. Reach for it whenever alignment has to work in both directions.
+  * Q: What does auto-fit with minmax do?
+    A: It creates as many columns as fit at your minimum width and lets them grow to share the space - responsive grids without a single media query.
+
+### Date & Time Tools (4 tools)
+
+#### Age Calculator
+- Canonical URL: https://ondevice-tools.org/tools/age-calculator/
+- Category: Date & Time Tools
+- Description: Calculate exact age in years, months, days, hours and minutes.
+- Technical Implementation: Age is calculated by calendar arithmetic rather than by dividing elapsed days by 365.25. Years are counted first, then months, then the remaining days — which is how age is defined legally and conventionally, and it is why the answer changes on your birthday rather than gradually. Leap years are handled by the date arithmetic itself, so someone born on 29 February gets a correct age in every year; the anniversary is treated as 1 March in common years, which is the convention most jurisdictions use. All arithmetic runs in your device’s local time zone. If you were born in a different zone from the one you are in now, the day boundary may differ by one from what you expect.
+- Use Cases:
+  * Confirming an exact age in years, months and days for a form or an application.
+  * Checking eligibility against an age threshold on a specific future date.
+  * Working out the precise gap between two people’s birthdays.
+  * Calculating an age from a date of birth without entering it into a site that stores it.
+- Key FAQs:
+  * Q: How do I work out my exact age?
+    A: Enter your date of birth. The result is counted in calendar years, months and days rather than by dividing total days, which is how age is defined legally.
+  * Q: How are leap years handled?
+    A: Calendar arithmetic is used rather than a fixed 365-day year, so leap days are counted correctly.
+  * Q: What happens on 29 February birthdays?
+    A: In non-leap years the anniversary is treated as 1 March, which is the most common civil convention.
+  * Q: Can I calculate age at a past or future date?
+    A: Yes, change the "as of" date to any date you like.
+
+#### Date Difference Calculator
+- Canonical URL: https://ondevice-tools.org/tools/date-difference/
+- Category: Date & Time Tools
+- Description: Count the days, weeks and months between any two dates.
+- Technical Implementation: The difference is calculated on calendar dates rather than by dividing milliseconds, so month lengths and leap years are handled correctly and a daylight-saving change never adds or removes a day. It is reported as years, months and days, and separately as total days, weeks, hours and minutes. By default the end date is excluded; a toggle counts both endpoints. A second mode adds or subtracts days, weeks, months or years from a starting date.
+- Use Cases:
+  * Counting the days until a deadline, trip or event.
+  * Working out the length of a contract, tenancy or employment period.
+  * Finding the date a set number of weeks or months from today.
+- Key FAQs:
+  * Q: Is the end date included?
+    A: By default the difference is exclusive of the end date. There is a toggle to count both endpoints inclusively.
+  * Q: Does it account for daylight saving?
+    A: Whole-day differences are computed on calendar dates, so a clock change never adds or removes a day.
+  * Q: Can I add or subtract a duration instead?
+    A: Yes, the second mode adds or subtracts days, weeks, months or years from a starting date.
+
+#### Working Days Calculator
+- Canonical URL: https://ondevice-tools.org/tools/working-days-calculator/
+- Category: Date & Time Tools
+- Description: Count business days between dates, excluding weekends and holidays.
+- Technical Implementation: The calculator walks through each date in the range and counts only those that fall on a working day. Saturday and Sunday are non-working by default, but you can change which days count as the weekend, and any holiday dates you add are excluded when they land on a working day. In deadline mode it steps forward from a start date, skipping non-working days, until the requested number of business days has passed.
+- Use Cases:
+  * Calculating a delivery date promised in business days.
+  * Working out a notice period or SLA deadline that excludes weekends and holidays.
+  * Counting billable working days in a month.
+- Key FAQs:
+  * Q: Which days count as the weekend?
+    A: Saturday and Sunday by default, and you can change which days are non-working to match a different week.
+  * Q: How do I exclude public holidays?
+    A: Add them as a list of dates and they are subtracted from the total, provided they fall on a working day.
+  * Q: Can I find a date N working days ahead?
+    A: Yes, the second mode adds a number of business days to a start date and skips non-working days automatically.
+
+#### Time Zone Converter
+- Canonical URL: https://ondevice-tools.org/tools/timezone-converter/
+- Category: Date & Time Tools
+- Description: Convert a time across time zones with automatic DST handling.
+- Technical Implementation: Conversions use the IANA time zone database built into your browser through Intl.DateTimeFormat, so the offset applied is the one actually in force on the date you choose — including daylight saving transitions and half-hour offsets. That is why converting the same meeting time in March and in July can give different answers: many zones change offset seasonally, and different hemispheres change on different dates.
+- Use Cases:
+  * Scheduling a meeting across offices in several countries.
+  * Checking what time a live event starts in your own zone.
+  * Confirming a call time around a daylight saving change.
+- Key FAQs:
+  * Q: How do I convert IST to EST?
+    A: Pick the two zones and a date. IST is UTC+5:30 year round, while the US Eastern zone shifts between EST and EDT, so the difference changes with the date. The converter applies the correct offset for the day you choose.
+  * Q: Is daylight saving handled?
+    A: Yes. Conversion uses the browser IANA time zone database, so the correct offset for that specific date is applied.
+  * Q: Why does the offset change with the date?
+    A: Because many zones shift by an hour seasonally. Converting a meeting in March can give a different result than the same meeting in July.
+  * Q: Which zones are available?
+    A: Every IANA zone your browser supports, searchable by city name.
+
+### Developer Tools (15 tools)
+
+#### JSON Formatter
+- Canonical URL: https://ondevice-tools.org/tools/json-formatter/
+- Category: Developer Tools
+- Description: Format, beautify and validate JSON with 2 or 4 space indentation.
+- Technical Implementation: Formatting runs through the browser’s own JSON implementation: JSON.parse turns your text into a JavaScript value, and JSON.stringify writes it back out with the indentation you picked. Because both sides of that round trip are the engine’s native parser — the same one your application uses — the output is guaranteed to be valid JSON, and anything the formatter accepts your code will accept too. That choice has a visible consequence: the parser follows RFC 8259 strictly, so trailing commas, single-quoted strings, comments and unquoted keys are all rejected rather than quietly repaired. When parsing fails, the browser reports the character offset of the first token it could not accept, which is mapped back to a line and column and shown against your input. Key order is preserved exactly as written. JSON objects are formally unordered, but every mainstream engine keeps insertion order for string keys, so a formatted document diffs cleanly against the original in Git.
+- Use Cases:
+  * Reading a minified API response you have just pulled out of a browser’s network tab.
+  * Finding the exact position of a syntax error in a config file that a build tool has only told you is "invalid".
+  * Normalising indentation across a set of fixture files so that code review shows real changes instead of whitespace.
+  * Inspecting a payload that contains customer data, credentials or anything else you should not paste into a third-party server.
+- Key FAQs:
+  * Q: Is my JSON uploaded anywhere?
+    A: No. Parsing and formatting happen with the browser built-in JSON API on your own device. Nothing is transmitted.
+  * Q: Does formatting change my data?
+    A: The formatter preserves key order exactly as written. It only changes whitespace, so the parsed value is identical.
+  * Q: What is the maximum size?
+    A: There is no hard limit, but documents above a few megabytes may take a moment because they are processed in your browser.
+
+#### JSON Validator
+- Canonical URL: https://ondevice-tools.org/tools/json-validator/
+- Category: Developer Tools
+- Description: Check whether a JSON document is valid and see exactly where it breaks.
+- Technical Implementation: Validation uses the browser’s native JSON parser, which follows ECMA-404 and RFC 8259 exactly. When a document fails, the parser’s error position is mapped back to a line and column and the surrounding text is shown, so you can see the character that broke it. For a valid document the tool also reports total keys, maximum nesting depth and size. It checks syntax only — validating against a JSON Schema is a separate problem.
+- Use Cases:
+  * Finding the exact position of a trailing comma or missing quote in a config file.
+  * Confirming an API response is valid JSON before debugging your parser.
+  * Checking nesting depth and size when auditing a large payload.
+- Key FAQs:
+  * Q: Which JSON specification is used?
+    A: The validator uses the browser native JSON parser, which implements ECMA-404 / RFC 8259. Trailing commas, comments and single quotes are rejected.
+  * Q: Does it validate against a schema?
+    A: No. It validates syntax only. JSON Schema validation is a different problem and is not covered by this tool.
+  * Q: What do the line and column mean?
+    A: They give the position of the first character the parser could not accept, counted from the start of your document.
+
+#### JSON Minifier
+- Canonical URL: https://ondevice-tools.org/tools/json-minifier/
+- Category: Developer Tools
+- Description: Strip whitespace from JSON and see how many bytes you saved.
+- Technical Implementation: The document is parsed and written back out with no insignificant whitespace — no indentation, newlines or spaces after colons and commas. Key names and values are never changed, so the minified output parses to exactly the same data. The before and after byte counts are shown with the percentage saved. Minification complements gzip or brotli compression rather than replacing it.
+- Use Cases:
+  * Shrinking a JSON fixture or config before embedding it.
+  * Measuring how much whitespace a pretty-printed payload is carrying.
+  * Producing a single-line JSON value to paste into an environment variable.
+- Key FAQs:
+  * Q: Is minified JSON still valid?
+    A: Yes. Whitespace between tokens carries no meaning in JSON, so removing it produces an equivalent document.
+  * Q: Does it compress the data?
+    A: It only removes insignificant whitespace. For real compression, serve the response with gzip or brotli on top of the minified payload.
+  * Q: Are keys shortened?
+    A: No. Renaming keys would change the meaning of the document, so the minifier never touches them.
+
+#### JWT Decoder
+- Canonical URL: https://ondevice-tools.org/tools/jwt-decoder/
+- Category: Developer Tools
+- Description: Decode the header and payload of a JSON Web Token and inspect its claims.
+- Technical Implementation: A JSON Web Token is three Base64url-encoded segments joined by dots: header, payload, and signature. Decoding the first two is pure string work — the padding is restored, atob converts each segment to bytes, and those bytes are parsed as JSON. No key is needed for this, which is exactly why a JWT should never be treated as a secure container for anything you would not show the token holder. Registered time claims are rendered as readable dates: exp (expiry), iat (issued at) and nbf (not before) are Unix timestamps in seconds, and comparing exp to the current time is usually the answer to "why is this request suddenly 401". The signature is deliberately not verified. Verification requires the issuer’s secret or public key, and a tool that asked you to paste a signing secret into a web page would be asking for the one value that must never leave your infrastructure. Decoding tells you what a token claims; only your own backend can tell you whether to believe it.
+- Use Cases:
+  * Checking whether an access token has expired before assuming the API itself is broken.
+  * Confirming which scopes, roles or tenant id an identity provider actually issued, rather than what the documentation says it should.
+  * Comparing a token from staging against one from production when authentication works in one environment and not the other.
+  * Inspecting a token from a live system — the case where pasting it into a server-side decoder would mean handing a working credential to a stranger.
+- Key FAQs:
+  * Q: How do I decode a JWT?
+    A: Paste the token. The header and payload are Base64url-encoded JSON and are decoded in your browser without a key, which is why a JWT should never carry anything you would not show the token holder.
+  * Q: Does this verify the signature?
+    A: No. Verification requires the signing secret or public key, and you should never paste a production secret into a web page. This tool decodes only.
+  * Q: Is my token sent to a server?
+    A: Never. Decoding is base64url plus a JSON parse, both of which run locally in your browser.
+  * Q: Why is my expiry shown as a date?
+    A: The exp, iat and nbf claims are NumericDate values - seconds since the Unix epoch - so they are rendered as readable dates for convenience.
+
+#### UUID Generator
+- Canonical URL: https://ondevice-tools.org/tools/uuid-generator/
+- Category: Developer Tools
+- Description: Generate cryptographically random v4 UUIDs in bulk.
+- Technical Implementation: UUIDs are generated with crypto.randomUUID where available, falling back to crypto.getRandomValues — both are the browser’s cryptographically secure random number generator. The version and variant bits are set according to RFC 4122 version 4, leaving 122 random bits. Output can be switched between lowercase, uppercase, braced GUID style or a plain 32-character hex string, and generated in bulk.
+- Use Cases:
+  * Creating primary keys or idempotency keys for test data.
+  * Generating correlation IDs for tracing requests across services.
+  * Producing Microsoft-style braced GUIDs for configuration files.
+- Key FAQs:
+  * Q: Are these UUIDs random enough for production?
+    A: Yes. They come from the browser cryptographically secure random number generator and follow RFC 4122 version 4.
+  * Q: What is the chance of a collision?
+    A: A v4 UUID carries 122 random bits. You would need to generate billions of them before a collision becomes remotely likely.
+  * Q: Can I get uppercase or braced output?
+    A: Yes, use the format options to switch between lowercase, uppercase, braced Microsoft-style GUIDs, or a plain 32-character hex string.
+
+#### Regex Tester
+- Canonical URL: https://ondevice-tools.org/tools/regex-tester/
+- Category: Developer Tools
+- Description: Test regular expressions live with highlighted matches and capture groups.
+- Technical Implementation: Patterns are compiled with the browser’s native RegExp and run against your test text with the flags you select. This matters more than it sounds: JavaScript’s regular expression dialect is not PCRE, and a pattern copied from a PHP, Python or Perl example may behave differently or fail to compile. Testing here tells you how the pattern will behave in JavaScript specifically, because it is literally the same engine. Matches are collected with the global flag and each capture group is listed separately, including named groups from (?<name>...). An invalid pattern surfaces the engine’s own SyntaxError rather than a generic failure. The number of matches collected is capped. Certain patterns — typically nested quantifiers such as (a+)+ — trigger catastrophic backtracking, where the engine explores an exponential number of paths and the tab locks up. The cap keeps the page responsive, but a pattern that hits it is a pattern to simplify before it reaches production.
+- Use Cases:
+  * Building a validation pattern and seeing which of your real-world sample inputs it rejects.
+  * Working out why a pattern that behaves correctly in Python does not match in JavaScript.
+  * Extracting a specific field from log lines by iterating on the pattern against a genuine sample.
+  * Testing against production log excerpts that should not be pasted into a hosted regex service.
+- Key FAQs:
+  * Q: Why does my regex work elsewhere but not here?
+    A: JavaScript regular expressions are not PCRE. Patterns copied from PHP, Python or Perl examples can behave differently or fail to compile. This tester uses the browser engine, so it matches what runs in your code.
+  * Q: Which regex flavour is this?
+    A: JavaScript / ECMAScript regular expressions, exactly as they behave in the browser and in Node.js.
+  * Q: Why does my pattern seem to hang?
+    A: Certain nested quantifiers cause catastrophic backtracking. The tester caps the number of matches it collects, but simplifying the pattern is the real fix.
+  * Q: Can I use named capture groups?
+    A: Yes. Named groups are supported and are listed by name in the results.
+
+#### Cron Expression Generator
+- Canonical URL: https://ondevice-tools.org/tools/cron-generator/
+- Category: Developer Tools
+- Description: Build and explain cron schedules in plain English.
+- Technical Implementation: The generator builds the standard five-field crontab expression — minute, hour, day of month, month and day of week — from labelled controls, supporting lists, ranges and step values. The expression is then described in plain English. It also computes the next run times from the current moment in your local time zone, which is the quickest way to catch a schedule that fires far more or far less often than intended.
+- Use Cases:
+  * Writing a schedule for a nightly backup or report job.
+  * Decoding an existing cron expression you inherited.
+  * Checking that a "first Monday of the month" schedule really does what you expect.
+- Key FAQs:
+  * Q: Which cron dialect is supported?
+    A: The standard five-field Unix crontab format: minute, hour, day of month, month and day of week.
+  * Q: What does the next run list show?
+    A: The next five times the expression will fire, calculated in your local timezone from the current moment.
+  * Q: Are step and range values supported?
+    A: Yes. Lists, ranges, steps and combinations of the three all work.
+
+#### Base64 Encoder & Decoder
+- Canonical URL: https://ondevice-tools.org/tools/base64-encoder/
+- Category: Developer Tools
+- Description: Convert text to Base64 and back, with full Unicode support.
+- Technical Implementation: Encoding uses the browser’s built-in btoa and atob, wrapped in a TextEncoder and TextDecoder pass. That wrapper is the important part: btoa operates on Latin-1 and throws on any character above U+00FF, so encoding text containing an accent, a Cyrillic character or an emoji fails without it. Converting to UTF-8 bytes first means any Unicode input encodes and round-trips correctly. Base64 represents three bytes as four ASCII characters, so encoded output is always about 33% larger than the input — worth remembering before embedding a large image as a data URI. Base64 is an encoding, not encryption. It is trivially reversible by anyone, and offers no confidentiality whatsoever. It exists to move binary data safely through channels that only handle text.
+- Use Cases:
+  * Embedding a small image or font directly in CSS or HTML as a data URI to remove a request.
+  * Decoding a Base64 field from an API response, a config file or an email header to see what it holds.
+  * Preparing a value for a header or URL where raw binary would not survive transit.
+  * Decoding a payload that contains credentials — the reversibility of Base64 is exactly why that should happen locally.
+- Key FAQs:
+  * Q: Does this handle emoji and accented characters?
+    A: Yes. Text is encoded as UTF-8 first, so any Unicode character round-trips correctly - unlike a raw call to the legacy btoa function.
+  * Q: What is URL-safe Base64?
+    A: A variant that replaces the plus and slash characters with hyphen and underscore and drops the padding, so the result can be used in a URL or filename without escaping.
+  * Q: Is Base64 encryption?
+    A: No. It is an encoding, fully reversible by anyone. Never use it to protect secrets.
+
+#### URL Encoder & Decoder
+- Canonical URL: https://ondevice-tools.org/tools/url-encoder/
+- Category: Developer Tools
+- Description: Percent-encode and decode URLs, query strings and components.
+- Technical Implementation: Component mode uses encodeURIComponent, which escapes reserved characters such as &, ?, / and = — the right choice for a single query value. Full URL mode leaves the structure of the address intact. Characters are encoded as their UTF-8 bytes. Decoding uses decodeURIComponent and also accepts + as a space, since HTML form submissions encode spaces that way. A query-string breakdown shows each parameter decoded on its own line.
+- Use Cases:
+  * Escaping a search term or redirect URL before putting it in a query string.
+  * Reading a long tracking URL by decoding its parameters.
+  * Debugging a request where a value containing & was split in two.
+- Key FAQs:
+  * Q: What is the difference between the two modes?
+    A: Component mode escapes reserved characters such as ampersand, question mark, slash and equals, which is what you want for a single query value. Full URL mode leaves the URL structure intact.
+  * Q: Why is a space sometimes a plus sign?
+    A: Form submissions encode a space as a plus, while general percent-encoding uses %20. The decoder accepts both.
+  * Q: Does it handle non-ASCII characters?
+    A: Yes. Characters are encoded as UTF-8 bytes, which is what every modern browser and server expects.
+
+#### HTML Entity Encoder
+- Canonical URL: https://ondevice-tools.org/tools/html-entity-encoder/
+- Category: Developer Tools
+- Description: Escape and unescape HTML entities to display markup safely.
+- Technical Implementation: Basic mode escapes the five characters that matter for markup — &, <, >, " and apostrophe. Full mode additionally writes every non-ASCII character as a numeric entity. Decoding handles named entities as well as decimal and hexadecimal references. Decoding reads entities as plain text rather than parsing them as live HTML, so decoded content cannot execute scripts in the page.
+- Use Cases:
+  * Escaping a code sample so it displays correctly in a blog post.
+  * Decoding entity-laden text copied from HTML source or an email.
+  * Preparing text containing angle brackets for insertion into an attribute.
+- Key FAQs:
+  * Q: Which characters are escaped?
+    A: In basic mode, the five characters that matter for markup safety: ampersand, less-than, greater-than, double quote and apostrophe. Full mode also escapes every non-ASCII character as a numeric entity.
+  * Q: Is escaping enough to prevent XSS?
+    A: HTML-escaping untrusted text before inserting it into markup prevents the most common injection, but attribute and script contexts need their own escaping rules.
+  * Q: Can it decode named entities?
+    A: Yes. Named entities, plus decimal and hexadecimal numeric references, are all decoded.
+
+#### Unix Timestamp Converter
+- Canonical URL: https://ondevice-tools.org/tools/timestamp-converter/
+- Category: Developer Tools
+- Description: Convert Unix timestamps to human dates and back, in UTC and local time.
+- Technical Implementation: Unix time counts seconds since 1 January 1970 UTC. The converter accepts seconds and milliseconds, distinguishing them by magnitude: a ten-digit value is seconds, a thirteen-digit value is milliseconds. Getting that wrong is the single most common timestamp bug, and it presents as a date in 1970 or one roughly fifty thousand years away. Each timestamp is shown in UTC and in your device’s local time zone simultaneously, with the offset stated, because most timestamp confusion is really time zone confusion. Two limits are worth knowing. Values above 2,147,483,647 — 19 January 2038 — overflow a signed 32-bit integer, which still matters in older systems and in some database columns. And JavaScript dates are precise to the millisecond, so nanosecond timestamps from tracing systems lose their tail here.
+- Use Cases:
+  * Turning a timestamp from a log line into a readable date while debugging.
+  * Checking whether a token or cache entry’s expiry is in the past.
+  * Producing a Unix timestamp for a specific date to use in a query or a fixture.
+  * Working out whether a discrepancy between two systems is a real gap or a time zone offset.
+- Key FAQs:
+  * Q: How do I convert a Unix timestamp to a date?
+    A: Paste the number. Ten digits are read as seconds and thirteen as milliseconds, which is the most common cause of a date landing in 1970 or far in the future.
+  * Q: Seconds or milliseconds?
+    A: Both. The converter detects the magnitude of the number and tells you which unit it assumed, and you can override the choice.
+  * Q: What timezone is used?
+    A: Results are shown in UTC and in your local timezone at the same time, so there is no ambiguity.
+  * Q: What is the year 2038 problem?
+    A: Systems storing time in a signed 32-bit integer overflow in January 2038. Modern platforms use 64-bit values and are unaffected.
+
+#### Hash Generator
+- Canonical URL: https://ondevice-tools.org/tools/hash-generator/
+- Category: Developer Tools
+- Description: Generate SHA-1, SHA-256, SHA-384 and SHA-512 hashes from text or files.
+- Technical Implementation: Hashing uses the Web Crypto API — crypto.subtle.digest — which is the browser’s own audited implementation of SHA-1, SHA-256, SHA-384 and SHA-512, the same primitive used for TLS. Your text is encoded to UTF-8 bytes, digested, and the resulting buffer is rendered as lowercase hexadecimal. Web Crypto is only available over HTTPS or on localhost, because a hashing function delivered over a connection an attacker can modify offers no assurance at all. That restriction is enforced by the browser, not by this page. One thing worth being clear about: a hash is a fingerprint, not encryption. It cannot be reversed, but identical input always produces identical output, so a plain hash of a common password is trivially reversed with a lookup table. For storing passwords you want a deliberately slow, salted algorithm such as bcrypt, scrypt or Argon2 — not any of the functions here.
+- Use Cases:
+  * Verifying that a downloaded file matches the SHA-256 checksum its publisher listed.
+  * Producing a stable cache key or content fingerprint from a string.
+  * Checking that two files with different names are byte-for-byte identical.
+  * Generating a test digest while developing, without sending the input to an online hashing service that logs it.
+- Key FAQs:
+  * Q: How do I generate a SHA-256 hash?
+    A: Type or paste your text and pick SHA-256. Hashing uses the browser Web Crypto API, so the input never leaves your device.
+  * Q: Can I use this to hash passwords?
+    A: No. Use a deliberately slow, salted algorithm such as bcrypt, scrypt or Argon2. A plain SHA or MD5 hash of a common password is trivially reversed with a lookup table.
+  * Q: Why is MD5 not offered?
+    A: The Web Crypto API deliberately omits MD5 because it is cryptographically broken. Use SHA-256 for anything that matters.
+  * Q: Is SHA-1 safe to use?
+    A: No, not for signatures or security. It is included only for compatibility with legacy systems that still require it.
+  * Q: Can I hash a file?
+    A: Yes, drop a file into the tool and its bytes are hashed directly, which is the usual way to verify a download checksum.
+
+#### SQL Formatter
+- Canonical URL: https://ondevice-tools.org/tools/sql-formatter/
+- Category: Developer Tools
+- Description: Format SQL queries with consistent keyword casing and indentation.
+- Technical Implementation: The formatter tokenises your statement and re-indents it around SQL’s structural keywords: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY and the JOIN family each start a new line, and the parenthesis depth of subqueries drives the indentation so nested queries visibly nest. String literals and quoted identifiers are preserved untouched, so a keyword appearing inside a quoted string is never mistaken for a structural keyword and reformatted. It is a formatter, not a parser or a linter: it will not tell you that a column does not exist or that a join is missing a condition. It changes only whitespace and keyword casing, so the statement it produces is the statement you gave it.
+- Use Cases:
+  * Making a long generated query — from an ORM or a BI tool — readable enough to review.
+  * Normalising formatting before committing a migration, so future diffs show logic changes rather than reflowed whitespace.
+  * Understanding an inherited report query by seeing its subquery structure laid out.
+  * Formatting a query containing real table names and business logic without sending it to a hosted formatter.
+- Key FAQs:
+  * Q: Which SQL dialects are supported?
+    A: The formatter is dialect-agnostic. It recognises standard clauses and operators shared by PostgreSQL, MySQL, SQL Server and SQLite.
+  * Q: Will it change my query?
+    A: No. Only whitespace and keyword casing change; string literals, identifiers and comments are preserved exactly.
+  * Q: Does it handle subqueries?
+    A: Yes. Nested parentheses increase the indentation level, so common table expressions and subqueries stay readable.
+
+#### XML Formatter
+- Canonical URL: https://ondevice-tools.org/tools/xml-formatter/
+- Category: Developer Tools
+- Description: Pretty-print and validate XML documents with proper indentation.
+- Technical Implementation: The document is parsed with the browser’s XML parser, so malformed markup is reported with the parser’s own error rather than being silently repaired. Well-formed documents are re-indented by nesting depth, with text-only elements kept on a single line. Comments, CDATA sections and processing instructions are preserved. Schema validation is not performed — only well-formedness.
+- Use Cases:
+  * Reading a single-line SOAP response or RSS feed.
+  * Finding the unclosed tag in a broken configuration file.
+  * Tidying an SVG file before committing it to a repository.
+- Key FAQs:
+  * Q: Is the document validated?
+    A: Yes, it is parsed with the browser XML parser, so malformed markup is reported with the parser own error message.
+  * Q: Are comments and CDATA preserved?
+    A: Yes. Comments, CDATA sections and processing instructions all survive formatting.
+  * Q: Does it validate against a schema?
+    A: No. Only well-formedness is checked; schema validation is out of scope for a browser tool.
+
+#### YAML to JSON Converter
+- Canonical URL: https://ondevice-tools.org/tools/yaml-formatter/
+- Category: Developer Tools
+- Description: Convert YAML to JSON and back, with syntax checking.
+- Technical Implementation: YAML is parsed into a data structure and printed as JSON, so you can see exactly how a tool will interpret indentation, lists and scalars. The reverse direction converts JSON back into readable YAML. The parser covers the common configuration subset — mappings, sequences, quoted and block scalars, comments and flow collections. Anchors, aliases and custom tags are reported rather than silently mangled, and tab indentation is flagged because it is invalid YAML.
+- Use Cases:
+  * Checking how a Kubernetes or GitHub Actions file will actually be interpreted.
+  * Finding the indentation error that breaks a Docker Compose file.
+  * Converting a JSON config into YAML for a tool that expects it.
+- Key FAQs:
+  * Q: How do I convert YAML to JSON?
+    A: Paste the YAML and the JSON equivalent appears, which shows exactly how a tool will interpret your indentation. The reverse direction converts JSON back to YAML.
+  * Q: Which YAML features are supported?
+    A: The common configuration subset: nested mappings, sequences, scalars, quoted strings, comments, multi-line block scalars and inline flow collections.
+  * Q: Are anchors and aliases supported?
+    A: Anchors, aliases and custom tags are not resolved. They are rare in hand-written configuration and are reported rather than silently mangled.
+  * Q: Why does indentation matter so much?
+    A: YAML uses indentation for structure, and tab characters are not valid indentation. The converter flags tabs explicitly because they are a very common cause of errors.
+
+### Image Tools (9 tools)
+
+#### QR Code Generator
+- Canonical URL: https://ondevice-tools.org/tools/qr-code-generator/
+- Category: Image Tools
+- Description: Create QR codes for links, Wi-Fi, contacts and text, then download PNG or SVG.
+- Technical Implementation: Your text is encoded into the QR pattern entirely in your browser. The encoder picks the smallest version — the grid size — that can hold your value at the error correction level you chose, adds the Reed-Solomon recovery data that lets a damaged code still be read, and lays out the finder squares in three corners that tell a scanner where the code is and which way up it sits. The result is produced as SVG, so it stays sharp at any size, and the PNG download rasterises that same vector at the pixel size you set. Nothing is uploaded: the link, Wi-Fi password or contact details you encode never leave the page, which matters more here than for most tools because a Wi-Fi QR code contains your network password in plain text.
+- Use Cases:
+  * Putting a link to a menu, form or page on a printed poster or flyer.
+  * Sharing Wi-Fi access with guests without reading a long password aloud.
+  * Adding a vCard contact code to a business card or email signature.
+  * Generating codes for a private or internal URL that should not pass through a third-party generator.
+- Key FAQs:
+  * Q: Do these QR codes expire?
+    A: No. The code encodes your value directly, so there is no redirect service in the middle that could expire or start charging. It keeps working for as long as whatever it points to does.
+  * Q: Is my data sent anywhere?
+    A: No. The code is generated by JavaScript in your browser, so the link, Wi-Fi password or contact details you encode never leave your device.
+  * Q: Which error correction level should I use?
+    A: Medium is a good default. Use High if the code will be printed small, placed on a curved surface or might get scuffed, and Low only when the value is long and you need to keep the pattern simple.
+  * Q: Can I put a logo in the middle?
+    A: Not in this tool. A logo covers part of the pattern and relies on error correction to survive, which is easy to overdo. Generate the SVG here and place a logo over it in a vector editor if you need one.
+  * Q: Why will my code not scan?
+    A: Usually contrast or inversion. Scanners expect a dark pattern on a light background; a light-on-dark code fails on many readers. Keep a clear margin around it and avoid low-contrast colour pairs.
+  * Q: What is the maximum length?
+    A: It depends on the error correction level and the type of characters. Numbers pack tightest, then uppercase letters, then arbitrary text. The tool tells you when a value will not fit.
+
+#### Image Compressor
+- Canonical URL: https://ondevice-tools.org/tools/image-compressor/
+- Category: Image Tools
+- Description: Shrink JPG, PNG and WebP files without leaving your browser.
+- Technical Implementation: The image is decoded into an offscreen <canvas> and re-encoded with canvas.toBlob() at the quality level you choose. Every step happens in your device’s memory using the browser’s own image codecs — the same ones it uses to display any image on any page. Quality maps to the JPEG or WebP encoder’s quantisation setting. Values around 0.8 typically remove most of the file size with no difference visible at normal viewing distance; below about 0.6, artefacts start to show in smooth gradients and around sharp edges. One consequence of the canvas round trip is worth knowing: EXIF metadata does not survive it. Camera model, timestamp, lens settings and — importantly — GPS coordinates are all dropped. If you are publishing photos, that is a privacy improvement you get for free. If you need the metadata, keep the original.
+- Use Cases:
+  * Getting a photo under an upload size limit for a form or a job application.
+  * Reducing page weight before publishing images to a site or a blog post.
+  * Stripping GPS coordinates out of a photo before sharing it publicly.
+  * Compressing pictures of family, documents or ID — the images that have no business being uploaded to a stranger’s server to be made smaller.
+- Key FAQs:
+  * Q: Are my images uploaded?
+    A: No. Compression uses a canvas in your own browser, so the file never leaves your device.
+  * Q: Why did my PNG get bigger?
+    A: PNG is lossless. Re-encoding a already-optimised PNG can add bytes - convert it to WebP instead for a real reduction.
+  * Q: Does compression lose quality?
+    A: JPEG and WebP are lossy, so yes, but the quality slider lets you find the point where the difference stops being visible.
+
+#### Image Resizer
+- Canonical URL: https://ondevice-tools.org/tools/image-resizer/
+- Category: Image Tools
+- Description: Resize images to exact dimensions or by percentage, offline.
+- Technical Implementation: Resizing draws your image into a canvas at the target dimensions using the browser’s built-in scaling, with image smoothing enabled so downscaling produces a clean result rather than an aliased one. Aspect ratio is locked by default; the second dimension is computed from the first and rounded to whole pixels. Very large reductions — a 6000px photo down to a 200px thumbnail — look better in stages than in a single step, because a one-shot downscale samples too sparsely and drops fine detail. Where the reduction is severe, the resize runs through intermediate steps. Upscaling is available but cannot invent detail that was never captured. Enlarging a small image interpolates between the pixels that exist; it will look soft, and no client-side tool can change that.
+- Use Cases:
+  * Producing an avatar or thumbnail at the exact pixel dimensions a platform requires.
+  * Cutting a camera photo down to a sensible size for the web before uploading it.
+  * Preparing a batch of images at consistent dimensions for a gallery or product listing.
+  * Resizing a scanned document or ID photo for an application form, without it passing through anyone else’s server.
+- Key FAQs:
+  * Q: Does it keep the aspect ratio?
+    A: By default yes - editing one dimension updates the other. Unlock the ratio to stretch the image deliberately.
+  * Q: Can I enlarge an image?
+    A: You can, but pixels that were never captured cannot be recovered, so upscaling always looks softer than the original.
+  * Q: Which formats are supported?
+    A: Anything your browser can decode: JPG, PNG, WebP, GIF (first frame), BMP and usually AVIF.
+
+#### Crop Image
+- Canonical URL: https://ondevice-tools.org/tools/crop-image/
+- Category: Image Tools
+- Description: Crop images to a selection or a fixed aspect ratio.
+- Technical Implementation: The image is decoded in your browser and the selected region is drawn onto a canvas of exactly that size, then exported as PNG, JPEG or WebP. The selection can be set in pixels or locked to 1:1, 4:3, 16:9, 3:2 or 9:16. Pixels inside the selection are copied unchanged, but JPEG and WebP re-encode them. Choose PNG when you need to avoid any generation loss.
+- Use Cases:
+  * Squaring a photo for a profile picture.
+  * Trimming dead space from a screenshot before sharing it.
+  * Cutting a banner to an exact aspect ratio.
+- Key FAQs:
+  * Q: Can I lock to a common ratio?
+    A: Yes - 1:1, 4:3, 16:9, 3:2 and 9:16 presets are available, along with a free-form mode.
+  * Q: How do I set the crop area?
+    A: Type the offset and size in pixels, or pick a ratio and use "centre selection". The highlighted overlay shows exactly what will be kept.
+  * Q: Is the crop lossless?
+    A: The pixels inside your selection are copied unchanged, but saving as JPG re-encodes them. Choose PNG to avoid any generation loss.
+
+#### Image Converter
+- Canonical URL: https://ondevice-tools.org/tools/image-converter/
+- Category: Image Tools
+- Description: Convert between JPG, PNG and WebP directly in the browser.
+- Technical Implementation: Your image is decoded by the browser, drawn onto a canvas and re-encoded in the target format, with a quality setting for the lossy formats. Because JPEG has no transparency, transparent areas are filled with the background colour you choose when converting to it. Which output formats are available depends on what your browser can encode — JPEG, PNG and WebP are supported everywhere current.
+- Use Cases:
+  * Converting a PNG screenshot to a smaller JPEG or WebP.
+  * Turning a WebP download into a PNG for software that cannot read WebP.
+  * Flattening a transparent logo onto a white background.
+- Key FAQs:
+  * Q: How do I convert JPG to PNG?
+    A: Choose PNG as the output format. The image is decoded and re-encoded in your browser. PNG is lossless, so the result will usually be larger than the JPEG.
+  * Q: Should I convert PNG to WebP?
+    A: Usually yes for the web. WebP files are typically 25-35% smaller at the same visual quality, and every current browser supports it.
+  * Q: What happens to transparency when converting to JPG?
+    A: JPEG has no alpha channel, so transparent areas are filled with the background colour you choose - white by default.
+  * Q: Why convert to WebP?
+    A: WebP files are typically 25-35% smaller than an equivalent JPEG at the same visual quality, and it is supported by every current browser.
+  * Q: Is AVIF supported?
+    A: AVIF input works wherever your browser can decode it. AVIF output depends on browser encoder support and is offered when available.
+
+#### Image to Base64
+- Canonical URL: https://ondevice-tools.org/tools/image-to-base64/
+- Category: Image Tools
+- Description: Convert an image into a Base64 data URL for inline embedding.
+- Technical Implementation: The file is read locally and encoded as a data URL: the MIME type followed by the Base64 representation of its bytes. Base64 uses four characters for every three bytes, so the output is roughly a third larger than the file. Alongside the raw data URL, the tool gives ready-made snippets for an img tag, a CSS background and Markdown.
+- Use Cases:
+  * Inlining a small icon in CSS to save a network request.
+  * Embedding an image in a single-file HTML document or email template.
+  * Putting an image into a JSON payload for an API test.
+- Key FAQs:
+  * Q: When should I inline an image?
+    A: For very small assets - icons, spacers, tiny logos - inlining saves a network request. Above a few kilobytes it usually hurts more than it helps.
+  * Q: Why is the output larger than the file?
+    A: Base64 encoding adds about a third to the byte count because it represents three bytes with four characters.
+  * Q: Can I use this in CSS?
+    A: Yes. The tool gives you ready-made snippets for an img tag, a CSS background and a bare data URL.
+
+#### Base64 to Image
+- Canonical URL: https://ondevice-tools.org/tools/base64-to-image/
+- Category: Image Tools
+- Description: Decode a Base64 string or data URL back into a downloadable image.
+- Technical Implementation: Base64 text is decoded back into bytes in your browser. If you paste a full data URL, its declared type is used; if you paste raw Base64, the format is detected from the file signature in the first bytes — PNG, JPEG, GIF, WebP, BMP and SVG are recognised. Whitespace is stripped automatically, and the decoded image is previewed with its real dimensions and size before you download it with the correct extension.
+- Use Cases:
+  * Seeing what image is stored in a database column or API response.
+  * Recovering an embedded image from email or HTML source.
+  * Checking that an encoded image is complete rather than truncated.
+- Key FAQs:
+  * Q: Do I need the data URL prefix?
+    A: No. Paste the raw Base64 and the tool detects the image type from the first bytes, or paste a full data URL and it will use the declared type.
+  * Q: Why does nothing render?
+    A: Usually the string is truncated or contains stray whitespace or quotes from the surrounding code. The tool strips whitespace automatically but cannot recover missing data.
+  * Q: Which formats can it detect?
+    A: PNG, JPEG, GIF, WebP, BMP and SVG are recognised from their signatures.
+
+#### Color Palette Extractor
+- Canonical URL: https://ondevice-tools.org/tools/color-palette-extractor/
+- Category: Image Tools
+- Description: Pull the dominant colors out of any image as a usable palette.
+- Technical Implementation: The image is drawn onto a canvas and its pixels read back. Colours are quantised into buckets and the most populated buckets become the palette, each reported with its share of the image. Frequency-based extraction favours large areas of colour, so small bright accents can rank low; increasing the palette size usually surfaces them. Swatches copy as hex, RGB or HSL, or the whole palette as CSS custom properties.
+- Use Cases:
+  * Building a colour scheme from a photograph or product shot.
+  * Pulling brand colours out of a logo you only have as an image.
+  * Generating CSS variables to match an illustration.
+- Key FAQs:
+  * Q: How are the colors chosen?
+    A: Pixels are quantised into buckets and the most populated buckets are returned, which approximates the colors a person would name when looking at the image.
+  * Q: Why are some colors missing?
+    A: Small but striking accents occupy few pixels, so they rank low by frequency. Increasing the palette size usually surfaces them.
+  * Q: Can I export the palette?
+    A: Yes - copy any swatch as hex, RGB or HSL, or export the whole palette as CSS custom properties.
+
+#### Favicon Generator
+- Canonical URL: https://ondevice-tools.org/tools/favicon-generator/
+- Category: Image Tools
+- Description: Generate every favicon size from a single image, plus the HTML.
+- Technical Implementation: Your source image is drawn onto canvases at 16, 32, 48, 96, 144, 180, 192, 256 and 512 pixels and exported as PNGs, covering browser tabs, iOS home screens, Android and PWA install icons. The generator also writes the matching link tags and web app manifest entries. Fine detail vanishes at 16 pixels, so a simple, high-contrast square mark works best.
+- Use Cases:
+  * Creating every icon size a new website needs from one logo.
+  * Generating PWA manifest icons for an installable web app.
+  * Replacing a blurry favicon with properly sized versions.
+- Key FAQs:
+  * Q: Which sizes are produced?
+    A: 16, 32, 48, 96, 144, 180, 192, 256 and 512 pixel PNGs - covering browsers, Android, iOS and PWA install prompts.
+  * Q: Do I still need an ICO file?
+    A: Only for very old browsers. Modern browsers happily use PNG favicons declared in the page head.
+  * Q: What source image works best?
+    A: A square image of at least 512 pixels with a simple, high-contrast mark. Fine detail disappears at 16 pixels.
+
+### PDF Tools (4 tools)
+
+#### Merge PDF
+- Canonical URL: https://ondevice-tools.org/tools/merge-pdf/
+- Category: PDF Tools
+- Description: Combine several PDF files into one, in the order you choose.
+- Technical Implementation: Each file you select is read with the File API into an ArrayBuffer — a copy in your tab’s memory. The PDF structures are parsed there, the page objects from every document are collected in order, and a new PDF is assembled and handed back as a blob your browser downloads. The files are never sent anywhere. Merging copies page content along with the resources each page references — fonts, embedded images and vector graphics — so pages look the same in the merged file as they did in the originals. Document-level features that cannot be meaningfully combined, such as form field values and digital signatures, do not survive a merge; a signature covers a specific document, and a merged file is a different document. Because everything is held in memory, the practical limit is your device’s RAM rather than a server-side upload cap. Very large scanned documents on a phone are the case most likely to run out of room.
+- Use Cases:
+  * Combining scanned pages into one document for an application or a claim.
+  * Merging invoices or receipts into a single file for an expense submission.
+  * Assembling separately exported chapters or reports into one deliverable.
+  * Joining documents containing financial, medical or legal information — exactly the files that should not be uploaded to a free web service.
+- Key FAQs:
+  * Q: Are my PDFs uploaded?
+    A: No. Merging happens in your browser using a JavaScript PDF library. The files never leave your device.
+  * Q: Is there a file size limit?
+    A: Only the memory available to your browser tab. Very large scanned documents may be slow but generally work.
+  * Q: Are bookmarks and forms preserved?
+    A: Page content, images and text are preserved. Interactive form fields and bookmarks are not carried across.
+
+#### Split PDF
+- Canonical URL: https://ondevice-tools.org/tools/split-pdf/
+- Category: PDF Tools
+- Description: Extract a page range from a PDF or split it into single pages.
+- Technical Implementation: The document is parsed in your browser and the pages you select are copied into a new PDF, along with the fonts and images those pages depend on. Pages you do not select are simply not copied, so nothing from them remains in the output. That last point matters if you are splitting a document to remove sensitive pages. Unlike drawing a black box over content — which leaves the text underneath, selectable and searchable — extracting a page range produces a file that genuinely does not contain the other pages. The original file on your disk is never modified. The result is a new download, and you keep the source exactly as it was.
+- Use Cases:
+  * Pulling a single signed page out of a long contract to send on.
+  * Splitting a bank or card statement to share only the transactions a claim requires.
+  * Extracting one chapter from a large manual to send to someone.
+  * Removing pages containing personal information before circulating a document.
+- Key FAQs:
+  * Q: How do I specify pages?
+    A: Use a range list such as 1-3, 7, 10-12. Pages are numbered from one.
+  * Q: Can I remove pages instead?
+    A: Yes, switch to remove mode and the listed pages are dropped rather than kept.
+  * Q: Does splitting reduce quality?
+    A: No. Pages are copied byte-for-byte into the new document, so there is no re-encoding.
+
+#### Rotate PDF
+- Canonical URL: https://ondevice-tools.org/tools/rotate-pdf/
+- Category: PDF Tools
+- Description: Rotate all or selected pages of a PDF and save the result.
+- Technical Implementation: The PDF is loaded with pdf-lib in your browser and the rotation attribute of each selected page is changed in 90-degree steps. The document is then saved as a new file. Because rotation is stored in the file rather than only in a viewer, every PDF reader and printer honours it. The page content itself is not re-rendered, so text and images stay exactly as they were.
+- Use Cases:
+  * Fixing scanned pages that came out sideways.
+  * Rotating a single landscape table inside a portrait report.
+  * Correcting a document before sending it to print.
+- Key FAQs:
+  * Q: Why do scanned pages come out sideways?
+    A: Scanners record the orientation they fed the paper in, which often does not match how the document reads.
+  * Q: Can I rotate only some pages?
+    A: Yes, give a page range and only those pages are rotated.
+  * Q: Is the rotation permanent?
+    A: It is written into the saved file as a page rotation attribute, so every viewer will honour it.
+
+#### Images to PDF
+- Canonical URL: https://ondevice-tools.org/tools/images-to-pdf/
+- Category: PDF Tools
+- Description: Turn JPG and PNG images into a single PDF document.
+- Technical Implementation: Each image is embedded into a new PDF with pdf-lib — JPEG and PNG directly, other formats after your browser converts them to PNG. Pages can match each image’s size, or use A4 or US Letter with the image centred and scaled to fit. Images are embedded at their original resolution, in the order you arrange them, and the finished PDF is built entirely in your browser.
+- Use Cases:
+  * Combining phone photos of a document into one PDF.
+  * Submitting several scanned receipts as a single file.
+  * Turning a set of slides or screenshots into a shareable document.
+- Key FAQs:
+  * Q: Which image formats work?
+    A: JPEG and PNG are embedded directly. Other formats are converted to PNG first by your browser.
+  * Q: Can I choose the page size?
+    A: Yes - fit each page to its image, or use A4 or US Letter with the image centred and scaled to fit.
+  * Q: Can I reorder the images?
+    A: Yes, drag them into the order you want before generating the PDF.
+
+### Text Tools (11 tools)
+
+#### Text Compare
+- Canonical URL: https://ondevice-tools.org/tools/text-compare/
+- Category: Text Tools
+- Description: Compare two texts and see every added, removed and changed line highlighted.
+- Technical Implementation: The comparison uses Myers’ O(ND) difference algorithm — the same approach underneath git diff. It finds the shortest edit script that turns the left text into the right one, which is why it aligns matching blocks correctly instead of declaring everything after a single inserted line to be different. Identical prefixes and suffixes are trimmed before the algorithm runs, so comparing two large documents that differ in the middle is fast. Within a changed line, a second word-level pass highlights the specific words that moved, unless the line has changed so completely that highlighting every word would add nothing. The ignore options change what counts as equal rather than editing your text: ignoring case, collapsing runs of whitespace, or skipping blank lines entirely. Your input is never modified — only the comparison is.
+- Use Cases:
+  * Finding what changed between two versions of a config file or a contract.
+  * Checking whether a copied block of code differs from the original in any way beyond formatting.
+  * Diffing two API responses to isolate the field that changed.
+  * Comparing documents under NDA, where a hosted diff tool would mean uploading both versions.
+- Key FAQs:
+  * Q: What counts as a changed line?
+    A: When a removed line and an added line line up, they are shown as one changed row with the differing words highlighted, rather than as two unrelated edits.
+  * Q: Can it handle large files?
+    A: Yes. The comparison uses an algorithm whose cost scales with the number of differences, so two nearly identical files of several thousand lines compare in milliseconds.
+  * Q: Is my text uploaded anywhere?
+    A: No. The comparison runs entirely in your browser, which is what makes it safe to paste a contract, a config file or production logs into it.
+
+#### Word Counter
+- Canonical URL: https://ondevice-tools.org/tools/word-counter/
+- Category: Text Tools
+- Description: Count words, characters, sentences and paragraphs as you type.
+- Technical Implementation: Words are counted by splitting on Unicode whitespace and discarding empty results, which handles multiple spaces, tabs and line breaks without inflating the total. Characters are counted both with and without spaces, because the two are asked for in different contexts. One subtlety worth knowing: JavaScript strings are UTF-16, so a naive .length counts an emoji or certain CJK characters as two. The count here iterates by code point, so what is reported matches what you would count by eye. Reading time is derived at roughly 200–250 words per minute, which is the accepted range for adult reading of general prose. Dense technical material runs slower and light narrative faster, so treat it as an estimate rather than a measurement.
+- Use Cases:
+  * Checking an essay, application or article against a strict word limit before submitting it.
+  * Fitting copy into a meta description, a tweet, or an ad slot with a hard character cap.
+  * Estimating how long a talk will take to deliver from its script.
+  * Counting words in a draft that is confidential — a manuscript, a legal filing, an unpublished report.
+- Key FAQs:
+  * Q: How many words is a 500 word essay?
+    A: The counter shows the exact figure as you type, along with characters, sentences and paragraphs, so you can check against a limit before submitting.
+  * Q: How is a word defined?
+    A: A word is any run of characters separated by whitespace, which matches how word processors count.
+  * Q: Does it count characters with and without spaces?
+    A: Yes, both totals are shown, which is what most academic and publishing guidelines ask for.
+  * Q: Is my text stored?
+    A: No. Everything is counted in your browser and nothing is saved or transmitted.
+
+#### Character Counter
+- Canonical URL: https://ondevice-tools.org/tools/character-counter/
+- Category: Text Tools
+- Description: Count characters with live limits for tweets, meta tags and SMS.
+- Technical Implementation: JavaScript counts string length in UTF-16 code units, so many emoji count as two or more. The counter shows both that figure and the number of visible characters, plus a trimmed count that ignores leading and trailing whitespace. Live limits track the lengths people actually run into: SMS segments, a 60-character page title, a 160-character meta description and a 280-character social post.
+- Use Cases:
+  * Fitting a meta description or page title before publishing.
+  * Keeping an SMS within a single segment.
+  * Checking whether emoji will push a post over a platform limit.
+- Key FAQs:
+  * Q: Why do emoji count as more than one character?
+    A: A JavaScript string counts UTF-16 code units. Many emoji use two, and some use several joined together, so both the code-unit count and the visible grapheme count are shown.
+  * Q: Which limits are tracked?
+    A: Common ones: SMS segments, a 160 character meta description, a 60 character page title, and a 280 character social post.
+  * Q: Does it count trailing whitespace?
+    A: Yes, all characters are counted exactly. A separate trimmed count is shown alongside.
+
+#### Reading Time Calculator
+- Canonical URL: https://ondevice-tools.org/tools/reading-time/
+- Category: Text Tools
+- Description: Estimate how long an article takes to read or speak aloud.
+- Technical Implementation: Words are counted and divided by a reading speed — 225 words per minute by default for silent reading — to estimate reading time. Speaking time uses a slower presentation pace of about 150 words per minute. Both speeds are adjustable. Dense or technical text reads noticeably slower, so lowering the rate gives a more realistic estimate for that kind of material.
+- Use Cases:
+  * Adding a reading-time label to a blog post.
+  * Checking a speech or presentation script fits its time slot.
+  * Estimating how long a document will take to review.
+- Key FAQs:
+  * Q: What reading speed is used?
+    A: The default is 225 words per minute for silent reading, which is the commonly cited average for adults reading non-technical prose. You can change it.
+  * Q: Why is the speaking time longer?
+    A: Speech is slower than silent reading. The speaking estimate uses about 150 words per minute, a comfortable presentation pace.
+  * Q: Does technical content read slower?
+    A: Yes, considerably. For dense or technical material, drop the speed to around 150 words per minute for a realistic estimate.
+
+#### Remove Duplicate Lines
+- Canonical URL: https://ondevice-tools.org/tools/remove-duplicate-lines/
+- Category: Text Tools
+- Description: Delete repeated lines from a list, with optional case-insensitive matching.
+- Technical Implementation: Lines are compared in order and the first occurrence of each is kept, so the original sequence survives. Optional normalisation ignores case and surrounding whitespace when deciding whether two lines match. The inverted mode shows only the lines that were repeated, with a count of how many times each appeared.
+- Use Cases:
+  * Cleaning a merged email or contact list.
+  * Finding which entries appear more than once in an export.
+  * Deduplicating log lines before analysing them.
+- Key FAQs:
+  * Q: Is the original order kept?
+    A: Yes. The first occurrence of each line stays in place and later duplicates are removed.
+  * Q: Can I ignore case and whitespace?
+    A: Yes. Both are options, so "Apple" and " apple " can be treated as the same line.
+  * Q: Can I keep only the duplicates?
+    A: Yes, invert the mode to show only the lines that appeared more than once, along with their counts.
+
+#### Sort Lines
+- Canonical URL: https://ondevice-tools.org/tools/sort-lines/
+- Category: Text Tools
+- Description: Sort text alphabetically, numerically, by length or at random.
+- Technical Implementation: Lines can be sorted alphabetically, numerically, by length or randomly, ascending or descending. Alphabetical sorting uses Intl.Collator, and natural mode compares embedded numbers by value so item2 comes before item10. The sort is stable — lines that compare as equal keep their original order — and blank lines can be removed or grouped at the end.
+- Use Cases:
+  * Alphabetising a list of names or keywords.
+  * Ordering file names that contain numbers correctly.
+  * Shuffling a list to pick items in random order.
+- Key FAQs:
+  * Q: What is natural sorting?
+    A: It compares embedded numbers by value, so item2 sorts before item10 instead of after it.
+  * Q: How are blank lines handled?
+    A: They can be removed before sorting, or kept and grouped at the end - it is a toggle.
+  * Q: Is the sort stable?
+    A: Yes. Lines that compare as equal keep their original relative order.
+
+#### Reverse Text
+- Canonical URL: https://ondevice-tools.org/tools/reverse-text/
+- Category: Text Tools
+- Description: Reverse text by character, by word or by line.
+- Technical Implementation: Character mode reverses by grapheme cluster rather than raw code unit, so emoji and accented characters built from several code points stay intact. Word mode keeps each word whole and reverses their order, and line mode reverses only the order of lines. Reversing changes character order; it does not produce mirrored glyphs.
+- Use Cases:
+  * Testing whether a word or phrase is a palindrome.
+  * Flipping the order of lines in a log or list.
+  * Undoing text that was exported in reverse order.
+- Key FAQs:
+  * Q: Does it handle emoji correctly?
+    A: Yes. Reversal works on grapheme clusters rather than raw code units, so emoji and combined characters are not broken apart.
+  * Q: What is the difference between the modes?
+    A: Character mode reverses every character, word mode keeps words intact but reverses their order, and line mode reverses the order of lines only.
+  * Q: Is this the same as mirrored text?
+    A: No. This changes the order of characters; it does not produce mirror-image glyphs.
+
+#### Case Converter
+- Canonical URL: https://ondevice-tools.org/tools/case-converter/
+- Category: Text Tools
+- Description: Convert text between upper, lower, title, camel, snake and kebab case.
+- Technical Implementation: Each conversion is a distinct transformation rather than a single toggle. Sentence case capitalises after terminal punctuation; title case capitalises each significant word while leaving short articles and prepositions lowercase; camelCase, PascalCase, snake_case and kebab-case first split the input on spaces, underscores, hyphens and existing case boundaries, then rejoin it in the target convention. The splitting step is what makes conversion between programming conventions reliable: getUserID is recognised as three parts, so it becomes get_user_id rather than getuserid. Case mapping uses the browser’s Unicode-aware toLocaleUpperCase and toLocaleLowerCase, so accented Latin, Greek and Cyrillic characters convert correctly instead of being passed through unchanged.
+- Use Cases:
+  * Converting a list of identifiers between the conventions of two languages or APIs.
+  * Fixing a heading that arrived in all caps without retyping it.
+  * Normalising imported CSV column names into consistent snake_case.
+  * Turning a list of names or labels into title case for a UI.
+- Key FAQs:
+  * Q: How do I convert text to title case?
+    A: Pick title case. Significant words are capitalised while short articles and prepositions are left lowercase. camelCase, PascalCase, snake_case and kebab-case are also available.
+  * Q: Which words stay lowercase in title case?
+    A: Short articles, conjunctions and prepositions are kept lowercase unless they start or end the title, following common style guides.
+  * Q: What is sentence case?
+    A: Only the first letter of each sentence is capitalised, along with any word you already wrote in capitals such as an acronym.
+  * Q: Does camelCase handle existing separators?
+    A: Yes. Spaces, hyphens, underscores and existing case boundaries are all treated as word breaks.
+
+#### Slug Generator
+- Canonical URL: https://ondevice-tools.org/tools/slug-generator/
+- Category: Text Tools
+- Description: Turn any title into a clean, URL-safe slug.
+- Technical Implementation: The title is lowercased, accented characters are transliterated to their closest ASCII equivalents, punctuation and emoji are stripped, and runs of whitespace become a single separator. Stop-word removal and a maximum length are optional. Hyphens are the recommended separator because search engines treat them as word boundaries, whereas underscores join words together.
+- Use Cases:
+  * Creating URL slugs for blog posts or product pages.
+  * Generating file names from titles that contain accents or punctuation.
+  * Making consistent anchor IDs for headings.
+- Key FAQs:
+  * Q: What happens to accented characters?
+    A: They are transliterated to their closest ASCII equivalent, so a title with an accented e produces a plain e in the slug.
+  * Q: Are stop words removed?
+    A: Only if you turn that option on. It shortens slugs but can hurt readability, so it is off by default.
+  * Q: Which separator should I use?
+    A: Hyphens. Search engines treat hyphens as word separators and underscores as word joiners.
+
+#### Lorem Ipsum Generator
+- Canonical URL: https://ondevice-tools.org/tools/lorem-ipsum/
+- Category: Text Tools
+- Description: Generate placeholder paragraphs, sentences or words for mockups.
+- Technical Implementation: Placeholder text is generated from a Latin-like word list with a natural spread of word lengths, as paragraphs, sentences or words. The classic "Lorem ipsum dolor sit amet" opening is on by default and can be turned off. Output can be wrapped in paragraph tags for pasting straight into a template.
+- Use Cases:
+  * Filling a page mockup so reviewers judge layout rather than copy.
+  * Testing how a component handles long paragraphs.
+  * Seeding placeholder content in a CMS during development.
+- Key FAQs:
+  * Q: Why use Lorem Ipsum instead of real text?
+    A: Nonsense Latin has a natural distribution of word lengths but carries no meaning, so reviewers judge the layout rather than the copy.
+  * Q: Can I start with the classic opening?
+    A: Yes. The familiar "Lorem ipsum dolor sit amet" opening is on by default and can be turned off for fully random text.
+  * Q: Can it generate HTML?
+    A: Yes, output can be wrapped in paragraph tags ready to paste into a template.
+
+#### Remove Extra Spaces
+- Canonical URL: https://ondevice-tools.org/tools/remove-extra-spaces/
+- Category: Text Tools
+- Description: Clean up double spaces, trailing whitespace and blank lines.
+- Technical Implementation: Each clean-up is a separate option: collapse repeated spaces, trim leading and trailing whitespace, convert tabs to spaces and collapse runs of blank lines. Line breaks are kept unless you choose to collapse all whitespace into a single line. Non-breaking spaces and zero-width characters — common when copying from web pages and word processors — are normalised as well.
+- Use Cases:
+  * Cleaning text copied from a PDF before pasting it elsewhere.
+  * Removing double spaces from a document.
+  * Stripping invisible characters that break search or comparisons.
+- Key FAQs:
+  * Q: What exactly is removed?
+    A: Whichever options you enable: repeated spaces collapse to one, leading and trailing whitespace goes, tabs convert to spaces and repeated blank lines collapse.
+  * Q: Are line breaks preserved?
+    A: Yes, unless you explicitly choose to collapse all whitespace, in which case the text becomes a single line.
+  * Q: Does it remove invisible characters?
+    A: Yes. Non-breaking spaces and zero-width characters, which often sneak in from web pages and word processors, are normalised too.
