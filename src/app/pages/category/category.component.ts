@@ -4,6 +4,7 @@ import { SeoService } from '../../core/seo.service';
 import { canonicalUrl } from '../../core/site.config';
 import { ToolService } from '../../core/tool.service';
 import { Category, CategoryId } from '../../core/tool.types';
+import { CATEGORY_CONTENT } from '../../core/data/category-content';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.component';
 
@@ -40,6 +41,73 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
           }
         </div>
 
+        @let guide = content();
+        @if (guide) {
+          <article class="mt-16 border-t border-line pt-12">
+            <header class="mb-8">
+              <h2 class="text-2xl font-bold tracking-tight text-balance text-fg md:text-3xl">
+                {{ guide.headline }}
+              </h2>
+              <p class="mt-3 text-lg leading-relaxed text-muted">
+                {{ guide.leadParagraph }}
+              </p>
+            </header>
+
+            <div class="grid gap-8 md:grid-cols-2">
+              @for (sec of guide.sections; track sec.heading) {
+                <div class="card p-6">
+                  <h3 class="text-lg font-semibold text-fg">{{ sec.heading }}</h3>
+                  <div class="mt-3 space-y-3">
+                    @for (p of sec.body; track $index) {
+                      <p class="text-sm leading-relaxed text-muted">{{ p }}</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (guide.workflows.length) {
+              <section class="mt-12">
+                <h3 class="mb-4 text-xl font-bold tracking-tight text-fg">Recommended Workflows</h3>
+                <div class="grid gap-4 sm:grid-cols-2">
+                  @for (wf of guide.workflows; track wf.title) {
+                    <div class="rounded-xl border border-line bg-surface p-5">
+                      <h4 class="font-semibold text-fg">{{ wf.title }}</h4>
+                      <ol class="mt-3 list-decimal pl-5 space-y-1.5 text-sm text-muted">
+                        @for (step of wf.steps; track $index) {
+                          <li>{{ step }}</li>
+                        }
+                      </ol>
+                    </div>
+                  }
+                </div>
+              </section>
+            }
+
+            @if (guide.faqs.length) {
+              <section class="mt-12">
+                <h3 class="mb-4 text-xl font-bold tracking-tight text-fg">Frequently Asked Questions</h3>
+                <div class="divide-y divide-line overflow-hidden rounded-2xl border border-line">
+                  @for (faq of guide.faqs; track faq.q) {
+                    <details class="group bg-surface">
+                      <summary
+                        class="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 font-medium text-fg hover:bg-brand-soft"
+                      >
+                        {{ faq.q }}
+                        <app-icon
+                          name="chevron-down"
+                          class="h-4 w-4 shrink-0 text-faint transition-transform group-open:rotate-180"
+                        />
+                      </summary>
+                      <p class="px-4 pb-4 leading-relaxed text-muted">{{ faq.a }}</p>
+                    </details>
+                  }
+                </div>
+              </section>
+            }
+          </article>
+        }
+
         <section class="mt-14">
           <h2 class="mb-4 text-xl font-bold tracking-tight">Other categories</h2>
           <div class="flex flex-wrap gap-2">
@@ -69,6 +137,11 @@ export class CategoryComponent implements OnInit {
     return id ? this.toolService.category(id) : undefined;
   });
 
+  protected readonly content = computed(() => {
+    const id = this.categoryId();
+    return id ? CATEGORY_CONTENT[id] : undefined;
+  });
+
   protected readonly tools = computed(() => {
     const id = this.categoryId();
     return id ? this.toolService.byCategory(id) : [];
@@ -87,6 +160,7 @@ export class CategoryComponent implements OnInit {
       if (!category) return;
 
       const tools = this.tools();
+      const guide = this.content();
       this.seo.apply({
         title: `${category.name} — ${tools.length} Free Online Tools`,
         description: `${category.description} All ${tools.length} tools run entirely in your browser with no uploads.`,
@@ -108,8 +182,21 @@ export class CategoryComponent implements OnInit {
               })),
             },
           },
+          ...(guide?.faqs?.length
+            ? [
+                {
+                  '@type': 'FAQPage',
+                  mainEntity: guide.faqs.map((faq) => ({
+                    '@type': 'Question',
+                    name: faq.q,
+                    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+                  })),
+                },
+              ]
+            : []),
         ],
       });
     });
   }
 }
+
