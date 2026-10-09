@@ -4,6 +4,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ResultPanelComponent } from '../../../shared/components/result-panel/result-panel.component';
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
 import { parseJson } from '../lib/json.util';
+import { formatJsonSource } from '../lib/json-format';
 
 @Component({
   selector: 'app-json-minifier',
@@ -77,7 +78,7 @@ export class JsonMinifierComponent {
   protected readonly output = computed(() => {
     const result = this.parsed();
     if (!result || 'error' in result) return '';
-    return JSON.stringify(result.value);
+    return formatJsonSource(this.input(), 0);
   });
 
   private readonly originalBytes = computed(() => new TextEncoder().encode(this.input()).length);

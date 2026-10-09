@@ -89,9 +89,7 @@ import { ToolService } from '../../core/tool.service';
         <h2>How it is paid for</h2>
         <p>
           Serving static files from a CDN costs very little, which is the main reason this can be
-          free with no usage limits. Running costs are covered by advertising. Ads are display
-          units on the page — they never see the contents of the tool you are using, because that
-          content is never sent anywhere for them to see.
+          free with no usage limits. Running costs are covered by advertising. Our tool code processes inputs locally and does not send them to advertising integrations. Advertising scripts still make network requests; local processing does not isolate the page from third-party scripts.
         </p>
         <p>
           Exactly what advertising does and does not have access to is set out on the

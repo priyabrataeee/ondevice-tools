@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal, effect } from '@angular/core';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ResultPanelComponent } from '../../../shared/components/result-panel/result-panel.component';
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
@@ -70,6 +70,10 @@ const FLAGS = [
             <app-icon name="alert" class="h-4 w-4 shrink-0" />
             {{ error() }}
           </div>
+        }
+
+        @if (busy()) {
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel evaluation</button>
         }
 
         <div>
@@ -156,7 +160,7 @@ const FLAGS = [
             label="Replace result"
             [value]="replaced()"
             downloadName="replaced.txt"
-            placeholder="Enter a replacement above to preview the substitution."
+            placeholder="An empty replacement deletes matching text."
           />
         }
       </div>
@@ -172,54 +176,47 @@ export class RegexTesterComponent {
   protected readonly flags = signal('gi');
   protected readonly replacement = signal('');
   /** True when the match list hit the safety cap. */
-  protected readonly truncated = computed(() => this.matches().length >= MAX_MATCHES);
+  protected readonly truncated = signal(false);
 
-  private readonly compiled = computed<{ regex: RegExp } | { error: string } | null>(() => {
-    const source = this.pattern();
-    if (!source) return null;
-    try {
-      return { regex: new RegExp(source, this.flags()) };
-    } catch (e) {
-      return { error: e instanceof Error ? e.message : 'Invalid regular expression' };
-    }
-  });
+  protected readonly error = signal('');
+  protected readonly matches = signal<MatchRow[]>([]);
+  protected readonly replaced = signal('');
+  protected readonly busy = signal(false);
+  private active: Worker | null = null;
 
-  protected readonly error = computed(() => {
-    const c = this.compiled();
-    return c && 'error' in c ? c.error : '';
-  });
+  protected cancel(): void {
+    this.active?.terminate();
+    this.active = null;
+    this.busy.set(false);
+    this.error.set('Evaluation cancelled. Edit an input to run again.');
+  }
 
-  protected readonly matches = computed<MatchRow[]>(() => {
-    const c = this.compiled();
-    const text = this.text();
-    if (!c || 'error' in c || !text) return [];
-
-    // A fresh regex per run keeps lastIndex from leaking between evaluations.
-    const regex = new RegExp(c.regex.source, c.regex.flags.includes('g') ? c.regex.flags : c.regex.flags + 'g');
-    const rows: MatchRow[] = [];
-    let match: RegExpExecArray | null;
-    let guard = 0;
-
-    while ((match = regex.exec(text)) !== null) {
-      if (guard++ >= MAX_MATCHES) break;
-
-      const groups: { name: string; value: string }[] = [];
-      for (let i = 1; i < match.length; i++) {
-        groups.push({ name: String(i), value: match[i] ?? '' });
+  constructor() {
+    effect((cleanup) => {
+      const data = { pattern: this.pattern(), flags: this.flags(), text: this.text(), replacement: this.replacement() };
+      this.matches.set([]); this.replaced.set(''); this.error.set(''); this.busy.set(false); this.truncated.set(false);
+      if (!data.pattern || !data.text || typeof window === 'undefined') return;
+      if (data.text.length > 200000 || data.pattern.length > 10000 || data.replacement.length > 10000) {
+        this.error.set('Limit: 200,000 text characters and 10,000 pattern or replacement characters.'); return;
       }
-      for (const [name, value] of Object.entries(match.groups ?? {})) {
-        groups.push({ name, value: value ?? '' });
-      }
-
-      rows.push({ index: rows.length, value: match[0], start: match.index, groups });
-
-      // Zero-length matches would loop forever without a manual advance.
-      if (match[0] === '') regex.lastIndex++;
-      if (!c.regex.flags.includes('g')) break;
-    }
-
-    return rows;
-  });
+      let worker: Worker | null = null;
+      let timeout: ReturnType<typeof setTimeout>;
+      const delay = setTimeout(() => {
+        try {
+          worker = new Worker('/regex-worker.js'); this.active = worker; this.busy.set(true);
+          const finish = () => { clearTimeout(timeout); worker?.terminate(); if (this.active === worker) this.active = null; this.busy.set(false); };
+          worker.onmessage = ({ data: result }) => {
+            if (this.active !== worker) return;
+            this.matches.set(result.matches); this.replaced.set(result.replaced); this.error.set(result.error); this.truncated.set(result.truncated); finish();
+          };
+          worker.onerror = () => { this.error.set('Evaluation failed. Please simplify the pattern.'); finish(); };
+          timeout = setTimeout(() => { if (this.active === worker) this.error.set('Evaluation exceeded 1 second. Simplify the pattern or shorten the text.'); finish(); }, 1000);
+          worker.postMessage(data);
+        } catch { this.error.set('Worker unavailable. Regex execution is disabled to keep this page responsive.'); this.busy.set(false); }
+      }, 200);
+      cleanup(() => { clearTimeout(delay); clearTimeout(timeout); worker?.terminate(); if (this.active === worker) this.active = null; });
+    });
+  }
 
   protected readonly segments = computed<Segment[]>(() => {
     const text = this.text();
@@ -237,16 +234,6 @@ export class RegexTesterComponent {
     return parts;
   });
 
-  protected readonly replaced = computed(() => {
-    const c = this.compiled();
-    const replacement = this.replacement();
-    if (!c || 'error' in c || !this.text() || !replacement) return '';
-    try {
-      return this.text().replace(c.regex, replacement);
-    } catch {
-      return '';
-    }
-  });
 
   protected hasFlag(flag: string): boolean {
     return this.flags().includes(flag);

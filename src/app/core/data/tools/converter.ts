@@ -133,13 +133,13 @@ export const CONVERTER_TOOLS: Tool[] = [
     keywords: ['exchange rate', 'usd', 'eur', 'inr', 'forex', 'money', 'usd to inr', 'inr to usd', 'eur to inr', 'currency conversion'],
     added: '2026-03-15',
     faqs: [
-      { q: 'Are these live rates?', a: 'No. OnDevice Tools has no backend, so the app ships with static reference rates. They are indicative only and you can edit any rate.' },
-      { q: 'How do I use my own rate?', a: 'Type the rate you were quoted into the rate field and every conversion recalculates from it.' },
-      { q: 'Why not fetch live rates?', a: 'That would require calling an external service, which conflicts with the promise that nothing you enter leaves your browser.' },
+      { q: 'Are these live rates?', a: 'No. Bundled numbers are illustrative and have no verified market date. Enter a provider quote for the selected pair.' },
+      { q: 'How do I use my own rate?', a: 'Enter your quoted rate. The result and selected table row update; other rows retain illustrative rates. Changing currencies clears your override.' },
+      { q: 'Why not fetch live rates?', a: 'Offline operation is a design choice. Fetching public rates would not require sending your amount, but this tool currently makes no rate requests.' },
     ],
     about: [
-      'This converter is deliberately offline. It ships with a snapshot of reference exchange rates so it keeps working with no network and sends nothing anywhere.',
-      'Use it for quick approximations and travel budgeting, and override the rate with the one your bank actually quoted when accuracy matters. The date of the bundled snapshot is shown next to the result.',
+      'This converter is deliberately offline. It ships with illustrative exchange values so it keeps working with no network and sends nothing anywhere.',
+      'Use it for quick approximations and travel budgeting, and override the rate with the one your bank actually quoted when accuracy matters. Bundled values are not suitable for financial decisions. Include provider fees separately.',
     ],
   },
 ];

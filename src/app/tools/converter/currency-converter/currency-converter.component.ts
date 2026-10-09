@@ -4,13 +4,10 @@ import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool
 import { formatUnitValue } from '../lib/units';
 
 /**
- * Static reference rates, quoted per 1 USD.
- *
- * OnDevice Tools has no backend and makes no network calls, so these ship with the
- * app. They are indicative only — the UI says so, shows the snapshot date, and
- * lets the user override any rate.
+ * Illustrative values per USD, not sourced market quotes.
+ * The selected pair can use a user-provided rate; other rows remain illustrative.
  */
-const RATES_DATE = '2026-04-01';
+
 const RATES: { code: string; name: string; perUsd: number }[] = [
   { code: 'USD', name: 'US Dollar', perUsd: 1 },
   { code: 'EUR', name: 'Euro', perUsd: 0.92 },
@@ -40,9 +37,7 @@ const RATES: { code: string; name: string; perUsd: number }[] = [
         <div class="flex items-start gap-2 rounded-xl border border-warning/40 bg-warning-soft p-3 text-sm text-warning">
           <app-icon name="alert" class="mt-0.5 h-4 w-4 shrink-0" />
           <span>
-            These are static reference rates from {{ ratesDate }}, bundled with the app so it works
-            offline. They are indicative only — override the rate below with the one you were
-            actually quoted.
+            These bundled values are illustrative, not verified market rates. Enter a quoted rate for the selected pair. Other rows remain illustrative and exclude bank fees.
           </span>
         </div>
 
@@ -60,7 +55,7 @@ const RATES: { code: string; name: string; perUsd: number }[] = [
               <select
                 class="select w-32"
                 [value]="from()"
-                (change)="from.set($any($event.target).value)"
+                (change)="from.set($any($event.target).value); customRate.set('')"
                 aria-label="Convert from"
               >
                 @for (rate of rates; track rate.code) {
@@ -81,7 +76,7 @@ const RATES: { code: string; name: string; perUsd: number }[] = [
               <select
                 class="select w-32"
                 [value]="to()"
-                (change)="to.set($any($event.target).value)"
+                (change)="to.set($any($event.target).value); customRate.set('')"
                 aria-label="Convert to"
               >
                 @for (rate of rates; track rate.code) {
@@ -102,20 +97,23 @@ const RATES: { code: string; name: string; perUsd: number }[] = [
               type="number"
               class="input max-w-xs"
               step="any"
-              [value]="rate()"
+              [value]="customRate() !== '' ? customRate() : rate()"
               (input)="customRate.set($any($event.target).value)"
             />
             @if (customRate() !== '') {
               <button type="button" class="btn btn-ghost" (click)="customRate.set('')">
-                Reset to bundled rate
+                Reset to illustrative rate
               </button>
             }
           </div>
+          @if (invalidRate()) {
+            <p class="mt-2 text-sm text-danger" role="alert">Enter a positive, finite exchange rate.</p>
+          }
         </div>
 
         <div class="overflow-hidden rounded-xl border border-line">
           <h3 class="border-b border-line bg-bg-subtle px-3 py-2 text-xs font-semibold tracking-wide text-faint uppercase">
-            {{ amountLabel() }} in other currencies
+            {{ amountLabel() }} — illustrative values; selected row uses your rate
           </h3>
           <table class="w-full text-sm">
             <tbody class="divide-y divide-line">
@@ -137,7 +135,7 @@ const RATES: { code: string; name: string; perUsd: number }[] = [
 })
 export class CurrencyConverterComponent {
   protected readonly rates = RATES;
-  protected readonly ratesDate = RATES_DATE;
+
 
   protected readonly amount = signal('100');
   protected readonly from = signal('USD');
@@ -155,6 +153,9 @@ export class CurrencyConverterComponent {
 
   private readonly bundledRate = computed(() => this.perUsd(this.to()) / this.perUsd(this.from()));
 
+  protected readonly invalidRate = computed(() => this.customRate() !== '' &&
+    (!Number.isFinite(Number(this.customRate())) || Number(this.customRate()) <= 0));
+
   protected readonly rate = computed(() => {
     const custom = Number(this.customRate());
     if (this.customRate() !== '' && Number.isFinite(custom) && custom > 0) return custom;
@@ -162,7 +163,7 @@ export class CurrencyConverterComponent {
   });
 
   protected readonly converted = computed(() =>
-    formatUnitValue(this.numericAmount() * this.rate(), 2),
+    this.invalidRate() ? '' : formatUnitValue(this.numericAmount() * this.rate(), 2),
   );
 
   protected readonly amountLabel = computed(
@@ -174,7 +175,7 @@ export class CurrencyConverterComponent {
     return RATES.map((entry) => ({
       code: entry.code,
       name: entry.name,
-      value: formatUnitValue(inUsd * entry.perUsd, 2),
+      value: entry.code === this.to() ? this.converted() : formatUnitValue(inUsd * entry.perUsd, 2),
     }));
   });
 

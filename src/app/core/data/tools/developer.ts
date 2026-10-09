@@ -108,7 +108,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     faqs: [
       { q: 'Why does my regex work elsewhere but not here?', a: 'JavaScript regular expressions are not PCRE. Patterns copied from PHP, Python or Perl examples can behave differently or fail to compile. This tester uses the browser engine, so it matches what runs in your code.' },
       { q: 'Which regex flavour is this?', a: 'JavaScript / ECMAScript regular expressions, exactly as they behave in the browser and in Node.js.' },
-      { q: 'Why does my pattern seem to hang?', a: 'Certain nested quantifiers cause catastrophic backtracking. The tester caps the number of matches it collects, but simplifying the pattern is the real fix.' },
+      { q: 'Why does my pattern seem to hang?', a: 'Certain nested quantifiers cause catastrophic backtracking. The tester terminates its worker after one second and caps displayed matches at 500. Simplify the pattern or shorten the input.' },
       { q: 'Can I use named capture groups?', a: 'Yes. Named groups are supported and are listed by name in the results.' },
     ],
     about: [

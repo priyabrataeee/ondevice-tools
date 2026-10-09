@@ -60,8 +60,7 @@ import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool
 
         @if (invalid()) {
           <p class="rounded-xl border border-danger/40 bg-danger-soft p-3 text-sm text-danger">
-            The maximum size must be larger than the minimum, and the two viewport widths must
-            differ.
+            Sizes must be nonnegative with maximum larger than minimum. Viewport widths must be positive and increasing.
           </p>
         } @else {
           <div class="overflow-hidden rounded-xl border border-line">
@@ -124,7 +123,8 @@ export class ClampGeneratorComponent {
   protected readonly invalid = computed(
     () =>
       this.maxSize() <= this.minSize() ||
-      this.maxViewport() === this.minViewport() ||
+      this.maxViewport() <= this.minViewport() ||
+      this.minViewport() <= 0 || this.minSize() < 0 ||
       !Number.isFinite(this.slope()),
   );
 

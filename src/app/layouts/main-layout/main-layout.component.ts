@@ -176,7 +176,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               </a>
               <p class="mt-3 max-w-sm text-sm leading-relaxed text-muted">
                 {{ toolCount }} free utilities that run entirely in your browser. No sign-up, no
-                uploads, no limits — your files never leave your device.
+                uploads or subscriptions — tool processing stays on your device.
               </p>
             </div>
 

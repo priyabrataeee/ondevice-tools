@@ -32,11 +32,7 @@ import {
         </p>
         <ul>
           <li>
-            <strong>Your content — never transmitted.</strong> The JSON you paste, the image you
-            compress, the PDF you merge, the password you hash. This is processed entirely by
-            JavaScript running in your browser. It is never uploaded, never seen by us, and never
-            seen by any advertiser. This is a property of how the site is built, not a promise
-            about how we behave.
+<strong>Your tool content — processed locally.</strong> Our tool code processes your text and files in your browser. We do not intentionally send tool inputs, outputs or filenames to our analytics or advertising integrations.
           </li>
           <li>
             <strong>Your visit — measured, like on most sites.</strong> That you opened a
@@ -45,8 +41,7 @@ import {
           </li>
         </ul>
         <p>
-          An advertiser can know you visited the image compressor. It cannot know anything about
-          the image, because the image was never sent anywhere.
+Advertising and analytics make network requests. Third-party scripts running on a page are a trust boundary; local processing is not a technical guarantee that those scripts cannot access page content.
         </p>
 
         <h2>How the tools work</h2>
@@ -65,13 +60,14 @@ import {
 
         <h2>What is stored on your device</h2>
         <p>
-          Three small values are kept in your browser's local storage so the site remembers your
+          Four small values are kept in your browser's local storage so the site remembers your
           preferences between visits:
         </p>
         <ul>
           <li><code>qt.theme</code> — whether you chose light, dark or system appearance.</li>
           <li><code>qt.favorites</code> — the list of tools you saved.</li>
           <li><code>qt.recent</code> — the last few tools you opened.</li>
+          <li><code>qt.background-motion</code> — your animation pause preference.</li>
         </ul>
         <p>
           These stay in your browser and are never transmitted. Clearing your site data removes
@@ -81,7 +77,7 @@ import {
         @if (adsEnabled) {
         <h2>Advertising</h2>
         <p>
-          This site is free with no usage limits, and it is funded by advertising rather than by
+          This site is free; individual tools may apply safety limits. It uses advertising rather than
           subscriptions or by selling data. Ads are served by
           <strong>Google AdSense</strong>.
         </p>
@@ -102,9 +98,7 @@ import {
             the site.
           </li>
           <li>
-            Ad units are ordinary display slots on the page. They run in isolated frames and have
-            no access to what you type into a tool, what file you opened, or the result the tool
-            produced.
+            Ad creatives may use isolated frames, but their loader scripts run on the page. We do not pass tool content to those integrations.
           </li>
         </ul>
         <p>
@@ -157,8 +151,7 @@ import {
             }
           </ul>
           <p>
-            Both measure the visit, not the work. Neither can see what you type into a tool, which
-            file you opened or what a tool produced, because that content never leaves your device.
+            Our analytics events measure visits and tool completion using only the tool identifier, not tool inputs, outputs or filenames. This describes our integration, not a browser-enforced restriction on third-party scripts.
             Clearing your site data removes the analytics cookies, and blocking either script leaves
             every tool working exactly as before.
           </p>
@@ -272,7 +265,7 @@ export class PrivacyComponent implements OnInit {
 
   protected readonly privacyEmail = EMAIL.privacy;
   protected readonly donationUrl = DONATION_URL;
-  protected readonly updated = 'September 2026';
+  protected readonly updated = 'October 2026';
 
   /**
    * The disclosures below are gated on what the build actually does, so this

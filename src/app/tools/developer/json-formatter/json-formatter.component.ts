@@ -3,7 +3,8 @@ import { byteLength } from '../../../core/utils';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ResultPanelComponent } from '../../../shared/components/result-panel/result-panel.component';
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
-import { jsonStats, parseJson, sortKeysDeep } from '../lib/json.util';
+import { jsonStats, parseJson } from '../lib/json.util';
+import { formatJsonSource } from '../lib/json-format';
 
 const SAMPLE = `{"name":"OnDevice Tools","private":true,"tools":[{"id":"json-formatter","tags":["json","format"]}],"version":2}`;
 
@@ -111,8 +112,7 @@ export class JsonFormatterComponent {
   protected readonly output = computed(() => {
     const result = this.parsed();
     if (!result || 'error' in result) return '';
-    const value = this.sortKeys() ? sortKeysDeep(result.value) : result.value;
-    return JSON.stringify(value, null, this.indent());
+    return formatJsonSource(this.input(), this.indent(), this.sortKeys());
   });
 
   protected readonly statCards = computed(() => {

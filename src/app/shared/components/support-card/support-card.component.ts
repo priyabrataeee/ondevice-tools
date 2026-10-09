@@ -27,7 +27,7 @@ import { IconComponent } from '../icon/icon.component';
       <div class="min-w-0 flex-1">
         <p class="font-semibold text-fg">{{ heading() }}</p>
         <p class="mt-0.5 text-sm leading-relaxed text-muted">
-          Every tool here is free, with no account and no limits. If one saved you some time, you
+          Every tool here is free, with no account required. If one saved you some time, you
           can chip in towards the running costs — entirely optional, and nothing is held back if
           you don't.
         </p>

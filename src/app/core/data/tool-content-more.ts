@@ -156,12 +156,12 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
 
   'currency-converter': {
     howItWorks: [
-      'The converter ships with a bundled snapshot of reference rates quoted against the US dollar, and converts between any two currencies through that common base. The snapshot date is shown beside the result so you always know how current the figures are.',
-      'It deliberately never fetches live rates: that would mean calling an external service from the page. Instead, the rate field is editable — type in the rate your bank or card provider actually quoted and every figure recalculates from it.',
+      'Bundled values demonstrate cross-rate arithmetic through a USD base. They are not sourced market quotes and have no verified snapshot date. Use a rate from your bank or provider when accuracy matters.',
+      'Enter a rate for the selected pair: 100 units at 0.92 gives 92 before fees. The main result and selected row update together. Other rows stay illustrative. Changing currencies clears the override; public rate fetching would not inherently require transmitting your amount.',
     ],
     useCases: [
-      'Rough travel budgeting when you are offline or abroad.',
-      'Checking a quoted exchange rate against a reference before paying.',
+      'Estimating a travel expense using a provider rate you enter yourself.',
+      'Comparing the arithmetic of two provider quotes, including fees separately.',
       'Converting a price with the exact rate your bank applied, entered by hand.',
     ],
   },
@@ -206,7 +206,7 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
   'clamp-generator': {
     howItWorks: [
       'Given a minimum and maximum size and the viewport widths where each should apply, the generator solves the straight line between those two points and expresses it as a preferred value combining rem and vw. That value is wrapped in clamp(min, preferred, max) so it never goes outside your bounds.',
-      'The rem component matters for accessibility: it keeps the size responsive to browser zoom and the user’s font-size setting, which a pure vw value would ignore.',
+      'Worked example: 16px at 320px and 24px at 1280px produces clamp(1rem, 0.8333rem + 0.8333vw, 1.5rem), assuming a 16px root font size. At 800px the unrounded interpolation is 20px. Below and above the bounds it stops at the minimum and maximum. Test browser zoom, larger default fonts and real content: mixing rem and vw does not guarantee accessible text resizing.',
     ],
     useCases: [
       'Making headings scale smoothly between mobile and desktop without media queries.',
@@ -291,7 +291,7 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
 
   'json-minifier': {
     howItWorks: [
-      'The document is parsed and written back out with no insignificant whitespace — no indentation, newlines or spaces after colons and commas. Key names and values are never changed, so the minified output parses to exactly the same data.',
+      'After syntax validation, source tokens are joined without insignificant whitespace. Large integers, duplicate members, numeric notation and escaped strings remain unchanged. For example, 9007199254740993 is not rounded to 9007199254740992. Comments and trailing commas remain invalid JSON.',
       'The before and after byte counts are shown with the percentage saved. Minification complements gzip or brotli compression rather than replacing it.',
     ],
     useCases: [

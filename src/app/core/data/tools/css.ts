@@ -70,11 +70,11 @@ export const CSS_TOOLS: Tool[] = [
     faqs: [
       { q: 'How does clamp work?', a: 'It takes a minimum, a preferred value and a maximum, and returns the preferred value clamped between the other two.' },
       { q: 'Why is the preferred value a formula?', a: 'The linear formula makes the size scale smoothly with the viewport between your two breakpoints instead of jumping at each one.' },
-      { q: 'Is it accessible?', a: 'Yes, provided the preferred value includes a rem component, which this generator always emits so that browser zoom and user font size still work.' },
+      { q: 'Is it accessible?', a: 'Not automatically. The rem conversion assumes a 16px root font size. Test zoom and user font-size changes; a rem plus vw expression alone does not guarantee accessible resizing.' },
     ],
     about: [
       'Fluid typography scales text smoothly with the viewport instead of stepping between media queries, and clamp() expresses it in a single line of CSS.',
-      'Give this generator your minimum and maximum sizes and the viewport widths they apply at, and it solves the linear equation for you and emits a clamp() expression that stays zoom-accessible.',
+      'Give this generator your minimum and maximum sizes and the viewport widths they apply at, and it solves the linear equation for you and emits a clamp() expression with rem and vw units. Verify resizing in your actual layout.',
     ],
   },
   {
