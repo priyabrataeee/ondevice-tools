@@ -14,8 +14,8 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const iconsDir = join(root, 'public', 'icons');
 
-const BRAND = [79, 70, 229];
-const BRAND_DEEP = [124, 58, 237];
+const BRAND = [180, 69, 37];
+const BRAND_DEEP = [84, 43, 37];
 const WHITE = [255, 255, 255];
 
 // --- PNG encoding -----------------------------------------------------------

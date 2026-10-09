@@ -36,25 +36,26 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
     <app-toast-container />
 
     <div class="flex min-h-screen flex-col text-fg">
-      <header class="glass sticky top-0 z-40 border-x-0 border-t-0">
+      <header class="studio-header sticky top-0 z-40 border-b border-line">
         <div class="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
           <a routerLink="/" class="flex shrink-0 items-center gap-2" aria-label="OnDevice Tools home">
             <span
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-brand-fg"
+              class="brand-mark"
             >
               <app-icon name="bolt" class="h-4.5 w-4.5" />
             </span>
-            <span class="text-base font-bold tracking-tight max-[359px]:hidden sm:text-lg">
-              OnDevice <span class="text-brand">Tools</span>
+            <span class="brand-wordmark max-[359px]:hidden">
+              OnDevice<small>TOOLS FOR EVERY DAY</small>
             </span>
           </a>
 
-          <nav class="ml-4 hidden items-center gap-1 md:flex" aria-label="Main">
+          <nav class="studio-nav ml-4 hidden items-center gap-1 md:flex" aria-label="Main">
             @for (link of navLinks; track link.path) {
               <a
                 [routerLink]="link.path"
                 routerLinkActive="text-fg bg-surface-strong"
                 [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                ariaCurrentWhenActive="page"
                 class="rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap text-muted transition-colors hover:text-fg"
               >
                 {{ link.label }}
@@ -86,7 +87,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="hidden items-center gap-2 rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-semibold text-amber-950 transition-colors hover:bg-amber-300 lg:inline-flex"
+              class="header-coffee hidden items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors lg:inline-flex"
             >
               <app-icon name="coffee" class="h-4 w-4" />
               Buy me a coffee
@@ -96,7 +97,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-400 text-amber-950 transition-colors hover:bg-amber-300 sm:h-9 sm:w-9 lg:hidden"
+              class="header-coffee flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9 lg:hidden"
               aria-label="Buy me a coffee"
             >
               <app-icon name="coffee" class="h-4.5 w-4.5" />
@@ -162,7 +163,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
         <router-outlet />
       </main>
 
-      <footer class="mt-16 border-t border-line bg-surface backdrop-blur-md">
+      <footer class="studio-footer mt-16 border-t border-line">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <div class="grid gap-10 md:grid-cols-[1.5fr_2fr]">
             <div>

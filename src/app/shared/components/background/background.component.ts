@@ -34,13 +34,13 @@ interface Palette {
 
 /**
  * Light theme reads as stained tissue under a brightfield microscope: dark
- * nuclei, violet membranes, pale cytoplasm on a white field.
+ * nuclei, copper membranes, pale cytoplasm on a warm paper field.
  */
 const LIGHT: Palette = {
-  base: [230, 230, 230],
-  cytoplasm: [124, 58, 237],
-  membrane: [76, 29, 149],
-  nucleus: [49, 46, 129],
+  base: [242, 238, 229],
+  cytoplasm: [159, 107, 75],
+  membrane: [127, 75, 55],
+  nucleus: [91, 63, 51],
   blend: 'multiply',
   cytoplasmAlpha: 0.1,
   membraneAlpha: 0.1,
@@ -53,15 +53,15 @@ const LIGHT: Palette = {
  * against a black field.
  */
 const DARK: Palette = {
-  base: [9, 9, 11],
-  cytoplasm: [55, 48, 163],
-  membrane: [109, 40, 217],
-  nucleus: [99, 102, 241],
+  base: [23, 25, 30],
+  cytoplasm: [104, 68, 49],
+  membrane: [166, 102, 64],
+  nucleus: [187, 136, 91],
   blend: 'lighter',
   cytoplasmAlpha: 0.14,
-  membraneAlpha: 0.6,
-  nucleusAlpha: 0.45,
-  washAlpha: 0.1,
+  membraneAlpha: 0.2,
+  nucleusAlpha: 0.2,
+  washAlpha: 0.04,
 };
 
 /**

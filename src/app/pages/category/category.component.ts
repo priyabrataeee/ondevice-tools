@@ -22,7 +22,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
           <span class="text-muted" aria-current="page">{{ cat.name }}</span>
         </nav>
 
-        <header class="animate-rise mb-8 flex items-start gap-4">
+        <header class="collection-heading animate-rise mb-8 flex items-start gap-4">
           <span
             class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand"
           >
@@ -35,7 +35,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
           </div>
         </header>
 
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div class="index-collection">
           @for (tool of tools(); track tool.id) {
             <app-tool-card [tool]="tool" />
           }

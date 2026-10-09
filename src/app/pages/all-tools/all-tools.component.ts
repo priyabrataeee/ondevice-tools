@@ -12,11 +12,11 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
   imports: [RouterLink, IconComponent, ToolCardComponent],
   template: `
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
-      <header class="animate-rise mb-8">
-        <h1 class="text-3xl font-bold tracking-tight md:text-4xl">All tools</h1>
+      <header class="collection-heading animate-rise mb-8">
+        <p class="eyebrow mb-3">THE COMPLETE COLLECTION / {{ total }} UTILITIES</p>
+        <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Find your next shortcut.</h1>
         <p class="mt-2 max-w-2xl text-lg text-muted">
-          Every one of the {{ total }} OnDevice Tools utilities, filtered live. Nothing you type here
-          leaves your browser.
+          All {{ total }} tools, one useful little corner of the internet. Search the collection or choose a category to get started.
         </p>
       </header>
 
@@ -61,7 +61,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
       </div>
 
       @if (visible().length) {
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div class="index-collection">
           @for (tool of visible(); track tool.id) {
             <app-tool-card [tool]="tool" [showCategory]="true" [categoryName]="nameOf(tool.category)" />
           }

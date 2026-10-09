@@ -207,6 +207,7 @@ const ICONS: Record<string, IconShape> = {
   'chevron-down': { paths: ['M5 9.5 12 16.5l7-7'] },
   'chevron-up': { paths: ['M5 14.5 12 7.5l7 7'] },
   'arrow-right': { paths: ['M4 12h15', 'M13.5 6.5 19 12l-5.5 5.5'] },
+  'arrow-down': { paths: ['M12 4v15', 'M6.5 13.5 12 19l5.5-5.5'] },
   x: { paths: ['M6 6l12 12', 'M18 6 6 18'] },
   menu: { paths: ['M4 7h16', 'M4 12h16', 'M4 17h16'] },
   external: { paths: ['M14 4h6v6', 'M20 4 11.5 12.5', 'M18 14.5V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V8a1.5 1.5 0 0 1 1.5-1.5H10'] },

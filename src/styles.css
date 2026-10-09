@@ -1,5 +1,7 @@
 @import './fonts.css';
 @import 'tailwindcss';
+@import './studio.css';
+@import './engine.css';
 
 /*
  * Dark mode is driven by a `dark` class on <html>, set by ThemeService (and by
@@ -13,57 +15,55 @@
  * swap flips the entire UI between light and dark.
  * ------------------------------------------------------------------------ */
 :root {
-  --qt-bg: #ffffff;
-  --qt-bg-subtle: #f7f7f8;
-  --qt-bg-elevated: #ffffff;
-  --qt-surface: rgb(255 255 255 / 0.72);
-  --qt-surface-strong: rgb(255 255 255 / 0.92);
-  --qt-border: rgb(9 9 11 / 0.1);
-  --qt-border-strong: rgb(9 9 11 / 0.18);
-  --qt-fg: #09090b;
-  --qt-muted: #52525b;
-  --qt-faint: #71717a;
-  --qt-brand: #4f46e5;
-  --qt-brand-hover: #4338ca;
+  --qt-bg: #f2eee5;
+  --qt-bg-subtle: #e9e4da;
+  --qt-bg-elevated: #fffcf5;
+  --qt-surface: rgb(255 252 245 / 0.96);
+  --qt-surface-strong: #fffcf5;
+  --qt-border: #d2cabe;
+  --qt-border-strong: #a9a195;
+  --qt-fg: #24252b;
+  --qt-muted: #605d5a;
+  --qt-faint: #666057;
+  --qt-brand: #b44525;
+  --qt-brand-hover: #90351b;
   --qt-brand-fg: #ffffff;
-  --qt-brand-soft: rgb(79 70 229 / 0.1);
-  --qt-accent: #7c3aed;
+  --qt-brand-soft: #f4e3d5;
+  --qt-accent: #324cbc;
   --qt-success: #15803d;
   --qt-success-soft: rgb(21 128 61 / 0.1);
   --qt-danger: #dc2626;
   --qt-danger-soft: rgb(220 38 38 / 0.1);
   --qt-warning: #b45309;
   --qt-warning-soft: rgb(180 83 9 / 0.12);
-  --qt-ring: rgb(79 70 229 / 0.45);
-  --qt-shadow: 0 1px 2px rgb(9 9 11 / 0.04), 0 8px 24px -8px rgb(9 9 11 / 0.12);
-  --qt-glow: radial-gradient(60% 60% at 50% 0%, rgb(99 102 241 / 0.18), transparent 70%);
+  --qt-ring: #b44525;
+  --qt-shadow: 0 2px 0 rgb(36 37 43 / 0.04);
 }
 
 .dark {
-  --qt-bg: #09090b;
-  --qt-bg-subtle: #0d0d11;
-  --qt-bg-elevated: #131318;
-  --qt-surface: rgb(255 255 255 / 0.04);
-  --qt-surface-strong: rgb(255 255 255 / 0.07);
-  --qt-border: rgb(255 255 255 / 0.1);
-  --qt-border-strong: rgb(255 255 255 / 0.18);
-  --qt-fg: #fafafa;
-  --qt-muted: #a1a1aa;
-  --qt-faint: #8b8b94;
-  --qt-brand: #818cf8;
-  --qt-brand-hover: #a5b4fc;
-  --qt-brand-fg: #0b0b12;
-  --qt-brand-soft: rgb(129 140 248 / 0.15);
-  --qt-accent: #a78bfa;
+  --qt-bg: #17191e;
+  --qt-bg-subtle: #1b1f26;
+  --qt-bg-elevated: #24272f;
+  --qt-surface: rgb(33 37 44 / 0.96);
+  --qt-surface-strong: #2c313a;
+  --qt-border: #424751;
+  --qt-border-strong: #6f7480;
+  --qt-fg: #f8f1e6;
+  --qt-muted: #c3beb8;
+  --qt-faint: #adaaa4;
+  --qt-brand: #ffa077;
+  --qt-brand-hover: #ffbe9f;
+  --qt-brand-fg: #24252b;
+  --qt-brand-soft: #403028;
+  --qt-accent: #9eaafa;
   --qt-success: #4ade80;
   --qt-success-soft: rgb(74 222 128 / 0.14);
   --qt-danger: #f87171;
   --qt-danger-soft: rgb(248 113 113 / 0.14);
   --qt-warning: #fbbf24;
   --qt-warning-soft: rgb(251 191 36 / 0.14);
-  --qt-ring: rgb(129 140 248 / 0.5);
+  --qt-ring: #ffa077;
   --qt-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
-  --qt-glow: radial-gradient(60% 60% at 50% 0%, rgb(99 102 241 / 0.22), transparent 70%);
 }
 
 /* Expose the tokens to Tailwind so `bg-bg`, `text-muted`, `border-line` work.
@@ -124,6 +124,12 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+
+    /* A category choice is an explicit user action. Keep its spatial movement
+     * visible even when the OS requests reduced motion. */
+    .engine-home .dial-pointer {
+      transition: transform 0.85s cubic-bezier(0.22, 0.8, 0.25, 1) !important;
     }
   }
 
@@ -186,10 +192,8 @@
   .card {
     background-color: var(--qt-surface);
     border: 1px solid var(--qt-border);
-    border-radius: 1rem;
+    border-radius: 0.85rem;
     box-shadow: var(--qt-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
   }
 
   .btn {
@@ -197,10 +201,10 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     padding: 0.5rem 0.95rem;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.25rem;
     border: 1px solid transparent;
     cursor: pointer;
@@ -259,9 +263,9 @@
   .textarea,
   .select {
     width: 100%;
-    background-color: var(--qt-bg-subtle);
+    background-color: var(--qt-bg-elevated);
     border: 1px solid var(--qt-border);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     padding: 0.55rem 0.8rem;
     font-size: 0.9375rem;
     color: var(--qt-fg);
@@ -300,7 +304,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    border-radius: 9999px;
+    border-radius: 0.5rem;
     border: 1px solid var(--qt-border);
     padding: 0.35rem 0.8rem;
     font-size: 0.8125rem;

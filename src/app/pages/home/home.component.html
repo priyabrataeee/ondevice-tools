@@ -1,0 +1,100 @@
+<div class="engine-home" [class.engine-paused]="motion.paused()">
+  <section class="utility-engine" aria-labelledby="engine-title">
+    <header class="engine-masthead">
+      <div class="engine-ident"><span class="engine-cross" aria-hidden="true">+</span><span>ONDEVICE<br /><b>UTILITY ENGINE</b></span></div>
+      <h1 id="engine-title">What are we<br /><em>making today?</em></h1>
+      <div class="engine-inventory"><strong>{{ toolCount }}</strong><span>TOOLS<br />ZERO ACCOUNTS</span></div>
+    </header>
+
+    <div class="engine-command">
+      <span class="command-symbol" aria-hidden="true">›_</span>
+      <label for="engine-search" class="sr-only">Search all tools</label>
+      <input id="engine-search" type="search" placeholder="Tell the machine what you need… try “compress”" autocomplete="off" [value]="query()" (input)="onSearch($event)" />
+      @if (query()) { <button type="button" (click)="clearSearch()" aria-label="Clear tool search"><app-icon name="x" class="h-4 w-4" /></button> }
+      <span class="command-scope">SEARCH ALL {{ toolCount }}</span>
+    </div>
+
+    <div class="engine-body" [class.engine-searching]="query().trim()">
+      <div class="channel-chamber">
+        <div class="chamber-label"><span>01 / SELECT A CHANNEL</span><span>↔ ARROW KEYS</span></div>
+        <div class="channel-dial" #channelPanel role="group" aria-label="Tool categories"
+          (keydown.arrowleft)="turnChannel(-1, $event)" (keydown.arrowright)="turnChannel(1, $event)">
+          <svg class="dial-drawing" viewBox="0 0 600 600" aria-hidden="true">
+            <circle class="dial-outer" cx="300" cy="300" r="224" />
+            <circle class="dial-inner" cx="300" cy="300" r="171" />
+            <circle class="dial-orbit" cx="300" cy="300" r="186" />
+            <path class="dial-axis" d="M300 45V172 M300 428V555 M45 300H172 M428 300H555" />
+            @for (tick of ticks; track tick.angle) {
+              <line class="dial-tick" x1="300" y1="100" x2="300" [attr.y2]="tick.major ? 114 : 105" [attr.transform]="'rotate(' + tick.angle + ' 300 300)'" />
+            }
+            <g class="dial-pointer" [attr.style]="'transform: ' + dialTransform() + ';'"><path d="M293 159L300 147L307 159Z" /><line x1="300" y1="168" x2="300" y2="184" /></g>
+          </svg>
+          <div class="dial-core" aria-hidden="true">
+            <span class="core-caption">{{ query().trim() ? 'SEARCH RESULTS' : 'CHANNEL / ' + activeChannel().number }}</span>
+            <strong>{{ visibleTools().length }}</strong>
+            <span class="core-name">{{ query().trim() ? 'TOOLS FOUND' : activeChannel().short }}</span>
+            <div class="core-signal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          @for (channel of channels(); track channel.id) {
+            <button type="button" class="channel-key" [style.left.%]="channel.x" [style.top.%]="channel.y"
+              [attr.data-channel]="channel.id" [attr.aria-pressed]="!query().trim() && activeCategory() === channel.id"
+              [attr.aria-label]="channel.name + ', ' + channel.count + ' tools'" (click)="selectCategory(channel.id)">
+              <span class="key-number">{{ channel.number }}</span>
+              <app-icon [name]="channel.icon" class="channel-icon" />
+              <span class="key-name">{{ channel.short }}</span>
+              <span class="key-indicator" aria-hidden="true"></span>
+            </button>
+          }
+        </div>
+        <div class="chamber-caption"><span class="engine-status-dot"></span><span>Choose a channel. Find your instrument.</span><span aria-hidden="true">↗</span></div>
+      </div>
+
+      <section class="tool-receipt" aria-labelledby="receipt-heading">
+        <div class="receipt-tear" aria-hidden="true"></div>
+        <header class="receipt-header">
+          <div class="receipt-kicker"><span>02 / PICK YOUR TOOL</span><span>{{ query().trim() ? 'FIND' : activeChannel().number }} ↗</span></div>
+          <h2 id="receipt-heading">{{ query().trim() ? 'Found in the machine.' : activeChannel().name }}</h2>
+          <p role="status">{{ visibleTools().length }} {{ visibleTools().length === 1 ? 'tool' : 'tools' }} {{ query().trim() ? 'matching your search' : 'ready to open' }}</p>
+        </header>
+        <div class="receipt-results" #resultsPanel tabindex="0" role="region" aria-label="Available tools">
+          @for (tool of visibleTools(); track tool.id; let i = $index) {
+            <a [routerLink]="['/tools', tool.id]" class="receipt-tool">
+              <span class="receipt-number">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+              <span class="receipt-tool-copy"><strong>{{ tool.name }}</strong><span>{{ tool.description }}</span></span>
+              <app-icon name="arrow-right" class="receipt-arrow h-4 w-4" />
+            </a>
+          } @empty {
+            <div class="receipt-empty"><span aria-hidden="true">∅</span><h3>No instrument found.</h3><p>Try “image”, “JSON” or “convert”.</p><button type="button" (click)="clearSearch()">Reset the search <span aria-hidden="true">↗</span></button></div>
+          }
+        </div>
+        <footer class="receipt-footer"><span class="receipt-barcode" aria-hidden="true"></span><a routerLink="/tools">Open the complete index <span aria-hidden="true">↗</span></a></footer>
+      </section>
+    </div>
+
+    <div class="engine-fastlane">
+      <span class="fastlane-label">QUICK<br />START ↗</span>
+      @for (tool of quickTools; track tool.id) { <a [routerLink]="['/tools', tool.id]"><app-icon [name]="tool.icon" class="h-4 w-4" /><span>{{ tool.name }}</span></a> }
+    </div>
+    <footer class="engine-serial"><span><span class="engine-status-dot"></span> LOCAL PROCESSING</span><span>DESIGNED FOR THE SMALL STUFF.</span><span>NO. {{ toolCount }} / ONDEVICE</span></footer>
+  </section>
+
+  @if (personalTools().length) {
+    <section class="memory-strip" aria-label="Your saved and recent tools"><span>LEFT ON<br />YOUR DESK ↗</span><div>@for (tool of personalTools(); track tool.id) { <a [routerLink]="['/tools', tool.id]">{{ tool.name }} <span aria-hidden="true">↗</span></a> }</div><a routerLink="/favorites" class="memory-all">Saved tools</a></section>
+  }
+
+  <div class="engine-notes page-width">
+    <section class="owner-note" aria-labelledby="owner-note-title"><span class="owner-symbol" aria-hidden="true">↳</span><div><p class="eyebrow">A MACHINE WITH A SIMPLE RULE</p><h2 id="owner-note-title">The work stays with you.</h2><p>No file upload. No sign-up. Just {{ toolCount }} browser-based tools, with the processing happening on your own device. <a routerLink="/privacy">How privacy works ↗</a></p></div><a routerLink="/about" class="owner-stamp">OPEN<br /><strong>SOURCE</strong><span>BY DESIGN ↗</span></a></section>
+  <section class="studio-about prose-qt">
+    <p class="eyebrow">ONE BOOKMARK. EVERYDAY POSSIBILITIES.</p>
+    <h2>Free browser tools for the work between the work.</h2>
+    <p>OnDevice Tools brings {{ toolCount }} utilities together for developers, designers, writers and everyday problem-solvers. Format JSON, inspect a JWT, compare text, resize an image, generate a QR code or work out a percentage without opening a heavyweight application.</p>
+    <div class="studio-about-columns">
+      <p><strong>Building something?</strong> Explore JSON, XML, YAML and SQL formatters, a regex tester, encoding tools and hash generation. Design with CSS gradients, shadows, grid and flexbox generators, then check your colour contrast.</p>
+      <p><strong>Getting everyday work done?</strong> Clean up text, count words, compress images, rearrange PDFs, convert units or calculate dates. Each tool includes practical explanations and examples, so you can understand the result as well as use it.</p>
+    </div>
+    <p>Tools are free for personal and commercial use. Individual tools may apply safety limits to keep your browser responsive. Advertising and optional contributions support the site; neither requires you to create an account.</p>
+  </section>
+
+    <app-support-card heading="Keep this little machine running." />
+  </div>
+</div>

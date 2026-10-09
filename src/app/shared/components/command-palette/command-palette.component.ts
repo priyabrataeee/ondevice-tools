@@ -11,6 +11,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { Router } from '@angular/router';
 import { CommandPaletteService } from '../../../core/command-palette.service';
 import { ToolService } from '../../../core/tool.service';
@@ -26,7 +27,7 @@ import { IconComponent } from '../icon/icon.component';
 @Component({
   selector: 'app-command-palette',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconComponent],
+  imports: [IconComponent, CdkTrapFocus],
   host: {
     '(document:keydown)': 'onKeydown($event)',
   },
@@ -44,6 +45,8 @@ import { IconComponent } from '../icon/icon.component';
           role="dialog"
           aria-modal="true"
           aria-label="Search tools"
+          cdkTrapFocus
+          [cdkTrapFocusAutoCapture]="true"
         >
           <div class="flex items-center gap-3 border-b border-line px-4">
             <app-icon name="search" class="h-5 w-5 text-faint" />
@@ -55,6 +58,7 @@ import { IconComponent } from '../icon/icon.component';
               autocomplete="off"
               spellcheck="false"
               role="combobox"
+              aria-label="Search the tool library"
               aria-expanded="true"
               aria-controls="qt-palette-results"
               [attr.aria-activedescendant]="results().length ? 'qt-opt-' + activeIndex() : null"

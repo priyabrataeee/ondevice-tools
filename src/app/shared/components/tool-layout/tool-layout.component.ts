@@ -33,7 +33,7 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
   template: `
     @let t = tool();
     @if (t) {
-      <article class="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 md:py-12">
+      <article class="tool-page mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 md:py-12">
         <nav class="mb-5 flex items-center gap-1.5 text-sm text-faint" aria-label="Breadcrumb">
           <a routerLink="/" class="transition-colors hover:text-fg">Home</a>
           <app-icon name="chevron-right" class="h-3.5 w-3.5" />
@@ -73,7 +73,8 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
           </div>
         </header>
 
-        <section class="card animate-rise p-4 sm:p-6" aria-label="{{ t.name }} tool">
+        <section class="tool-workspace card animate-rise p-4 sm:p-6" aria-label="{{ t.name }} tool">
+          <div class="workspace-bar"><span class="status-dot"></span><span>LOCAL WORKSPACE</span><span>NO UPLOAD REQUIRED</span></div>
           <ng-content />
         </section>
 

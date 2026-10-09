@@ -49,7 +49,7 @@ export class ThemeService {
       root.style.colorScheme = dark ? 'dark' : 'light';
 
       const meta = this.document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', dark ? '#09090b' : '#ffffff');
+      if (meta) meta.setAttribute('content', dark ? '#17191e' : '#f2eee5');
 
       try {
         localStorage.setItem(STORAGE_KEY, pref);

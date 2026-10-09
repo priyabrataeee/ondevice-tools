@@ -11,7 +11,8 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
   imports: [RouterLink, IconComponent, ToolCardComponent],
   template: `
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
-      <header class="animate-rise mb-8">
+      <header class="collection-heading animate-rise mb-8">
+        <p class="eyebrow mb-3">YOUR PERSONAL TOOLKIT</p>
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Your favourites</h1>
         <p class="mt-2 max-w-2xl text-lg text-muted">
           Tools you have saved. They are stored in this browser only — nothing is synced to a

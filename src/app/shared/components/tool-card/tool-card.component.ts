@@ -8,30 +8,14 @@ import { IconComponent } from '../icon/icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, IconComponent],
   template: `
-    <a
-      [routerLink]="['/tools', tool().id]"
-      class="card group flex h-full flex-col gap-3 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-lg"
-    >
-      <div class="flex items-start gap-3">
-        <span
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand transition-colors group-hover:bg-brand group-hover:text-brand-fg"
-        >
-          <app-icon [name]="tool().icon" class="h-5 w-5" />
-        </span>
-        <div class="min-w-0 flex-1">
-          <h3 class="truncate font-semibold text-fg group-hover:text-brand">{{ tool().name }}</h3>
-          @if (showCategory()) {
-            <p class="text-xs text-faint">{{ categoryName() }}</p>
-          }
-        </div>
-        @if (tool().trending) {
-          <span
-            class="rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold tracking-wide text-warning uppercase"
-            >Hot</span
-          >
-        }
+    <a [routerLink]="['/tools', tool().id]" class="instrument-card">
+      <div class="instrument-top">
+        <span class="instrument-icon"><app-icon [name]="tool().icon" class="h-4.5 w-4.5" /></span>
+        <app-icon name="arrow-right" class="instrument-arrow h-4 w-4" />
       </div>
-      <p class="line-clamp-2 text-sm leading-relaxed text-muted">{{ tool().description }}</p>
+      <h3>{{ tool().name }}</h3>
+      <p>{{ tool().description }}</p>
+      @if (showCategory()) { <span class="instrument-category">{{ categoryName() }}</span> }
     </a>
   `,
 })

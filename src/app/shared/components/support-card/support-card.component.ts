@@ -16,10 +16,10 @@ import { IconComponent } from '../icon/icon.component';
   imports: [IconComponent],
   template: `
     <aside
-      class="mt-12 flex flex-col items-start gap-4 rounded-2xl border border-amber-300/70 bg-amber-50 p-5 sm:flex-row sm:items-center dark:border-amber-500/30 dark:bg-amber-950/30"
+      class="support-note"
     >
       <span
-        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-400 text-amber-950"
+        class="support-icon"
       >
         <app-icon name="coffee" class="h-6 w-6" />
       </span>
@@ -37,7 +37,7 @@ import { IconComponent } from '../icon/icon.component';
         [href]="donationUrl"
         target="_blank"
         rel="noopener nofollow"
-        class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-semibold text-amber-950 transition-colors hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+        class="support-link"
       >
         <app-icon name="coffee" class="h-4 w-4" />
         Buy me a coffee
