@@ -79,6 +79,7 @@ export const TEXT_TOOLS: Tool[] = [
   },
   {
     id: 'remove-duplicate-lines',
+    updated: '2026-10-11',
     name: 'Remove Duplicate Lines',
     description: 'Delete repeated lines from a list, with optional case-insensitive matching.',
     category: 'text',
@@ -97,6 +98,7 @@ export const TEXT_TOOLS: Tool[] = [
   },
   {
     id: 'sort-lines',
+    updated: '2026-10-11',
     name: 'Sort Lines',
     description: 'Sort text alphabetically, numerically, by length or at random.',
     category: 'text',
@@ -105,7 +107,7 @@ export const TEXT_TOOLS: Tool[] = [
     added: '2026-02-05',
     faqs: [
       { q: 'What is natural sorting?', a: 'It compares embedded numbers by value, so item2 sorts before item10 instead of after it.' },
-      { q: 'How are blank lines handled?', a: 'They can be removed before sorting, or kept and grouped at the end - it is a toggle.' },
+      { q: 'How are blank lines handled?', a: 'Remove blank lines is enabled initially. Turn it off to keep them; their position depends on the selected sorting mode and direction.' },
       { q: 'Is the sort stable?', a: 'Yes. Lines that compare as equal keep their original relative order.' },
     ],
     about: [
@@ -115,6 +117,7 @@ export const TEXT_TOOLS: Tool[] = [
   },
   {
     id: 'reverse-text',
+    updated: '2026-10-11',
     name: 'Reverse Text',
     description: 'Reverse text by character, by word or by line.',
     category: 'text',
@@ -122,7 +125,7 @@ export const TEXT_TOOLS: Tool[] = [
     keywords: ['backwards', 'mirror', 'flip', 'reverse string', 'reverse text', 'backwards text'],
     added: '2026-02-10',
     faqs: [
-      { q: 'Does it handle emoji correctly?', a: 'Yes. Reversal works on grapheme clusters rather than raw code units, so emoji and combined characters are not broken apart.' },
+      { q: 'Does it handle emoji correctly?', a: 'Modern browsers with Intl.Segmenter reverse grapheme clusters, keeping joined emoji and combining characters intact. Older browsers use a code-point fallback that may separate complex clusters.' },
       { q: 'What is the difference between the modes?', a: 'Character mode reverses every character, word mode keeps words intact but reverses their order, and line mode reverses the order of lines only.' },
       { q: 'Is this the same as mirrored text?', a: 'No. This changes the order of characters; it does not produce mirror-image glyphs.' },
     ],
@@ -154,6 +157,7 @@ export const TEXT_TOOLS: Tool[] = [
   },
   {
     id: 'slug-generator',
+    updated: '2026-10-11',
     name: 'Slug Generator',
     description: 'Turn any title into a clean, URL-safe slug.',
     category: 'text',
@@ -161,13 +165,13 @@ export const TEXT_TOOLS: Tool[] = [
     keywords: ['permalink', 'url slug', 'seo', 'transliterate', 'url slug generator', 'seo slug', 'permalink generator'],
     added: '2026-02-18',
     faqs: [
-      { q: 'What happens to accented characters?', a: 'They are transliterated to their closest ASCII equivalent, so a title with an accented e produces a plain e in the slug.' },
+      { q: 'What happens to accented characters?', a: 'Unicode decomposition removes many combining accents, so é becomes e. This is not full ASCII transliteration: non-Latin letters and some letters such as ł remain.' },
       { q: 'Are stop words removed?', a: 'Only if you turn that option on. It shortens slugs but can hurt readability, so it is off by default.' },
       { q: 'Which separator should I use?', a: 'Hyphens. Search engines treat hyphens as word separators and underscores as word joiners.' },
     ],
     about: [
       'A slug is the human-readable part of a URL. Good slugs are short, lowercase, hyphen-separated and free of punctuation, which makes them easy to read, share and index.',
-      'This generator lowercases your title, transliterates accented characters to ASCII, strips punctuation and emoji, collapses whitespace into your chosen separator and can optionally drop common stop words and enforce a maximum length.',
+      'This generator optionally lowercases your title, removes decomposable accents, replaces punctuation and emoji with separators, and can drop common English stop words or limit length. Non-Latin letters remain; check uniqueness and URL encoding in the system where you publish.',
     ],
   },
   {

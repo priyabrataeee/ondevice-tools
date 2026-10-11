@@ -1,78 +1,80 @@
 export interface XmlResult {
   output: string;
   error?: string;
+  warning?: string;
 }
 
-/**
- * Re-indents XML by nesting depth.
- *
- * Well-formedness is checked with DOMParser first — the browser's own parser
- * gives far better diagnostics than anything hand-rolled — but the actual
- * re-indent works on the raw token stream so comments, CDATA and processing
- * instructions survive untouched.
- */
-export function formatXml(xml: string, indentSize = 2): XmlResult {
-  const trimmed = xml.trim();
-  if (!trimmed) return { output: '' };
+interface ElementToken {
+  open: string;
+  close: string;
+  children: (ElementToken | string)[];
+}
 
-  const parseError = checkWellFormed(trimmed);
-  if (parseError) return { output: '', error: parseError };
+/** Work with source tokens so quotes, entities, comments and CDATA are not rewritten. */
+function transformXml(xml: string, indentSize: number | null): XmlResult {
+  const source = xml.trim();
+  if (!source) return { output: '' };
+  if (typeof DOMParser === 'undefined') return { output: source };
+  const document = new DOMParser().parseFromString(source, 'application/xml');
+  // A valid document may contain an element literally named parsererror.
+  const error = document.getElementsByTagNameNS('http://www.mozilla.org/newlayout/xml/parsererror.xml', 'parsererror')[0];
+  if (error) return { output: '', error: (error.textContent ?? 'Malformed XML').trim().split('\n')[0] };
 
-  const indent = ' '.repeat(indentSize);
-  const lines: string[] = [];
-  let depth = 0;
-
-  // Split into tags and the text between them.
-  const tokens = trimmed
-    .replace(/>\s+</g, '><')
-    .split(/(<!\[CDATA\[[\s\S]*?\]\]>|<!--[\s\S]*?-->|<[^>]+>)/)
-    .filter((t) => t.trim().length > 0);
-
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i].trim();
-
-    if (token.startsWith('</')) {
-      depth = Math.max(0, depth - 1);
-      lines.push(indent.repeat(depth) + token);
-      continue;
-    }
-
-    const isSelfClosing = token.endsWith('/>');
-    const isDeclaration = token.startsWith('<?') || token.startsWith('<!');
-    const isOpenTag = token.startsWith('<') && !isSelfClosing && !isDeclaration;
-
-    if (isOpenTag) {
-      // Collapse <tag>text</tag> onto a single line — it reads far better.
-      const next = tokens[i + 1]?.trim();
-      const afterNext = tokens[i + 2]?.trim();
-      if (next && !next.startsWith('<') && afterNext?.startsWith('</')) {
-        lines.push(indent.repeat(depth) + token + next + afterNext);
-        i += 2;
-        continue;
-      }
-      lines.push(indent.repeat(depth) + token);
-      depth++;
-      continue;
-    }
-
-    lines.push(indent.repeat(depth) + token);
+  // Internal subsets and entity declarations require a full DTD-aware lexer.
+  // Returning unchanged input is safer than quietly corrupting a declaration.
+  if (/<!DOCTYPE\s/i.test(source)) {
+    return { output: source, warning: 'Documents with a DOCTYPE are returned unchanged. Use a DTD-aware XML editor to reformat them.' };
   }
+  const tokens = source.match(/<!\[CDATA\[[\s\S]*?\]\]>|<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<(?:(?:[^<>"'])|"[^"]*"|'[^']*')+>|[^<]+/g) ?? [];
+  if (tokens.join('') !== source) return { output: source, warning: 'This document cannot be safely reformatted; the original is shown.' };
 
-  return { output: lines.join('\n') };
+  const root: ElementToken = { open: '', close: '', children: [] };
+  const stack = [root];
+  for (const token of tokens) {
+    if (token.startsWith('</')) {
+      const node = stack.pop();
+      if (!node || node === root) return { output: '', error: 'Unbalanced XML elements.' };
+      node.close = token;
+    } else if (token.startsWith('<') && !/^<[!?]/.test(token) && !token.endsWith('/>')) {
+      const node: ElementToken = { open: token, close: '', children: [] };
+      stack[stack.length - 1].children.push(node);
+      stack.push(node);
+    } else {
+      stack[stack.length - 1].children.push(token);
+    }
+  }
+  if (stack.length !== 1) return { output: '', error: 'Unbalanced XML elements.' };
+
+  const original = (node: ElementToken): string =>
+    node.open + node.children.map((child) => typeof child === 'string' ? child : original(child)).join('') + node.close;
+  const render = (node: ElementToken, depth: number): string => {
+    // Text, inline spacing, CDATA and xml:space make whitespace significant.
+    // Keep the whole subtree verbatim, including nested elements.
+    const significant = /\bxml:space\s*=\s*(["'])preserve\1/.test(node.open) || node.children.some((child) =>
+      typeof child === 'string' && (child.startsWith('<![CDATA[') ||
+        (!child.startsWith('<') && (!/^\s*$/.test(child) || !/[\r\n]/.test(child)))),
+    );
+    if (significant) return original(node);
+    const children = node.children.filter((child) => typeof child !== 'string' || child.trim());
+    if (indentSize === null) {
+      return node.open + children.map((child) => typeof child === 'string' ? child : render(child, depth + 1)).join('') + node.close;
+    }
+    const padding = ' '.repeat(indentSize * depth);
+    if (!node.open) return children.map((child) => typeof child === 'string' ? child : render(child, 0)).join('\n');
+    if (!children.length) return node.open + node.close;
+    return node.open + '\n' + children.map((child) =>
+      padding + ' '.repeat(indentSize) + (typeof child === 'string' ? child : render(child, depth + 1)),
+    ).join('\n') + '\n' + padding + node.close;
+  };
+  return { output: render(root, 0) };
 }
 
+/** Indent element-only content; preserve mixed-content subtrees verbatim. */
+export function formatXml(xml: string, indentSize = 2): XmlResult {
+  return transformXml(xml, indentSize);
+}
+
+/** Remove indentation-only text nodes, never whitespace inside values or CDATA. */
 export function minifyXml(xml: string): XmlResult {
-  const trimmed = xml.trim();
-  if (!trimmed) return { output: '' };
-  const parseError = checkWellFormed(trimmed);
-  if (parseError) return { output: '', error: parseError };
-  return { output: trimmed.replace(/>\s+</g, '><').replace(/\s{2,}/g, ' ') };
-}
-
-function checkWellFormed(xml: string): string | undefined {
-  if (typeof DOMParser === 'undefined') return undefined;
-  const doc = new DOMParser().parseFromString(xml, 'application/xml');
-  const error = doc.querySelector('parsererror');
-  if (!error) return undefined;
-  return (error.textContent ?? 'The document is not well-formed XML.').trim().split('\n')[0];
+  return transformXml(xml, null);
 }

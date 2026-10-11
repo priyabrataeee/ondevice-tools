@@ -34,10 +34,9 @@ export const SITE_OG_IMAGE = `${SITE_URL}/og-image.png`;
 /**
  * Google AdSense publisher id, e.g. `ca-pub-1234567890123456`.
  *
- * Leave it empty and the site ships exactly as it does today: no ad script, no
- * ad slots, no third-party cookies. Fill it in and `AdsService` injects the
- * loader during prerender (so the tag is in the static HTML the AdSense crawler
- * fetches) and `<app-ad-slot>` starts rendering units.
+ * Leave it empty to disable advertising (analytics is configured separately).
+ * When configured, AdsService adds publisher verification on every page and
+ * prerenders the ad loader only on known tool routes. Other screens stay ad-free.
  *
  * The same value must also appear in `public/ads.txt`.
  */

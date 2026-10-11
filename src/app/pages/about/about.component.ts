@@ -19,24 +19,23 @@ import { ToolService } from '../../core/tool.service';
     <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 md:py-16">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">About OnDevice Tools</h1>
       <p class="mt-3 text-lg text-muted">
-        {{ toolCount }} everyday utilities that do their work inside your browser tab, because
-        there is no server here to send anything to.
+        {{ toolCount }} everyday utilities that process files and text inside your browser tab,
+        without a tool-processing backend.
       </p>
 
       <div class="prose-qt mt-8">
         <h2>Why this site exists</h2>
         <p>
-          Most free online tools work the same way: you choose a file, the page uploads it to a
-          server you know nothing about, something happens there, and a result comes back. For a
-          throwaway snippet that is fine. For a contract, a passport scan, a database dump or a
-          JSON Web Token from a live environment, it is a decision most people would not make
-          consciously if the page said out loud what it was doing.
+          Some online utilities upload files for processing. Others work locally. It can be
+          difficult to tell which you are using before choosing a file. This project makes its
+          processing code public so you can inspect that choice and understand each tool's limits.
         </p>
         <p>
           OnDevice Tools was built to remove that decision. Every tool here is written in
           JavaScript that runs on your own machine. Your file is read by the browser, processed by
           the browser, and handed back by the browser. There is no upload step to opt out of,
-          because there is no server capable of receiving one.
+          in the tool-processing code. The public website still connects to its CDN, analytics
+          and advertising providers; local processing is not a guarantee against every privacy risk.
         </p>
 
         <h2>How it actually works</h2>
@@ -53,21 +52,21 @@ import { ToolService } from '../../core/tool.service';
           developer tools. Nothing about that pipeline involves a network request.
         </p>
         <p>
-          A service worker caches the app after your first visit, so the tools keep working with
-          no connection at all. That is the simplest proof of the claim: something that genuinely
-          uploads your data cannot run on a plane.
+          A service worker caches application resources for offline use. Open the tools you need
+          and test them offline before relying on them without a connection. Downloads can fail,
+          storage can be cleared, and a first visit does not guarantee a complete cache.
         </p>
 
         <h2>What this means in practice</h2>
         <ul>
-          <li><strong>It is instant.</strong> No upload, no queue, no round trip.</li>
+          <li><strong>No processing upload.</strong> Speed depends on your device and input size.</li>
           <li>
-            <strong>It works on files you should not upload.</strong> Client data, credentials,
-            anything under an NDA.
+            <strong>Use non-sensitive samples.</strong> Do not paste live credentials or regulated
+            data into a public website solely because it processes inputs locally.
           </li>
           <li>
-            <strong>There is no size limit imposed by a server</strong> — only what your own
-            device can comfortably hold in memory.
+            <strong>Limits are tool-specific.</strong> Some tools cap input size or execution time
+            to protect responsiveness; device memory also matters.
           </li>
           <li><strong>It works offline</strong> once cached, including on a plane or a train.</li>
           <li><strong>There is no account.</strong> Nothing to sign up for, nothing to cancel.</li>
@@ -82,14 +81,18 @@ import { ToolService } from '../../core/tool.service';
         <p>
           It is a one-person project, which is why tools ship steadily rather than all at once,
           and why the feedback loop is short: if something is wrong, mail
-          <a [href]="'mailto:' + email.support">{{ email.support }}</a> and it usually gets fixed
-          the same week.
+          <a [href]="'mailto:' + email.support">{{ email.support }}</a> with a non-sensitive example
+          and your browser version. Response and repair times are not guaranteed.
         </p>
 
         <h2>How it is paid for</h2>
         <p>
           Serving static files from a CDN costs very little, which is the main reason this can be
-          free with no usage limits. Running costs are covered by advertising. Our tool code processes inputs locally and does not send them to advertising integrations. Advertising scripts still make network requests; local processing does not isolate the page from third-party scripts.
+          free without an account or subscription. Donations support the project; advertising is
+          configured but whether ads appear depends on provider approval and visitor settings.
+          Our tool code processes inputs locally and does not send them to advertising integrations.
+          Advertising scripts still make network requests; local processing does not isolate the
+          page from third-party scripts.
         </p>
         <p>
           Exactly what advertising does and does not have access to is set out on the
@@ -111,11 +114,10 @@ import { ToolService } from '../../core/tool.service';
           worth more when you can check it than when you are asked to take it on trust.
         </p>
         <p>
-          If you would rather verify it in thirty seconds than read a codebase, open your browser's
-          developer tools, switch to the Network tab, and use any tool on the site. Nothing you
-          typed or opened will appear in any request. Or turn off your connection entirely — once
-          the service worker has cached the site, every tool still works, which is difficult to
-          fake.
+          To inspect a particular workflow, use synthetic input and watch the Network tab in
+          your browser's developer tools. Distinguish application downloads, analytics and ad
+          requests from tool processing. Test that workflow offline too. These checks provide
+          evidence about that session, not a security guarantee for future code or third-party scripts.
         </p>
         <p>
           The licence is deliberate. {{ licenseName }} lets anyone run, study, modify and self-host

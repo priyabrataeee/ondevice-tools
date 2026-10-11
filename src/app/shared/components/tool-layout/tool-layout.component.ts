@@ -14,6 +14,7 @@ import { SeoService } from '../../../core/seo.service';
 import { ToastService } from '../../../core/toast.service';
 import { ToolService } from '../../../core/tool.service';
 import { contentFor } from '../../../core/data/tool-content';
+import { TOOL_GUIDES } from '../../../core/data/tool-examples';
 import { ADSENSE_SLOTS, canonicalUrl } from '../../../core/site.config';
 import { AdSlotComponent } from '../ad-slot/ad-slot.component';
 import { IconComponent } from '../icon/icon.component';
@@ -118,6 +119,37 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
           </section>
         }
 
+        @if (guide(); as guide) {
+          <section class="mt-12" aria-labelledby="worked-examples-heading">
+            <h2 id="worked-examples-heading" class="mb-4 text-2xl font-bold tracking-tight text-fg">Worked examples</h2>
+            <div class="space-y-6">
+              @for (example of guide.examples; track example.title) {
+                <article class="rounded-2xl border border-line bg-surface p-4 sm:p-6">
+                  <h3 class="text-lg font-semibold text-fg">{{ example.title }}</h3>
+                  <p class="mt-2 text-sm text-muted"><strong>Settings:</strong> {{ example.settings }}</p>
+                  <div class="mt-4 grid min-w-0 gap-4 md:grid-cols-2">
+                    <div class="min-w-0">
+                      <p class="mb-2 text-sm font-medium text-fg">Input</p>
+                      <pre class="whitespace-pre-wrap break-all rounded-xl bg-bg-subtle p-3 text-sm text-fg"><code>{{ example.input }}</code></pre>
+                    </div>
+                    <div class="min-w-0">
+                      <p class="mb-2 text-sm font-medium text-fg">Expected output</p>
+                      <pre class="whitespace-pre-wrap break-all rounded-xl bg-bg-subtle p-3 text-sm text-fg"><code>{{ example.output }}</code></pre>
+                    </div>
+                  </div>
+                  <p class="mt-4 leading-relaxed text-muted">{{ example.explanation }}</p>
+                </article>
+              }
+            </div>
+          </section>
+          <section class="mt-10" aria-labelledby="limitations-heading">
+            <h2 id="limitations-heading" class="mb-4 text-2xl font-bold tracking-tight text-fg">Limits and checks before you use the result</h2>
+            <ul class="list-disc space-y-3 pl-5 text-muted">
+              @for (limit of guide.limitations; track limit) { <li>{{ limit }}</li> }
+            </ul>
+          </section>
+        }
+
         @if (t.faqs.length) {
           <section class="mt-12">
             <h2 class="mb-4 text-2xl font-bold tracking-tight text-fg">Frequently asked questions</h2>
@@ -192,6 +224,7 @@ export class ToolLayoutComponent implements OnInit {
   });
 
   protected readonly slots = ADSENSE_SLOTS;
+  protected readonly guide = computed(() => TOOL_GUIDES[this.toolId()]);
 
   /** Local mirror so the button re-renders under OnPush. */
   protected readonly isFavorite = signal(false);

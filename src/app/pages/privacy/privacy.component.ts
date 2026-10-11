@@ -18,9 +18,9 @@ import {
     <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 md:py-16">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Privacy</h1>
       <p class="mt-3 text-lg text-muted">
-        The short version: the files and text you put into a tool never leave your device. The
-        advertising that funds the site does use cookies, and this page explains exactly where the
-        line falls.
+        Our tool code processes files and text locally. The public site also uses analytics and
+        is configured for advertising, which can use cookies. Local processing does not isolate
+        page content from third-party scripts.
       </p>
       <p class="mt-2 text-sm text-faint">Last updated {{ updated }}</p>
 
@@ -48,14 +48,14 @@ Advertising and analytics make network requests. Third-party scripts running on 
         <p>
           Every tool runs as JavaScript inside your browser tab, using standard web APIs — Canvas
           for images, the File API for reading files you choose, Web Crypto for hashing, the
-          built-in parsers for JSON, XML and YAML. There is no backend that could receive your
-          data, so there is no upload to opt out of.
+          built-in parsers for JSON and XML, and local libraries for other formats. The tool
+          code does not upload files or text to a processing backend.
         </p>
         <p>
-          You can verify this yourself in about thirty seconds: open your browser's developer
-          tools, switch to the Network tab, and run any tool. You will see no request carrying
-          your input. Or disconnect from the internet entirely — once the service worker has
-          cached the site, every tool still works.
+          Inspect a workflow with synthetic input using your browser's Network tab, and compare
+          tool processing with analytics and ad requests. Test the tools you need offline before
+          relying on cached resources. These checks do not guarantee the behavior of future code,
+          browser extensions or third-party scripts. Avoid live credentials and sensitive records.
         </p>
 
         <h2>What is stored on your device</h2>
@@ -77,9 +77,9 @@ Advertising and analytics make network requests. Third-party scripts running on 
         @if (adsEnabled) {
         <h2>Advertising</h2>
         <p>
-          This site is free; individual tools may apply safety limits. It uses advertising rather than
-          subscriptions or by selling data. Ads are served by
-          <strong>Google AdSense</strong>.
+          This site is free; individual tools may apply safety limits. <strong>Google AdSense</strong>
+          is configured on tool pages. Display depends on provider approval and visitor settings.
+          Search, category, saved-list, error and informational pages do not load the ad script.
         </p>
         <p>To be specific about what that involves:</p>
         <ul>
@@ -170,8 +170,9 @@ Advertising and analytics make network requests. Third-party scripts running on 
           </li>
         </ul>
         <p>
-          Once the service worker has cached the app, the tools work fully offline with no
-          third-party requests at all.
+          Tools whose required resources are cached can work without a connection. Downloads
+          may be incomplete and browsers may clear stored resources. Offline operation is not a
+          guarantee that no requests will be attempted or that nothing is sent when you reconnect.
         </p>
 
         <h2>Children</h2>
@@ -182,24 +183,23 @@ Advertising and analytics make network requests. Third-party scripts running on 
 
         <h2>Where you are changes what happens</h2>
         <p>
-          Privacy law treats storage differently on either side of the Atlantic, and the site
-          follows each rather than applying one rule everywhere.
+          Our Google Consent Mode configuration uses regional defaults. These describe the
+          signals our integration sends; they do not mean that the page makes no network requests.
         </p>
         <ul>
           <li>
             <strong>EEA, UK and Switzerland — opt in.</strong> Advertising and analytics storage
-            start <em>denied</em>. Nothing is stored and no personalised advertising signal is sent
-            until you agree through the consent dialog. Declining is a normal outcome: every tool
-            keeps working, and the site simply measures less.
+            start <em>denied</em> in Consent Mode. Google may still receive cookieless requests.
+            Essential preferences such as your theme are separate. Tool processing does not
+            require advertising consent.
           </li>
           <li>
-            <strong>United States — opt out.</strong> Storage starts granted, and you can opt out
-            at any time. Several state laws — California's CPRA and the Virginia, Colorado,
-            Connecticut, Utah and Texas equivalents — treat a browser-level signal as a binding
-            request, which is honoured below.
+            <strong>United States.</strong> The configured default is granted, subject to
+            applicable consent choices and the advertising opt-out signal described below.
           </li>
           <li>
-            <strong>Everywhere else</strong> follows the same opt-out model as the United States.
+            <strong>Other regions.</strong> The current configuration also defaults to granted.
+            Contact our privacy address if you have questions about processing in your region.
           </li>
         </ul>
 
@@ -208,16 +208,16 @@ Advertising and analytics make network requests. Third-party scripts running on 
           If your browser or an extension sends
           <a href="https://globalprivacycontrol.org/" target="_blank" rel="noopener nofollow"
             >Global Privacy Control</a
-          >, this site reads it and turns off advertising storage, advertising identifiers and ad
-          personalisation automatically — no banner to find, no button to press. Cookieless,
-          aggregate analytics continues, because GPC concerns the sale and sharing of personal
-          information for advertising rather than first-party measurement.
+          >, this site sends denied values for ad_storage, ad_user_data and ad_personalization
+          through our Consent Mode integration. This signal does not change
+          analytics_storage in our implementation; analytics follows its separate regional consent
+          settings and is not necessarily cookieless.
         </p>
         @if (consent.optedOutBySignal()) {
           <p><strong>Your browser is sending that signal now, and it has been applied.</strong></p>
         }
 
-        <h3>Changing your mind</h3>
+        <h3 id="privacy-choices">Changing your mind</h3>
         <p>
           @if (consent.canManage()) {
             Use
@@ -227,20 +227,23 @@ Advertising and analytics make network requests. Third-party scripts running on 
             here or in the footer of any page to reopen the consent dialog and change or withdraw
             what you chose.
           } @else {
-            The consent dialog can be reopened from the "Your privacy choices" link in the footer
-            wherever advertising consent applies to your region.
+            Ad-free pages do not load Google's ad messaging script. You can
+            <a routerLink="/tools/json-formatter" [queryParams]="{ 'privacy-choices': '1' }">open advertising privacy choices on a tool page</a>.
+            When Google's consent control is available, the dialog opens there automatically.
+            If it does not appear, use the provider opt-out links above or contact our privacy address.
           }
-          Clearing your browser's site data for this site also resets every choice, along with the
-          analytics and advertising cookies themselves.
+          Clearing this site's browser data removes its local preferences and first-party cookies;
+          third-party cookies and provider-held records may need separate controls.
         </p>
 
         <h2>Your rights</h2>
         <p>
-          We hold no account, no profile and no database of users, so there is nothing for us to
-          export or delete on request. The data that does exist about your visit is held by the
-          third parties named above, and their own policies and opt-outs — linked in this page —
-          are the way to exercise your rights over it. Clearing your browser's site data removes
-          everything stored locally and every advertising cookie set through this site.
+          We do not operate user accounts or a tool-input database. For access, deletion or other
+          privacy requests concerning this site, contact
+          <a [href]="'mailto:' + privacyEmail">{{ privacyEmail }}</a>. Analytics and hosting providers
+          may hold visit records; their policies and controls are linked above. Browser cleanup
+          is not a provider deletion request. Clearing your browser's site data removes
+          locally stored site data, but not provider-held records or all third-party cookies.
         </p>
 
         <h2>Changes to this page</h2>

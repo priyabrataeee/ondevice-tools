@@ -41,38 +41,19 @@ function findPages(dir, pages = []) {
   return pages;
 }
 
-/**
- * Per-tool ship dates, read from the registry.
- *
- * A sitemap where every URL claims it changed today teaches a crawler nothing,
- * so tool pages report the date the tool actually shipped and everything else
- * reports the build date.
- */
-const toolDates = (() => {
-  const dir = join(root, 'src', 'app', 'core', 'data', 'tools');
-  const dates = new Map();
-  for (const file of readdirSync(dir)) {
-    const source = readFileSync(join(dir, file), 'utf8');
-    const entry = /id: '([^']+)'[\s\S]*?added: '([0-9-]+)'/g;
-    let match;
-    while ((match = entry.exec(source)) !== null) dates.set(match[1], match[2]);
-  }
-  return dates;
-})();
-
-const buildDate = new Date().toISOString().slice(0, 10);
-
+/** Reuse the rendered structured-data date. Unknown dates are omitted, not invented. */
 function lastmodFor(path) {
-  const id = path.startsWith('/tools/') ? path.slice('/tools/'.length) : '';
-  return toolDates.get(id) ?? buildDate;
-}
-
-function priorityFor(path) {
-  if (path === '/') return '1.0';
-  if (path === '/tools') return '0.9';
-  if (path.startsWith('/category/')) return '0.8';
-  if (path.startsWith('/tools/')) return '0.7';
-  return '0.4';
+  const html = readFileSync(join(browserDir, path.slice(1), 'index.html'), 'utf8');
+  const script = /<script\b[^>]*\bdata-qt-ld\b[^>]*>([\s\S]*?)<\/script>/i.exec(html);
+  if (!script) return undefined;
+  const nodes = JSON.parse(script[1])['@graph'] ?? [];
+  const date = nodes.find((node) => node['@type'] === 'SoftwareApplication')?.dateModified;
+  if (!date) return undefined;
+  // A calendar date may be the next UTC day in the publisher's time zone.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date)) || Date.parse(date) > Date.now() + 86_400_000) {
+    throw new Error(`Invalid modification date for ${path}: ${date}`);
+  }
+  return date;
 }
 
 let pages;
@@ -87,18 +68,17 @@ const routes = pages.filter((p) => !EXCLUDED.has(p)).sort();
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...routes.map((path) =>
-    [
+  ...routes.map((path) => {
+    const lastmod = lastmodFor(path);
+    return [
       '  <url>',
       // Trailing slash to match `canonicalUrl()` in src/app/core/site.config.ts:
       // that is the form the host serves with a 200 rather than a redirect.
       `    <loc>${siteUrl}${path === '/' ? '/' : `${path}/`}</loc>`,
-      `    <lastmod>${lastmodFor(path)}</lastmod>`,
-      `    <changefreq>weekly</changefreq>`,
-      `    <priority>${priorityFor(path)}</priority>`,
+      ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
       '  </url>',
-    ].join('\n'),
-  ),
+    ].join('\n');
+  }),
   '</urlset>',
   '',
 ].join('\n');

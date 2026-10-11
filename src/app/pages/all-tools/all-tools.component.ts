@@ -81,27 +81,34 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
             Why Use Browser-Native Tools?
           </h2>
           <p class="mt-3 text-lg leading-relaxed text-muted">
-            The web was originally designed as a document viewer, but modern browser engines (V8, JavaScriptCore, Gecko) have evolved into ultra-fast, sandboxed application runtimes capable of desktop-grade data processing without ever contacting a server.
+            These utilities use browser APIs to process your input locally. Choose a tool to see
+            its controls, supported formats and limitations. Site downloads, analytics and
+            advertising are separate from that local processing.
           </p>
         </header>
 
         <div class="grid gap-8 md:grid-cols-3">
           <div class="card p-6">
-            <h3 class="text-base font-semibold text-fg">Absolute Privacy</h3>
+            <h3 class="text-base font-semibold text-fg">Local Processing</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">
-              Whether you are pasting a production JWT token, compressing family photos, or merging sensitive legal contracts, your files and text never leave your computer or phone.
+              Our tool code does not upload your input for processing. This public page still
+              uses third-party services. Use sample data, not production credentials, and read
+              the privacy policy before working with sensitive material.
             </p>
           </div>
           <div class="card p-6">
-            <h3 class="text-base font-semibold text-fg">Zero Network Latency</h3>
+            <h3 class="text-base font-semibold text-fg">No Processing Upload</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">
-              Because operations execute on your device CPU and GPU, you avoid slow upload times, server processing queues, and bandwidth consumption on mobile networks.
+              Processing runs on your device without an upload queue. Loading the app still uses
+              bandwidth; large inputs can take time and some tools impose safety limits.
             </p>
           </div>
           <div class="card p-6">
             <h3 class="text-base font-semibold text-fg">Offline Availability</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">
-              After your initial visit, our service worker caches the application bundles. You can open and use any tool while travelling, on a flight, or during internet outages.
+              A service worker caches application resources. Open the tools you need and test
+              them offline before travelling. Incomplete downloads or cleared storage can make
+              a tool unavailable without a connection.
             </p>
           </div>
         </div>
@@ -144,19 +151,19 @@ export class AllToolsComponent implements OnInit {
   protected readonly allToolsFaqs = [
     {
       q: 'How does OnDevice Tools process data without uploading it?',
-      a: 'Every utility is written in pure JavaScript, WebAssembly, and native web APIs (like HTML5 Canvas, File API, Web Crypto, and RFC-compliant parsers). When you drag a file or paste text, your browser executes the code locally in memory.',
+      a: 'The tools use JavaScript libraries and browser APIs such as Canvas, File API and Web Crypto. File and text processing runs on your device. Analytics and advertising can make separate network requests.',
     },
     {
       q: 'Is there any subscription fee, paywall or usage limit?',
-      a: 'No. All 64 tools are completely free for personal and commercial use without account registration or artificial quotas.',
+      a: 'The tools are free without account registration or a subscription. Some have input-size, output-count or execution-time limits for stability; check the controls and notes on each page.',
     },
     {
-      q: 'How can I verify that my data is never sent to a server?',
-      a: 'You can open your browser developer tools (F12 or Ctrl+Shift+I), switch to the Network tab, and perform any action. You will observe zero outbound HTTP requests carrying your payload.',
+      q: 'How can I inspect local processing?',
+      a: 'Use synthetic input while watching the Network tab in browser developer tools, then test the workflow offline. The source is public on GitHub. These checks are not a guarantee about third-party scripts or future code; do not use live credentials for testing.',
     },
     {
       q: 'Can these tools be used completely offline?',
-      a: 'Yes. Once cached by our Service Worker on your first visit, the entire suite functions with no active internet connection.',
+      a: 'Tools whose required resources are cached can work offline. Open and test the tools you need before disconnecting. Browsers can evict caches, and an initial visit may not finish every download.',
     },
   ];
 

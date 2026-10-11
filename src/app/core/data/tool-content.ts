@@ -36,7 +36,7 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       'Reading a minified API response you have just pulled out of a browser’s network tab.',
       'Finding the exact position of a syntax error in a config file that a build tool has only told you is "invalid".',
       'Normalising indentation across a set of fixture files so that code review shows real changes instead of whitespace.',
-      'Inspecting a payload that contains customer data, credentials or anything else you should not paste into a third-party server.',
+      'Inspecting synthetic or redacted payloads while reviewing local processing in browser developer tools.',
     ],
   },
 
@@ -50,7 +50,7 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       'Checking whether an access token has expired before assuming the API itself is broken.',
       'Confirming which scopes, roles or tenant id an identity provider actually issued, rather than what the documentation says it should.',
       'Comparing a token from staging against one from production when authentication works in one environment and not the other.',
-      'Inspecting a token from a live system — the case where pasting it into a server-side decoder would mean handing a working credential to a stranger.',
+      'Inspecting a synthetic or expired token while learning its structure. Avoid live credentials on public websites, even when decoding is local.',
     ],
   },
 

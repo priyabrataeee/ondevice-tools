@@ -1,5 +1,7 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
 import { ADS_ENABLED } from './site.config';
 
 type Gtag = (...args: unknown[]) => void;
@@ -37,6 +39,9 @@ interface ConsentWindow extends Window {
 export class ConsentService {
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  private polling?: number;
 
   /**
    * Whether a control for reopening the consent dialog should be offered.
@@ -53,6 +58,13 @@ export class ConsentService {
     if (!this.isBrowser || !ADS_ENABLED) return;
     this.honourGlobalPrivacyControl();
     this.watchForMessagingScript();
+    // Ads may first load on a tool reached much later through SPA navigation.
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event) => {
+      if (event instanceof NavigationEnd) this.watchForMessagingScript();
+    });
+    this.destroyRef.onDestroy(() => {
+      if (this.polling !== undefined) this.window()?.clearInterval(this.polling);
+    });
   }
 
   /**
@@ -93,15 +105,21 @@ export class ConsentService {
   private watchForMessagingScript(): void {
     const win = this.window();
     if (!win) return;
+    if (this.polling !== undefined) win.clearInterval(this.polling);
 
     let attempts = 0;
-    const poll = win.setInterval(() => {
+    this.polling = win.setInterval(() => {
       attempts += 1;
       if (typeof win.googlefc?.showRevocationMessage === 'function') {
         this.canManage.set(true);
-        win.clearInterval(poll);
+        win.clearInterval(this.polling);
+        this.polling = undefined;
+        if (new URL(win.location.href).searchParams.get('privacy-choices') === '1') {
+          this.openPrivacyChoices();
+        }
       } else if (attempts >= 20) {
-        win.clearInterval(poll);
+        win.clearInterval(this.polling);
+        this.polling = undefined;
       }
     }, 500);
   }

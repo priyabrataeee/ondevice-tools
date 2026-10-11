@@ -1,19 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { ADSENSE_CLIENT, ADS_ENABLED } from './site.config';
+import { isAdPage } from './ad-policy';
 
 const LOADER_ID = 'adsense-loader';
 const LOADER_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 
 /**
- * Injects the AdSense loader into `<head>`.
- *
- * This runs during prerender as well as in the browser, so the tag ends up in
- * the static HTML that the AdSense verification crawler fetches — it does not
- * execute JavaScript, and a tag added only at runtime would be invisible to it.
- *
- * Nothing at all is injected while `ADSENSE_CLIENT` is empty, which keeps the
- * default build free of third-party requests.
+ * Prerenders the loader only on eligible tool pages. Removing a loaded script
+ * cannot unload Auto Ads; the route guard starts a clean document when leaving.
  */
 @Injectable({ providedIn: 'root' })
 export class AdsService {
@@ -22,8 +17,8 @@ export class AdsService {
   readonly enabled = ADS_ENABLED;
   readonly client = ADSENSE_CLIENT;
 
-  install(): void {
-    if (!ADS_ENABLED) return;
+  install(path: string, noindex = false): void {
+    if (!ADS_ENABLED || noindex || !isAdPage(path)) return;
 
     const head = this.document.head;
     if (head.querySelector(`#${LOADER_ID}`)) return;
@@ -36,5 +31,18 @@ export class AdsService {
     // the response as an opaque-free CORS request.
     script.crossOrigin = 'anonymous';
     head.appendChild(script);
+  }
+
+  hasLoader(): boolean {
+    return this.document.getElementById(LOADER_ID) !== null;
+  }
+
+  /** Publisher verification is separate from permission to display ads. */
+  installVerification(): void {
+    if (!ADS_ENABLED || this.document.head.querySelector('meta[name="google-adsense-account"]')) return;
+    const meta = this.document.createElement('meta');
+    meta.name = 'google-adsense-account';
+    meta.content = ADSENSE_CLIENT;
+    this.document.head.appendChild(meta);
   }
 }

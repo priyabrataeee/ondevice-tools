@@ -12,6 +12,7 @@ import {
   canonicalUrl,
 } from './site.config';
 import { Tool } from './tool.types';
+import { AdsService } from './ads.service';
 
 export interface SeoConfig {
   /** Page title without the site suffix. */
@@ -79,6 +80,7 @@ export class SeoService {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
+  private readonly ads = inject(AdsService);
 
   apply(config: SeoConfig): void {
     const fullTitle = composeTitle(config.path, config.title);
@@ -122,6 +124,7 @@ export class SeoService {
       this.websiteNode(),
       ...(config.structuredData ?? []),
     ]);
+    this.ads.install(config.path, config.noindex);
   }
 
   /** Convenience wrapper that derives every tag from a registry entry. */
@@ -153,7 +156,7 @@ export class SeoService {
           // Crawlers and LLMs both use freshness signals; the registry already
           // records when each tool shipped.
           datePublished: tool.added,
-          dateModified: tool.added,
+          dateModified: tool.updated ?? tool.added,
         },
         {
           '@type': 'BreadcrumbList',

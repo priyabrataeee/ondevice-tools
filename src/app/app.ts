@@ -17,10 +17,9 @@ export class App implements OnInit {
   private readonly consent = inject(ConsentService);
 
   ngOnInit(): void {
-    // Both run during prerender as well as in the browser, so their tags are
-    // present in the static HTML the AdSense verification crawler fetches — it
-    // does not execute JavaScript. Each is a no-op until configured.
-    this.ads.install();
+    // Verification does not load ads. Page metadata installs the loader only
+    // after the route has resolved to an eligible tool.
+    this.ads.installVerification();
     this.analytics.install();
     // Browser-only: honours an opt-out signal and enables the privacy-choices
     // control once Google's consent messaging has loaded.

@@ -3,6 +3,7 @@ import { Tool } from '../../tool.types';
 export const DEVELOPER_TOOLS: Tool[] = [
   {
     id: 'json-formatter',
+    updated: '2026-10-11',
     name: 'JSON Formatter',
     description: 'Format, beautify and validate JSON with 2 or 4 space indentation.',
     category: 'developer',
@@ -12,7 +13,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     popular: true,
     trending: true,
     faqs: [
-      { q: 'Is my JSON uploaded anywhere?', a: 'No. Parsing and formatting happen with the browser built-in JSON API on your own device. Nothing is transmitted.' },
+      { q: 'Is my JSON uploaded for processing?', a: 'Our tool code validates and formats JSON locally without uploading it. The public page also uses analytics and advertising; use synthetic or redacted input rather than live secrets.' },
       { q: 'Does formatting change my data?', a: 'The formatter preserves key order exactly as written. It only changes whitespace, so the parsed value is identical.' },
       { q: 'What is the maximum size?', a: 'There is no hard limit, but documents above a few megabytes may take a moment because they are processed in your browser.' },
     ],
@@ -41,6 +42,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
   },
   {
     id: 'json-minifier',
+    updated: '2026-10-11',
     name: 'JSON Minifier',
     description: 'Strip whitespace from JSON and see how many bytes you saved.',
     category: 'developer',
@@ -53,12 +55,13 @@ export const DEVELOPER_TOOLS: Tool[] = [
       { q: 'Are keys shortened?', a: 'No. Renaming keys would change the meaning of the document, so the minifier never touches them.' },
     ],
     about: [
-      'Minifying JSON removes every byte that a parser ignores: the indentation, the newlines and the spaces after colons and commas. On a deeply indented document this routinely removes a fifth to a third of the payload.',
+      'Minifying JSON removes indentation, newlines and spaces between tokens. It keeps spaces inside strings. Savings depend on the original layout; already compact input may save nothing.',
       'The tool shows the before and after size along with the percentage saved, so you can judge whether the trade-off in readability is worth it for your use case.',
     ],
   },
   {
     id: 'jwt-decoder',
+    updated: '2026-10-11',
     name: 'JWT Decoder',
     description: 'Decode the header and payload of a JSON Web Token and inspect its claims.',
     category: 'developer',
@@ -69,7 +72,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     faqs: [
       { q: 'How do I decode a JWT?', a: 'Paste the token. The header and payload are Base64url-encoded JSON and are decoded in your browser without a key, which is why a JWT should never carry anything you would not show the token holder.' },
       { q: 'Does this verify the signature?', a: 'No. Verification requires the signing secret or public key, and you should never paste a production secret into a web page. This tool decodes only.' },
-      { q: 'Is my token sent to a server?', a: 'Never. Decoding is base64url plus a JSON parse, both of which run locally in your browser.' },
+      { q: 'Is my token uploaded for decoding?', a: 'The decoder runs locally and does not upload the token. This public page still uses third-party services. Use a synthetic or expired token, not a working production credential.' },
       { q: 'Why is my expiry shown as a date?', a: 'The exp, iat and nbf claims are NumericDate values - seconds since the Unix epoch - so they are rendered as readable dates for convenience.' },
     ],
     about: [
@@ -249,6 +252,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
   },
   {
     id: 'xml-formatter',
+    updated: '2026-10-11',
     name: 'XML Formatter',
     description: 'Pretty-print and validate XML documents with proper indentation.',
     category: 'developer',
@@ -257,7 +261,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     added: '2026-03-12',
     faqs: [
       { q: 'Is the document validated?', a: 'Yes, it is parsed with the browser XML parser, so malformed markup is reported with the parser own error message.' },
-      { q: 'Are comments and CDATA preserved?', a: 'Yes. Comments, CDATA sections and processing instructions all survive formatting.' },
+      { q: 'Are comments and CDATA preserved?', a: 'Yes. Comments, CDATA and processing instructions retain their source text. Mixed content and xml:space="preserve" subtrees stay unchanged. Documents with a DOCTYPE are returned unchanged with a warning.' },
       { q: 'Does it validate against a schema?', a: 'No. Only well-formedness is checked; schema validation is out of scope for a browser tool.' },
     ],
     about: [

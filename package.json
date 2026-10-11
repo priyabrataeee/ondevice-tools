@@ -24,6 +24,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
+    "verify:review": "node scripts/verify-review.mjs",
     "generate:icons": "node scripts/generate-icons.mjs",
     "generate:llms": "node scripts/generate-llms.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",

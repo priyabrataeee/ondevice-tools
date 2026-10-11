@@ -115,6 +115,7 @@ export class SortLinesComponent {
       sensitivity: this.caseSensitive() ? 'variant' : 'base',
     });
 
+    const direction = this.descending() ? -1 : 1;
     lines.sort((a, b) => {
       switch (this.mode()) {
         case 'numeric': {
@@ -123,19 +124,18 @@ export class SortLinesComponent {
           const aValid = Number.isFinite(na);
           const bValid = Number.isFinite(nb);
           // Lines without a leading number sort to the end, in text order.
-          if (!aValid && !bValid) return collator.compare(a, b);
+          if (!aValid && !bValid) return direction * collator.compare(a, b);
           if (!aValid) return 1;
           if (!bValid) return -1;
-          return na - nb;
+          return direction * (na - nb);
         }
         case 'length':
-          return a.length - b.length || collator.compare(a, b);
+          return direction * (a.length - b.length || collator.compare(a, b));
         default:
-          return collator.compare(a, b);
+          return direction * collator.compare(a, b);
       }
     });
 
-    if (this.descending()) lines.reverse();
     return lines.join('\n');
   });
 

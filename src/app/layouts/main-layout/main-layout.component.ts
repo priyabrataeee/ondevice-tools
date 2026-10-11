@@ -233,6 +233,8 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                 >
                   Your privacy choices
                 </button>
+              } @else {
+                <a routerLink="/privacy" fragment="privacy-choices" class="underline transition-colors hover:text-fg">Your privacy choices</a>
               }
             </p>
             <p class="flex items-center gap-1.5">

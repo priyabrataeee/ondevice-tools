@@ -38,6 +38,8 @@ export interface Tool {
   keywords: string[];
   /** ISO date the tool shipped — powers the "Recently added" rail. */
   added: string;
+  /** Last substantive implementation or content update; never the build date. */
+  updated?: string;
   popular?: boolean;
   trending?: boolean;
   faqs: ToolFaq[];

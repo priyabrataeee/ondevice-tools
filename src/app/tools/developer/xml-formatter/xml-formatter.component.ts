@@ -39,6 +39,9 @@ const SAMPLE =
           </div>
         </div>
 
+        @if (warning()) {
+          <p role="status" class="rounded-xl border border-line bg-bg-subtle p-3 text-sm text-muted">{{ warning() }}</p>
+        }
         @if (error()) {
           <div class="rounded-xl border border-danger/40 bg-danger-soft p-3 text-sm">
             <p class="flex items-center gap-2 font-medium text-danger">
@@ -88,4 +91,5 @@ export class XmlFormatterComponent {
 
   protected readonly output = computed(() => this.result().output);
   protected readonly error = computed(() => this.result().error ?? '');
+  protected readonly warning = computed(() => this.result().warning ?? '');
 }

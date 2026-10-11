@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { adNavigationGuard } from './core/ad-navigation.guard';
 
 /**
  * Every tool is its own lazily loaded route so the initial bundle stays small
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    canActivateChild: [adNavigationGuard],
     children: [
       {
         path: '',
