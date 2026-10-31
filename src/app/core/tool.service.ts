@@ -71,11 +71,21 @@ export class ToolService {
     return CATEGORIES.find((c) => c.id === id);
   }
 
-  /** Tools in the same category, excluding the current one. */
+  /**
+   * Tools in the same category, starting after the current one and wrapping
+   * round. Taking the first N instead meant tools late in a category were
+   * linked from almost nowhere, and crawlers left them undiscovered. Small
+   * categories are topped up from the tools that follow in the registry.
+   */
   related(tool: Tool, limit = 6): Tool[] {
-    return this.tools()
-      .filter((t) => t.category === tool.category && t.id !== tool.id)
-      .slice(0, limit);
+    const rotate = (list: Tool[]) => {
+      const at = list.findIndex((t) => t.id === tool.id);
+      return [...list.slice(at + 1), ...list.slice(0, Math.max(at, 0))];
+    };
+    const all = this.tools();
+    const sameCategory = rotate(all.filter((t) => t.category === tool.category));
+    const others = rotate(all).filter((t) => t.category !== tool.category);
+    return [...sameCategory, ...others].slice(0, limit);
   }
 
   /**

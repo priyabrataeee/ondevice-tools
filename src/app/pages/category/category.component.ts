@@ -195,6 +195,7 @@ export class CategoryComponent implements OnInit {
               ]
             : []),
         ],
+        breadcrumbs: [{ name: category.name, path: `/category/${category.id}` }],
       });
     });
   }

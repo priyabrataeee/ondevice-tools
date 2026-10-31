@@ -22,6 +22,8 @@ class TestHome extends HomeComponent {
   selectedChannel() { return this.activeChannel(); }
   quickStart() { return this.quickTools; }
   dial() { return this.dialTransform(); }
+  showAll() { this.expanded.set(true); }
+  isExpanded() { return this.expanded(); }
 }
 
 describe('homepage utility engine', () => {
@@ -55,6 +57,24 @@ describe('homepage utility engine', () => {
     expect(home.quickStart()).toHaveLength(4);
     expect(home.quickStart().every((tool) => tools.get(tool.id))).toBe(true);
     expect(home.selectedChannel().id).toBe('developer');
+  });
+
+  it('labels channels with short forms of the category names', () => {
+    const home = create();
+    for (const channel of home.channelList()) {
+      expect(channel.name.toUpperCase().replace('CALCULATORS', 'CALC').replace('CONVERTERS', 'CONVERT'))
+        .toContain(channel.short);
+    }
+  });
+
+  it('collapses the mobile list again after changing category or search', () => {
+    const home = create();
+    home.showAll();
+    home.chooseCategory('text');
+    expect(home.isExpanded()).toBe(false);
+    home.showAll();
+    home.search('json');
+    expect(home.isExpanded()).toBe(false);
   });
 
   it('rotates the dial pointer through the shortest path', () => {

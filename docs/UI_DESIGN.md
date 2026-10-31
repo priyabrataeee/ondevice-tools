@@ -27,6 +27,15 @@ The layout and interaction model are bespoke to OnDevice Tools. The design inten
 - Kept existing tool routes, SEO metadata, on-device processing, consent integrations, strict CSP and header pause control intact.
 - Kept reduced-motion handling for CSS motion. The existing canvas animation remains user-pausable from the header.
 
+## UX review fixes — 31 October 2026
+
+- H1 leads with the offer: "64 free tools. Nothing uploaded." The italic "What are we making today?" stays as the hook.
+- Dial keys use short forms of the real category names: DEVELOPER, TEXT, IMAGE, PDF, CSS, COLOR, CALC, CONVERT, DATE & TIME.
+- At 760px and below the dial becomes a 3×3 key grid. The first tool now starts about 640px down at 320–375px, not 822px.
+- At 760px and below the tool list is no longer a scroll box. It shows 8 rows and a "Show all" button, which resets on category or search change.
+- Type floor: 11px for labels, 12px for readable copy, on the homepage and shared labels in studio.css. The mobile search field is 16px to stop iOS zoom.
+- Verified at 320, 375, 740, 761, 820 and 1440px in light mode, and 1440px in dark mode. No key overlap or horizontal overflow.
+
 ## Review before deployment
 
 Check the local preview at http://127.0.0.1:4300/.

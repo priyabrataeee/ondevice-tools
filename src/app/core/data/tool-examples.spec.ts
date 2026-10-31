@@ -6,6 +6,10 @@ import { ReverseTextComponent } from '../../tools/text/reverse-text/reverse-text
 import { SlugGeneratorComponent } from '../../tools/text/slug-generator/slug-generator.component';
 import { JsonMinifierComponent } from '../../tools/developer/json-minifier/json-minifier.component';
 import { formatXml, minifyXml } from '../../tools/developer/lib/xml-format';
+import { TestBed } from '@angular/core/testing';
+import { CropImageComponent } from '../../tools/image/crop-image/crop-image.component';
+import { TimestampConverterComponent } from '../../tools/developer/timestamp-converter/timestamp-converter.component';
+import { compareText, toUnifiedDiff } from '../../tools/text/lib/diff.util';
 
 class SortCheck extends SortLinesComponent {
   run(text: string, mode: 'natural' | 'numeric', descending = false) {
@@ -30,6 +34,26 @@ class SlugCheck extends SlugGeneratorComponent {
 class JsonCheck extends JsonMinifierComponent {
   run(text: string) { this.input.set(text); return this.output(); }
 }
+class CropCheck extends CropImageComponent {
+  run(input: string, ratio: number) {
+    const [, width, height] = /(\d+) × (\d+)/.exec(input)!;
+    this.naturalWidth.set(+width); this.naturalHeight.set(+height); this.ratio.set(ratio); this.centerCrop();
+    return `Crop area: ${this.cropWidth()} × ${this.cropHeight()} px\nOffset: x ${this.cropX()}, y ${this.cropY()}`;
+  }
+}
+class TimestampCheck extends TimestampConverterComponent {
+  run(input: string) {
+    this.timestamp.set(input);
+    return `ISO 8601 (UTC): ${this.fromTimestamp()[0].value}\nInterpreted as: ${this.resolvedUnit()}`;
+  }
+}
+/** Example inputs hold both sides as `ORIGINAL\n…\nCHANGED\n…`. */
+function diffExample(input: string, ignore: boolean): string {
+  const [left, right] = input.replace(/^ORIGINAL\n/, '').split('\nCHANGED\n');
+  const options = { ignoreCase: ignore, ignoreWhitespace: ignore, ignoreBlankLines: false };
+  return toUnifiedDiff(compareText(left, right, options).rows);
+}
+const inContext = <T>(create: () => T): T => TestBed.runInInjectionContext(create);
 
 describe('published worked examples', () => {
   const execute: Record<string, (input: string, index: number) => string> = {
@@ -39,6 +63,9 @@ describe('published worked examples', () => {
     'slug-generator': (input, i) => new SlugCheck().run(input, i === 1),
     'json-minifier': (input) => new JsonCheck().run(input),
     'xml-formatter': (input) => formatXml(input).output,
+    'crop-image': (input, i) => inContext(() => new CropCheck()).run(input, i ? 16 / 9 : 1),
+    'text-compare': (input, i) => diffExample(input, i === 1),
+    'timestamp-converter': (input) => inContext(() => new TimestampCheck()).run(input),
   };
   for (const [id, guide] of Object.entries(TOOL_GUIDES)) {
     guide.examples.forEach((example, i) => {

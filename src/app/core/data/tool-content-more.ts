@@ -377,12 +377,15 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
   'crop-image': {
     howItWorks: [
       'The image is decoded in your browser and the selected region is drawn onto a canvas of exactly that size, then exported as PNG, JPEG or WebP. The selection can be set in pixels or locked to 1:1, 4:3, 16:9, 3:2 or 9:16.',
-      'Pixels inside the selection are copied unchanged, but JPEG and WebP re-encode them. Choose PNG when you need to avoid any generation loss.',
+      'With a ratio locked, the height is always calculated from the width and rounded to whole pixels, and the selection is kept inside the image. Centre selection starts at 80% of the image width, then shrinks to fit if the ratio would make it taller than the picture.',
+      'Pixels inside the selection are copied unchanged, but JPEG and WebP re-encode them at 92% quality. Choose PNG when you need to avoid any generation loss or keep transparency; JPEG fills transparent areas with white.',
     ],
     useCases: [
-      'Squaring a photo for a profile picture.',
-      'Trimming dead space from a screenshot before sharing it.',
-      'Cutting a banner to an exact aspect ratio.',
+      'Squaring a photo for a profile picture or a marketplace listing that requires 1:1.',
+      'Trimming dead space, toolbars or private details from a screenshot before sharing it.',
+      'Cutting a banner or video thumbnail to an exact 16:9 aspect ratio.',
+      'Turning a landscape photo into a 9:16 frame for a phone story or wallpaper.',
+      'Cropping ID scans, receipts or family photos that should not be uploaded to an online editor.',
     ],
   },
 

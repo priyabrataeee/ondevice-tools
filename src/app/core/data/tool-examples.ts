@@ -151,4 +151,73 @@ export const TOOL_GUIDES: Record<string, ToolGuide> = {
       'Indentation changes whitespace nodes in element-only content. Do not use it as XML canonicalization or to prepare digitally signed XML; retain the original and compare results in the target application.',
     ],
   },
+  'crop-image': {
+    examples: [
+      {
+        title: 'Crop a landscape photo to a square',
+        settings: '1:1 ratio, Centre selection',
+        input: 'Source image: 4032 × 3024 px',
+        output: 'Crop area: 3024 × 3024 px\nOffset: x 504, y 0',
+        explanation: 'A square cannot be wider than the shorter side, so the selection uses the full 3024 px height and is centred horizontally. Use this for profile pictures and marketplace thumbnails that require 1:1.',
+      },
+      {
+        title: 'Cut a 16:9 frame out of a portrait phone photo',
+        settings: '16:9 ratio, Centre selection',
+        input: 'Source image: 1080 × 1920 px',
+        output: 'Crop area: 864 × 486 px\nOffset: x 108, y 717',
+        explanation: 'Centre selection starts at 80% of the image width and derives the height from the ratio: 864 ÷ 16 × 9 = 486. Increase the width field afterwards to keep more of the frame; the height follows the locked ratio.',
+      },
+    ],
+    limitations: [
+      'Cropping removes pixels; it never adds detail. A 486 px tall crop stays 486 px tall, so upscale it separately only if you accept a softer result.',
+      'JPEG and WebP output are re-encoded at 92% quality, and JPEG fills transparent areas with white. Choose PNG to keep exact pixels and transparency.',
+      'Orientation follows how your browser displays the file. Metadata such as EXIF location is not copied into the cropped file.',
+    ],
+  },
+  'text-compare': {
+    examples: [
+      {
+        title: 'Find the changed value in two config files',
+        settings: 'All ignore options off, Unified view',
+        input: 'ORIGINAL\ntimeout = 30\nretries = 3\nmode = fast\nCHANGED\ntimeout = 60\nretries = 3\nmode = fast\nlog = on',
+        output: '--- Original\n+++ Changed\n-timeout = 30\n+timeout = 60\n retries = 3\n mode = fast\n+log = on',
+        explanation: 'The edited line is shown as a removal followed by an addition, and the appended line as a plain addition. Unchanged lines keep a leading space, the same convention as git diff.',
+      },
+      {
+        title: 'Check whether two texts differ only in case and spacing',
+        settings: 'Ignore case and Ignore whitespace on',
+        input: 'ORIGINAL\nHello   World\nCHANGED\nhello world',
+        output: '--- Original\n+++ Changed\n Hello   World',
+        explanation: 'With both options on, the lines compare as equal and the tool reports the texts as identical. The diff keeps the original text unchanged; the options only change what counts as a difference.',
+      },
+    ],
+    limitations: [
+      'This is a line-based text diff. Reordered JSON keys or reformatted code can show as changes even when the meaning is the same; format both sides first.',
+      'The on-screen table shows the first 800 rows. Download the unified diff to review longer results in full.',
+      'Turn ignore options off when auditing code, YAML or legal text, where case and whitespace changes can matter.',
+    ],
+  },
+  'timestamp-converter': {
+    examples: [
+      {
+        title: 'Convert a Unix timestamp in seconds to a date',
+        settings: 'Unit: Auto',
+        input: '1767225600',
+        output: 'ISO 8601 (UTC): 2026-01-01T00:00:00.000Z\nInterpreted as: seconds',
+        explanation: 'A ten-digit value is read as seconds since 1 January 1970 UTC. The tool also shows the same moment in your local time zone and relative to now.',
+      },
+      {
+        title: 'Convert a JavaScript millisecond timestamp',
+        settings: 'Unit: Auto',
+        input: '1767225600000',
+        output: 'ISO 8601 (UTC): 2026-01-01T00:00:00.000Z\nInterpreted as: milliseconds',
+        explanation: 'Values with more than eleven digits are read as milliseconds, which is what Date.now() and most JavaScript logs produce. Reading the same number as seconds would give a date tens of thousands of years ahead.',
+      },
+    ],
+    limitations: [
+      'Only whole numbers are accepted. Decimal seconds and microsecond or nanosecond timestamps must be truncated to seconds or milliseconds first.',
+      'Local time uses your device’s time zone and daylight-saving rules. Compare the UTC row when matching logs from servers in other regions.',
+      'Choose Seconds or Milliseconds explicitly for very old or very distant dates, where digit-count detection can guess the wrong unit.',
+    ],
+  },
 };

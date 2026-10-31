@@ -200,9 +200,11 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'timer',
     keywords: ['epoch', 'unix time', 'milliseconds', 'iso 8601', 'utc', 'epoch converter', 'unix timestamp to date', 'date to timestamp', 'epoch to date'],
     added: '2026-01-28',
+    updated: '2026-10-31',
     popular: true,
     faqs: [
       { q: 'How do I convert a Unix timestamp to a date?', a: 'Paste the number. Ten digits are read as seconds and thirteen as milliseconds, which is the most common cause of a date landing in 1970 or far in the future.' },
+      { q: 'How do I convert a date to a Unix timestamp?', a: 'Pick a date and time in the Date → timestamp section. It is read in your local time zone and shown as Unix seconds, Unix milliseconds, ISO 8601 and UTC.' },
       { q: 'Seconds or milliseconds?', a: 'Both. The converter detects the magnitude of the number and tells you which unit it assumed, and you can override the choice.' },
       { q: 'What timezone is used?', a: 'Results are shown in UTC and in your local timezone at the same time, so there is no ambiguity.' },
       { q: 'What is the year 2038 problem?', a: 'Systems storing time in a signed 32-bit integer overflow in January 2038. Modern platforms use 64-bit values and are unaffected.' },

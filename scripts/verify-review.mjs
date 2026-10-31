@@ -30,6 +30,7 @@ const paths = new Set(pages.map((file) => '/' + relative(output, dirname(file)).
 let indexed = 0;
 let adPages = 0;
 let examples = 0;
+const descriptions = new Set();
 for (const file of pages) {
   const route = '/' + relative(output, dirname(file)).split(sep).filter(Boolean).join('/');
   const url = siteUrl + (route === '/' ? '/' : route + '/');
@@ -40,11 +41,22 @@ for (const file of pages) {
   check(document.querySelectorAll('link[rel="canonical"]').length === 1, 'Expected one canonical');
   check(document.querySelector('link[rel="canonical"]').href === url, 'Wrong canonical');
   check(document.title.trim(), 'Missing title');
-  check(document.querySelector('meta[name="description"]')?.content, 'Missing description');
+  const descriptionTags = document.querySelectorAll('meta[name="description"]');
+  check(descriptionTags.length === 1, 'Expected one meta description');
+  const description = descriptionTags[0].content;
+  check(description.trim(), 'Missing description');
+  check(document.querySelector('meta[property="og:description"]')?.content === description, 'Open Graph description differs');
+  check(document.querySelector('meta[name="twitter:description"]')?.content === description, 'Twitter description differs');
   const noindex = document.querySelector('meta[name="robots"]')?.content.includes('noindex');
   check(noindex === (route === '/404' || route === '/favorites'), 'Unexpected robots directive');
   check(sitemapDates.has(url) !== noindex, 'Indexability and sitemap disagree');
-  if (!noindex) indexed++;
+  if (!noindex) {
+    indexed++;
+    // Site editorial target; Google does not impose a fixed minimum length.
+    check(description.length >= 150 && description.length <= 160, `Description outside 150–160 character target (${description.length})`);
+    check(!descriptions.has(description), 'Duplicate page description');
+    descriptions.add(description);
+  }
   const graph = JSON.parse(document.querySelector('script[data-qt-ld]').textContent)['@graph'];
   const tool = graph.find((node) => node['@type'] === 'SoftwareApplication');
   const loader = document.querySelectorAll('#adsense-loader');
@@ -74,4 +86,4 @@ assert.ok(fallback.window.document.querySelector('meta[name="robots"]')?.content
 assert.equal(fallback.window.document.querySelector('#adsense-loader'), null, 'Fallback 404 must be ad-free');
 fallback.window.close();
 sitemap.window.close();
-console.log(`Review checks passed: ${pages.length} pages, ${indexed} sitemap URLs, ${adPages} eligible ad pages, ${examples} worked-example pages; canonical, noindex, dates and internal links checked.`);
+console.log(`Review checks passed: ${pages.length} pages, ${indexed} sitemap URLs, ${adPages} eligible ad pages, ${examples} worked-example pages; unique 150–160 character descriptions, sharing metadata, canonical, noindex, dates and internal links checked.`);

@@ -196,7 +196,7 @@ export class AllToolsComponent implements OnInit {
       ],
     });
 
-    // Support deep links such as /tools?q=json from the site search action.
+    // Support deep links such as /tools?q=json, which the search box writes.
     const q = this.route.snapshot.queryParamMap.get('q');
     if (q) this.query.set(q);
   }

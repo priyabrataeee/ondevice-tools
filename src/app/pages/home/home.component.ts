@@ -7,10 +7,14 @@ import { ToolService } from '../../core/tool.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { SupportCardComponent } from '../../shared/components/support-card/support-card.component';
 
+/** Short forms of the category names used everywhere else, so the keys read the same as the nav. */
 const CHANNEL_NAMES: Record<string, string> = {
-  developer: 'CODE', text: 'WORDS', image: 'IMAGES', pdf: 'PDF', css: 'CSS',
-  color: 'COLOR', calculator: 'MATH', converter: 'UNITS', datetime: 'TIME',
+  developer: 'DEVELOPER', text: 'TEXT', image: 'IMAGE', pdf: 'PDF', css: 'CSS',
+  color: 'COLOR', calculator: 'CALC', converter: 'CONVERT', datetime: 'DATE & TIME',
 };
+
+/** Rows shown at 760px and below before "Show all"; the CSS hides the rest there only. */
+const COLLAPSED_COUNT = 8;
 
 @Component({
   selector: 'app-home',
@@ -25,6 +29,8 @@ export class HomeComponent implements OnInit {
   private readonly resultsPanel = viewChild<ElementRef<HTMLElement>>('resultsPanel');
   private readonly channelPanel = viewChild<ElementRef<HTMLElement>>('channelPanel');
   protected readonly query = signal('');
+  protected readonly expanded = signal(false);
+  protected readonly collapsedCount = COLLAPSED_COUNT;
   protected readonly activeCategory = signal('developer');
   protected readonly categories = this.toolService.categories;
   protected readonly toolCount = this.toolService.tools().length;
@@ -82,5 +88,9 @@ export class HomeComponent implements OnInit {
     this.selectCategory(channels[next].id);
     this.channelPanel()?.nativeElement.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
   }
-  private resetScroll(): void { const panel = this.resultsPanel()?.nativeElement; if (panel) panel.scrollTop = 0; }
+  private resetScroll(): void {
+    this.expanded.set(false);
+    const panel = this.resultsPanel()?.nativeElement;
+    if (panel) panel.scrollTop = 0;
+  }
 }

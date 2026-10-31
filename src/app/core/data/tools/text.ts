@@ -9,10 +9,13 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'compare',
     keywords: ['diff', 'text diff', 'difference checker', 'compare files', 'side by side', 'merge', 'compare two texts', 'diff checker', 'difference between two files'],
     added: '2026-09-01',
+    updated: '2026-10-31',
     popular: true,
     trending: true,
     faqs: [
+      { q: 'How do I compare two texts online?', a: 'Paste the original on the left and the changed version on the right. Differences appear immediately, side by side or as a unified diff, with counts of added, removed, changed and unchanged lines.' },
       { q: 'What counts as a changed line?', a: 'When a removed line and an added line line up, they are shown as one changed row with the differing words highlighted, rather than as two unrelated edits.' },
+      { q: 'Can I find the difference between two strings?', a: 'Yes. Paste each string into one side. Two different single-line strings show as one changed row, and the side-by-side view highlights the words that differ unless almost every word changed.' },
       { q: 'Can it handle large files?', a: 'Yes. The comparison uses an algorithm whose cost scales with the number of differences, so two nearly identical files of several thousand lines compare in milliseconds.' },
       { q: 'Is my text uploaded anywhere?', a: 'No. The comparison runs entirely in your browser, which is what makes it safe to paste a contract, a config file or production logs into it.' },
     ],

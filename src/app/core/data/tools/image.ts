@@ -32,12 +32,15 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'image',
     keywords: ['compress', 'optimize', 'reduce size', 'quality', 'compress image', 'reduce image size', 'image optimizer', 'compress jpeg', 'compress png', 'shrink photo'],
     added: '2026-02-24',
+    updated: '2026-10-31',
     popular: true,
     trending: true,
     faqs: [
       { q: 'Are my images uploaded?', a: 'No. Compression uses a canvas in your own browser, so the file never leaves your device.' },
-      { q: 'Why did my PNG get bigger?', a: 'PNG is lossless. Re-encoding a already-optimised PNG can add bytes - convert it to WebP instead for a real reduction.' },
+      { q: 'How do I reduce an image file size?', a: 'Drop the image, lower the quality slider until the preview still looks right, and compare the before and after sizes. Setting a maximum width shrinks large camera photos much further than quality alone.' },
+      { q: 'Why did my PNG get bigger?', a: 'PNG is lossless. Re-encoding an already-optimised PNG can add bytes - convert it to WebP instead for a real reduction. PNG files default to WebP output for that reason.' },
       { q: 'Does compression lose quality?', a: 'JPEG and WebP are lossy, so yes, but the quality slider lets you find the point where the difference stops being visible.' },
+      { q: 'Which format gives the smallest file?', a: 'WebP is usually smallest at similar visual quality and keeps transparency. JPEG is the most widely accepted by upload forms. PNG output is lossless, so it rarely shrinks photos.' },
     ],
     about: [
       'Images dominate page weight, and an unoptimised photo straight from a phone camera can be several megabytes. Compressing before upload is the single biggest win available for page speed.',
@@ -71,14 +74,18 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'crop',
     keywords: ['trim', 'cut', 'aspect ratio', 'square', 'avatar', 'crop photo', 'square crop', 'profile picture crop', 'trim image'],
     added: '2026-03-05',
+    updated: '2026-10-31',
     faqs: [
-      { q: 'Can I lock to a common ratio?', a: 'Yes - 1:1, 4:3, 16:9, 3:2 and 9:16 presets are available, along with a free-form mode.' },
-      { q: 'How do I set the crop area?', a: 'Type the offset and size in pixels, or pick a ratio and use "centre selection". The highlighted overlay shows exactly what will be kept.' },
+      { q: 'How do I crop an image online without uploading it?', a: 'Open or drop the picture, choose a ratio or type the crop size in pixels, press Crop image and download the result. The file is read and cropped by your browser; it is not sent to a server.' },
+      { q: 'How do I crop an image to an exact aspect ratio?', a: 'Pick 1:1, 4:3, 3:2, 16:9 or 9:16, then press Centre selection. The height is derived from the width, and changing either field keeps the ratio locked. Choose Free to set both sides independently.' },
+      { q: 'How do I set the crop area?', a: 'Type the X and Y offset and the width and height in pixels. The highlighted overlay shows exactly what will be kept, and the line under the fields reports the source and crop size.' },
       { q: 'Is the crop lossless?', a: 'The pixels inside your selection are copied unchanged, but saving as JPG re-encodes them. Choose PNG to avoid any generation loss.' },
+      { q: 'Which image formats can I crop?', a: 'Any image your browser can display, typically JPG, PNG, WebP, GIF and AVIF. The cropped result downloads as PNG, JPEG or WebP; animated GIFs are flattened to a single frame.' },
     ],
     about: [
       'Cropping is the most common image edit there is: squaring an avatar, trimming dead space from a screenshot, or fitting a banner to a fixed ratio.',
       'This tool overlays your selection on the image and lets you set it precisely in pixels or snap it to a standard aspect ratio, then exports just that region as PNG, JPEG or WebP.',
+      'To crop a picture: choose an image, select a ratio such as 1:1 or 16:9, press Centre selection, fine-tune the offset and size, then press Crop image and download. Nothing is uploaded at any step.',
     ],
   },
   {

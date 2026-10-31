@@ -7,12 +7,15 @@ import {
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_OG_IMAGE,
+  SITE_OG_IMAGE_ALT,
+  SITE_OG_IMAGE_SIZE,
   SITE_URL,
   SOURCE_URL,
   canonicalUrl,
 } from './site.config';
 import { Tool } from './tool.types';
 import { AdsService } from './ads.service';
+import { PAGE_DESCRIPTIONS } from './data/seo-descriptions';
 
 export interface SeoConfig {
   /** Page title without the site suffix. */
@@ -23,6 +26,11 @@ export interface SeoConfig {
   image?: string;
   /** Extra JSON-LD graph nodes to emit alongside the defaults. */
   structuredData?: Record<string, unknown>[];
+  /**
+   * Trail below Home, ending with this page, mirroring the visible breadcrumb.
+   * Emitted as a BreadcrumbList; Home is prepended automatically.
+   */
+  breadcrumbs?: { name: string; path: string }[];
   /**
    * Keep the page out of the index. Used for pages whose content is per-browser
    * and therefore meaningless to a crawler, e.g. /favorites.
@@ -84,7 +92,8 @@ export class SeoService {
 
   apply(config: SeoConfig): void {
     const fullTitle = composeTitle(config.path, config.title);
-    const description = fitDescription(config.description);
+    const descriptionPath = config.path.replace(/\/+$/, '') || '/';
+    const description = fitDescription(PAGE_DESCRIPTIONS[descriptionPath] ?? config.description);
     const url = canonicalUrl(config.path);
     const image = config.image ?? SITE_OG_IMAGE;
 
@@ -98,6 +107,17 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
     this.meta.updateTag({ property: 'og:image', content: image });
     this.meta.updateTag({ property: 'og:locale', content: 'en_US' });
+    if (image === SITE_OG_IMAGE) {
+      this.meta.updateTag({ property: 'og:image:width', content: SITE_OG_IMAGE_SIZE.width });
+      this.meta.updateTag({ property: 'og:image:height', content: SITE_OG_IMAGE_SIZE.height });
+      this.meta.updateTag({ property: 'og:image:alt', content: SITE_OG_IMAGE_ALT });
+      this.meta.updateTag({ name: 'twitter:image:alt', content: SITE_OG_IMAGE_ALT });
+    } else {
+      this.meta.removeTag('property="og:image:width"');
+      this.meta.removeTag('property="og:image:height"');
+      this.meta.removeTag('property="og:image:alt"');
+      this.meta.removeTag('name="twitter:image:alt"');
+    }
 
     this.meta.updateTag({ name: 'author', content: SITE_AUTHOR });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
@@ -123,6 +143,7 @@ export class SeoService {
       this.organizationNode(),
       this.websiteNode(),
       ...(config.structuredData ?? []),
+      ...(config.breadcrumbs?.length ? [this.breadcrumbNode(config.breadcrumbs)] : []),
     ]);
     this.ads.install(config.path, config.noindex);
   }
@@ -134,9 +155,7 @@ export class SeoService {
 
     this.apply({
       title: toolTitle(tool.name),
-      // Registry blurbs are written for cards (~50–70 chars). The meta
-      // description gets the site's differentiator appended so it lands in the
-      // 120–160 range search results actually display.
+      // Fallback for newly added tools until their curated summary is written.
       description: `${tool.description} Free and private — runs entirely in your browser, nothing is uploaded.`,
       path,
       structuredData: [
@@ -158,19 +177,6 @@ export class SeoService {
           datePublished: tool.added,
           dateModified: tool.updated ?? tool.added,
         },
-        {
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: canonicalUrl('/') },
-            {
-              '@type': 'ListItem',
-              position: 2,
-              name: categoryName,
-              item: canonicalUrl(`/category/${tool.category}`),
-            },
-            { '@type': 'ListItem', position: 3, name: tool.name, item: url },
-          ],
-        },
         ...(tool.faqs.length
           ? [
               {
@@ -184,7 +190,23 @@ export class SeoService {
             ]
           : []),
       ],
+      breadcrumbs: [
+        { name: categoryName, path: `/category/${tool.category}` },
+        { name: tool.name, path },
+      ],
     });
+  }
+
+  private breadcrumbNode(trail: { name: string; path: string }[]): Record<string, unknown> {
+    return {
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: 'Home', path: '/' }, ...trail].map((crumb, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: crumb.name,
+        item: canonicalUrl(crumb.path),
+      })),
+    };
   }
 
   /**
@@ -220,11 +242,9 @@ export class SeoService {
       url: canonicalUrl('/'),
       publisher: { '@id': `${SITE_URL}/#organization` },
       description: SITE_DESCRIPTION,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/tools/?q={search_term_string}` },
-        'query-input': 'required name=search_term_string',
-      },
+      inLanguage: 'en',
+      // No SearchAction: Google retired the sitelinks search box in 2024, and
+      // the template only advertised /tools/?q= variants that canonicalise away.
     };
   }
 

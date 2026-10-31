@@ -2,14 +2,14 @@
   <section class="utility-engine" aria-labelledby="engine-title">
     <header class="engine-masthead">
       <div class="engine-ident"><span class="engine-cross" aria-hidden="true">+</span><span>ONDEVICE<br /><b>UTILITY ENGINE</b></span></div>
-      <h1 id="engine-title">What are we<br /><em>making today?</em></h1>
+      <h1 id="engine-title">{{ toolCount }} free tools. Nothing uploaded.<br /><em>What are we making today?</em></h1>
       <div class="engine-inventory"><strong>{{ toolCount }}</strong><span>TOOLS<br />ZERO ACCOUNTS</span></div>
     </header>
 
     <div class="engine-command">
       <span class="command-symbol" aria-hidden="true">›_</span>
       <label for="engine-search" class="sr-only">Search all tools</label>
-      <input id="engine-search" type="search" placeholder="Tell the machine what you need… try “compress”" autocomplete="off" [value]="query()" (input)="onSearch($event)" />
+      <input id="engine-search" type="search" placeholder="Search tools… try “compress”" autocomplete="off" [value]="query()" (input)="onSearch($event)" />
       @if (query()) { <button type="button" (click)="clearSearch()" aria-label="Clear tool search"><app-icon name="x" class="h-4 w-4" /></button> }
       <span class="command-scope">SEARCH ALL {{ toolCount }}</span>
     </div>
@@ -36,7 +36,7 @@
             <div class="core-signal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           </div>
           @for (channel of channels(); track channel.id) {
-            <button type="button" class="channel-key" [style.left.%]="channel.x" [style.top.%]="channel.y"
+            <button type="button" class="channel-key" [style.--key-x]="channel.x + '%'" [style.--key-y]="channel.y + '%'"
               [attr.data-channel]="channel.id" [attr.aria-pressed]="!query().trim() && activeCategory() === channel.id"
               [attr.aria-label]="channel.name + ', ' + channel.count + ' tools'" (click)="selectCategory(channel.id)">
               <span class="key-number">{{ channel.number }}</span>
@@ -56,7 +56,7 @@
           <h2 id="receipt-heading">{{ query().trim() ? 'Found in the machine.' : activeChannel().name }}</h2>
           <p role="status">{{ visibleTools().length }} {{ visibleTools().length === 1 ? 'tool' : 'tools' }} {{ query().trim() ? 'matching your search' : 'ready to open' }}</p>
         </header>
-        <div class="receipt-results" #resultsPanel tabindex="0" role="region" aria-label="Available tools">
+        <div class="receipt-results" [class.is-expanded]="expanded()" #resultsPanel tabindex="0" role="region" aria-label="Available tools">
           @for (tool of visibleTools(); track tool.id; let i = $index) {
             <a [routerLink]="['/tools', tool.id]" class="receipt-tool">
               <span class="receipt-number">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
@@ -67,6 +67,9 @@
             <div class="receipt-empty"><span aria-hidden="true">∅</span><h3>No instrument found.</h3><p>Try “image”, “JSON” or “convert”.</p><button type="button" (click)="clearSearch()">Reset the search <span aria-hidden="true">↗</span></button></div>
           }
         </div>
+        @if (!expanded() && visibleTools().length > collapsedCount) {
+          <button type="button" class="receipt-more" (click)="expanded.set(true)">Show all {{ visibleTools().length }} tools <span aria-hidden="true">↓</span></button>
+        }
         <footer class="receipt-footer"><span class="receipt-barcode" aria-hidden="true"></span><a routerLink="/tools">Open the complete index <span aria-hidden="true">↗</span></a></footer>
       </section>
     </div>

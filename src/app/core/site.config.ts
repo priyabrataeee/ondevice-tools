@@ -13,7 +13,7 @@ export const SITE_NAME = 'OnDevice Tools';
 export const SITE_TAGLINE = 'Free browser-based tools that never upload your data';
 
 export const SITE_DESCRIPTION =
-  'A fast, private collection of free online utilities for developers, designers and writers. Everything runs in your browser — nothing is uploaded.';
+  'Explore free browser tools for text, images, code, documents and calculations. Process inputs locally, preview results and use each tool without an account.';
 
 /**
  * Builds the absolute URL that the host actually serves with a 200.
@@ -30,6 +30,11 @@ export function canonicalUrl(path: string): string {
 
 /** Default social sharing image (served from /public). */
 export const SITE_OG_IMAGE = `${SITE_URL}/og-image.png`;
+
+/** Must match the PNG written by scripts/generate-icons.mjs. */
+export const SITE_OG_IMAGE_SIZE = { width: '1200', height: '630' } as const;
+
+export const SITE_OG_IMAGE_ALT = 'OnDevice Tools — free browser tools; nothing you type leaves the page';
 
 /**
  * Google AdSense publisher id, e.g. `ca-pub-1234567890123456`.

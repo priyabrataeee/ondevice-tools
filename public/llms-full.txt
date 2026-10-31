@@ -692,6 +692,8 @@
 - Key FAQs:
   * Q: How do I convert a Unix timestamp to a date?
     A: Paste the number. Ten digits are read as seconds and thirteen as milliseconds, which is the most common cause of a date landing in 1970 or far in the future.
+  * Q: How do I convert a date to a Unix timestamp?
+    A: Pick a date and time in the Date → timestamp section. It is read in your local time zone and shown as Unix seconds, Unix milliseconds, ISO 8601 and UTC.
   * Q: Seconds or milliseconds?
     A: Both. The converter detects the magnitude of the number and tells you which unit it assumed, and you can override the choice.
   * Q: What timezone is used?
@@ -814,10 +816,14 @@
 - Key FAQs:
   * Q: Are my images uploaded?
     A: No. Compression uses a canvas in your own browser, so the file never leaves your device.
+  * Q: How do I reduce an image file size?
+    A: Drop the image, lower the quality slider until the preview still looks right, and compare the before and after sizes. Setting a maximum width shrinks large camera photos much further than quality alone.
   * Q: Why did my PNG get bigger?
-    A: PNG is lossless. Re-encoding a already-optimised PNG can add bytes - convert it to WebP instead for a real reduction.
+    A: PNG is lossless. Re-encoding an already-optimised PNG can add bytes - convert it to WebP instead for a real reduction. PNG files default to WebP output for that reason.
   * Q: Does compression lose quality?
     A: JPEG and WebP are lossy, so yes, but the quality slider lets you find the point where the difference stops being visible.
+  * Q: Which format gives the smallest file?
+    A: WebP is usually smallest at similar visual quality and keeps transparency. JPEG is the most widely accepted by upload forms. PNG output is lossless, so it rarely shrinks photos.
 
 #### Image Resizer
 - Canonical URL: https://ondevice-tools.org/tools/image-resizer/
@@ -841,18 +847,24 @@
 - Canonical URL: https://ondevice-tools.org/tools/crop-image/
 - Category: Image Tools
 - Description: Crop images to a selection or a fixed aspect ratio.
-- Technical Implementation: The image is decoded in your browser and the selected region is drawn onto a canvas of exactly that size, then exported as PNG, JPEG or WebP. The selection can be set in pixels or locked to 1:1, 4:3, 16:9, 3:2 or 9:16. Pixels inside the selection are copied unchanged, but JPEG and WebP re-encode them. Choose PNG when you need to avoid any generation loss.
+- Technical Implementation: The image is decoded in your browser and the selected region is drawn onto a canvas of exactly that size, then exported as PNG, JPEG or WebP. The selection can be set in pixels or locked to 1:1, 4:3, 16:9, 3:2 or 9:16. With a ratio locked, the height is always calculated from the width and rounded to whole pixels, and the selection is kept inside the image. Centre selection starts at 80% of the image width, then shrinks to fit if the ratio would make it taller than the picture. Pixels inside the selection are copied unchanged, but JPEG and WebP re-encode them at 92% quality. Choose PNG when you need to avoid any generation loss or keep transparency; JPEG fills transparent areas with white.
 - Use Cases:
-  * Squaring a photo for a profile picture.
-  * Trimming dead space from a screenshot before sharing it.
-  * Cutting a banner to an exact aspect ratio.
+  * Squaring a photo for a profile picture or a marketplace listing that requires 1:1.
+  * Trimming dead space, toolbars or private details from a screenshot before sharing it.
+  * Cutting a banner or video thumbnail to an exact 16:9 aspect ratio.
+  * Turning a landscape photo into a 9:16 frame for a phone story or wallpaper.
+  * Cropping ID scans, receipts or family photos that should not be uploaded to an online editor.
 - Key FAQs:
-  * Q: Can I lock to a common ratio?
-    A: Yes - 1:1, 4:3, 16:9, 3:2 and 9:16 presets are available, along with a free-form mode.
+  * Q: How do I crop an image online without uploading it?
+    A: Open or drop the picture, choose a ratio or type the crop size in pixels, press Crop image and download the result. The file is read and cropped by your browser; it is not sent to a server.
+  * Q: How do I crop an image to an exact aspect ratio?
+    A: Pick 1:1, 4:3, 3:2, 16:9 or 9:16, then press Centre selection. The height is derived from the width, and changing either field keeps the ratio locked. Choose Free to set both sides independently.
   * Q: How do I set the crop area?
-    A: Type the offset and size in pixels, or pick a ratio and use "centre selection". The highlighted overlay shows exactly what will be kept.
+    A: Type the X and Y offset and the width and height in pixels. The highlighted overlay shows exactly what will be kept, and the line under the fields reports the source and crop size.
   * Q: Is the crop lossless?
     A: The pixels inside your selection are copied unchanged, but saving as JPG re-encodes them. Choose PNG to avoid any generation loss.
+  * Q: Which image formats can I crop?
+    A: Any image your browser can display, typically JPG, PNG, WebP, GIF and AVIF. The cropped result downloads as PNG, JPEG or WebP; animated GIFs are flattened to a single frame.
 
 #### Image Converter
 - Canonical URL: https://ondevice-tools.org/tools/image-converter/
@@ -1028,8 +1040,12 @@
   * Diffing two API responses to isolate the field that changed.
   * Comparing documents under NDA, where a hosted diff tool would mean uploading both versions.
 - Key FAQs:
+  * Q: How do I compare two texts online?
+    A: Paste the original on the left and the changed version on the right. Differences appear immediately, side by side or as a unified diff, with counts of added, removed, changed and unchanged lines.
   * Q: What counts as a changed line?
     A: When a removed line and an added line line up, they are shown as one changed row with the differing words highlighted, rather than as two unrelated edits.
+  * Q: Can I find the difference between two strings?
+    A: Yes. Paste each string into one side. Two different single-line strings show as one changed row, and the side-by-side view highlights the words that differ unless almost every word changed.
   * Q: Can it handle large files?
     A: Yes. The comparison uses an algorithm whose cost scales with the number of differences, so two nearly identical files of several thousand lines compare in milliseconds.
   * Q: Is my text uploaded anywhere?

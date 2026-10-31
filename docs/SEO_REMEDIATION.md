@@ -1,4 +1,57 @@
-# SEO and AdSense remediation — updated 11 October 2026
+# SEO and AdSense remediation — updated 31 October 2026
+
+## Search Console review — 31 October
+
+Exports: Coverage, Performance (last 24 hours), Breadcrumbs and HTTPS, plus the "Discovered – currently not indexed" example list.
+
+- HTTPS: 21 of 21 URLs HTTPS. Breadcrumbs: 11 valid, 0 invalid. No action.
+- Indexing: 72 indexed. Redirect 35, canonical alternate 13, noindex 2, discovered-not-indexed 8, crawled-not-indexed 1.
+- The 8 never-crawled URLs: grid-generator, image-to-base64, images-to-pdf, json-validator, merge-pdf, split-pdf, word-counter, xml-formatter. Several had only two internal inbound links.
+- Performance: 40 impressions, 0 clicks, average position about 83. Crop Image and Text Compare took most impressions.
+- **The live site was older than this repository.** The 14 October descriptions and organization text were not deployed.
+
+Live redirect checks: slashless routes answered 307, not a permanent redirect. `http://www.` took three hops. `/404/` answers 200 with noindex because Cloudflare serves `404.html` there; this is expected.
+
+Changes:
+
+- `_redirects` now 301s every slashless route to its trailing-slash URL. Wrangler preview confirmed 301 before asset handling.
+- Related tools rail shows 6 tools, rotating from the current tool within its category. Every tool now has at least 3 internal inbound links; previously 19 had 2.
+- BreadcrumbList is emitted on category pages through a shared `breadcrumbs` option. Tool pages use the same helper.
+- Removed the WebSite SearchAction; Google retired the sitelinks search box. Added `inLanguage`.
+- Added og:image width, height and alt text.
+- Crop Image, Text Compare and Unix Timestamp Converter gained tested worked examples and limitations. Crop Image, Image Compressor, Text Compare and Timestamp Converter gained query-matched FAQs. Their `updated` dates are 31 October.
+
+Validation: build, lint, 58 Angular tests, 4 worker tests and `verify:review` pass. Worked examples are executed against the components in `tool-examples.spec.ts`.
+
+Owner actions:
+
+- Deploy with `npm run deploy`, then spot-check a slashless URL returns 301.
+- Add a Cloudflare redirect rule: `http://` and `www.` to `https://ondevice-tools.org` with path preserved, so the chain is one hop.
+- In URL Inspection, request indexing for the 8 never-crawled URLs and the 4 updated tool pages.
+- Do not validate "Page with redirect" or "Alternative page with proper canonical tag". Those URLs are intentionally not indexed.
+
+## Meta description warning — 14 October
+
+The supplied `ondevice-tools.org_FailingUrls_10_14_2026.csv` lists six URLs without a reason column. The owner clarified that the warning concerns short meta descriptions, rather than a Search Console crawl error.
+
+Live checks found four direct HTTP 200 responses and two expected 307 redirects from slashless addresses to canonical trailing-slash URLs. All six canonical pages were indexable, self-canonical and present in the live sitemap. No redirect, robots or hosting change was needed for this report.
+
+The local baseline contained 77 public descriptions below 150 characters. Added curated summaries for tools, categories and informational pages, and updated the homepage description. All **79 public pages** now have unique descriptions of **150–160 characters** in the generated HTML. Open Graph and Twitter descriptions use the same summary, including after browser navigation. The all-tools description already met the target.
+
+| Reported page | Before | After |
+| --- | ---: | ---: |
+| Remove Extra Spaces | 131 | 158 |
+| Word Counter | 133 | 158 |
+| Color Contrast Checker | 136 | 154 |
+| Age Calculator | 133 | 160 |
+| Case Converter | 141 | 155 |
+| Contact | 99 | 160 |
+
+Counts are characters in the generated meta description. The 150–160 range is a project editing target, not a Google rule or an indexing guarantee. [Google recommends relevant, distinct page summaries and truncates displayed snippets according to device width](https://developers.google.com/search/docs/appearance/snippet).
+
+Validation: production build, lint and the complete prerender review pass. The review now checks description length, uniqueness, single-tag output and matching sharing metadata. Browser checks confirm fresh descriptions when navigating from Word Counter to Text Tools, Case Converter and Contact. No new functional tests were added for this metadata-only change.
+
+These changes are local. Deploy the build, then rerun the audit against the public URLs. Search results can retain older snippets until recrawling, and Google may select its own text from a page. This CSV does not identify the earlier crawl/indexing exclusions.
 
 ## Evidence from the 11 October review
 

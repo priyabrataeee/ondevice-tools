@@ -214,7 +214,7 @@ export class ToolLayoutComponent implements OnInit {
   });
   protected readonly related = computed(() => {
     const t = this.tool();
-    return t ? this.toolService.related(t, 3) : [];
+    return t ? this.toolService.related(t, 6) : [];
   });
 
   /** Long-form copy for the pages that compete on high-volume search terms. */
