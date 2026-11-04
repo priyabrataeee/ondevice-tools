@@ -9,6 +9,7 @@ export const COLOR_TOOLS: Tool[] = [
     icon: 'palette',
     keywords: ['hex to rgb', 'hsl', 'cmyk', 'color picker', 'rgba', 'rgb to hex', 'hex to hsl', 'hsl to hex', 'rgb to hsl', 'color code converter'],
     added: '2026-02-26',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'How do I convert HEX to RGB?', a: 'Each pair of hex digits is one channel in base 16. #FF8800 is red 255, green 136, blue 0. The conversion is exact and reversible.' },
@@ -30,6 +31,7 @@ export const COLOR_TOOLS: Tool[] = [
     icon: 'contrast',
     keywords: ['wcag', 'accessibility', 'a11y', 'contrast ratio', 'readable', 'contrast checker', 'wcag contrast', 'colour contrast ratio', 'accessible colors'],
     added: '2026-02-26',
+    updated: '2026-11-04',
     trending: true,
     faqs: [
       { q: 'What ratio do I need?', a: 'WCAG AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 and 4.5:1 respectively.' },

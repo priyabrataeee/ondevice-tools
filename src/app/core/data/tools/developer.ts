@@ -3,13 +3,13 @@ import { Tool } from '../../tool.types';
 export const DEVELOPER_TOOLS: Tool[] = [
   {
     id: 'json-formatter',
-    updated: '2026-10-11',
     name: 'JSON Formatter',
     description: 'Format, beautify and validate JSON with 2 or 4 space indentation.',
     category: 'developer',
     icon: 'braces',
     keywords: ['beautify', 'pretty print', 'indent', 'json viewer', 'json beautifier', 'format json', 'json pretty print', 'json editor'],
     added: '2026-01-12',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -30,6 +30,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'check-circle',
     keywords: ['lint', 'syntax check', 'parse error', 'validate json', 'json checker', 'is my json valid'],
     added: '2026-01-18',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which JSON specification is used?', a: 'The validator uses the browser native JSON parser, which implements ECMA-404 / RFC 8259. Trailing commas, comments and single quotes are rejected.' },
       { q: 'Does it validate against a schema?', a: 'No. It validates syntax only. JSON Schema validation is a different problem and is not covered by this tool.' },
@@ -61,13 +62,13 @@ export const DEVELOPER_TOOLS: Tool[] = [
   },
   {
     id: 'jwt-decoder',
-    updated: '2026-10-11',
     name: 'JWT Decoder',
     description: 'Decode the header and payload of a JSON Web Token and inspect its claims.',
     category: 'developer',
     icon: 'key',
     keywords: ['json web token', 'bearer', 'claims', 'auth', 'oauth', 'decode jwt', 'jwt parser', 'jwt token decoder', 'read jwt'],
     added: '2026-02-02',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'How do I decode a JWT?', a: 'Paste the token. The header and payload are Base64url-encoded JSON and are decoded in your browser without a key, which is why a JWT should never carry anything you would not show the token holder.' },
@@ -88,6 +89,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'fingerprint',
     keywords: ['guid', 'unique id', 'v4', 'random', 'identifier', 'generate uuid', 'uuid v4', 'guid generator', 'random uuid'],
     added: '2026-01-22',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'Are these UUIDs random enough for production?', a: 'Yes. They come from the browser cryptographically secure random number generator and follow RFC 4122 version 4.' },
@@ -107,6 +109,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'regex',
     keywords: ['regexp', 'pattern', 'match', 'capture group', 'replace', 'regex tester online', 'test regex', 'regex101 alternative', 'javascript regex'],
     added: '2026-02-14',
+    updated: '2026-11-04',
     trending: true,
     faqs: [
       { q: 'Why does my regex work elsewhere but not here?', a: 'JavaScript regular expressions are not PCRE. Patterns copied from PHP, Python or Perl examples can behave differently or fail to compile. This tester uses the browser engine, so it matches what runs in your code.' },
@@ -127,6 +130,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'clock',
     keywords: ['crontab', 'schedule', 'job', 'timer', 'cron parser', 'cron expression', 'crontab generator', 'cron schedule'],
     added: '2026-03-03',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which cron dialect is supported?', a: 'The standard five-field Unix crontab format: minute, hour, day of month, month and day of week.' },
       { q: 'What does the next run list show?', a: 'The next five times the expression will fire, calculated in your local timezone from the current moment.' },
@@ -145,6 +149,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'code',
     keywords: ['base64', 'encode', 'decode', 'btoa', 'atob', 'url safe', 'base64 encode', 'base64 decode', 'base64 converter'],
     added: '2026-01-15',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'Does this handle emoji and accented characters?', a: 'Yes. Text is encoded as UTF-8 first, so any Unicode character round-trips correctly - unlike a raw call to the legacy btoa function.' },
@@ -164,6 +169,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'link',
     keywords: ['percent encoding', 'uri', 'query string', 'escape', 'unescape', 'url encode', 'url decode', 'percent encode', 'urlencode'],
     added: '2026-01-15',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What is the difference between the two modes?', a: 'Component mode escapes reserved characters such as ampersand, question mark, slash and equals, which is what you want for a single query value. Full URL mode leaves the URL structure intact.' },
       { q: 'Why is a space sometimes a plus sign?', a: 'Form submissions encode a space as a plus, while general percent-encoding uses %20. The decoder accepts both.' },
@@ -182,6 +188,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'file-code',
     keywords: ['escape html', 'entities', 'xss', 'nbsp', 'html encode', 'html decode', 'escape html entities'],
     added: '2026-02-08',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which characters are escaped?', a: 'In basic mode, the five characters that matter for markup safety: ampersand, less-than, greater-than, double quote and apostrophe. Full mode also escapes every non-ASCII character as a numeric entity.' },
       { q: 'Is escaping enough to prevent XSS?', a: 'HTML-escaping untrusted text before inserting it into markup prevents the most common injection, but attribute and script contexts need their own escaping rules.' },
@@ -222,6 +229,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'hash',
     keywords: ['sha256', 'sha512', 'checksum', 'digest', 'crypto', 'md5', 'sha256 generator', 'md5 generator', 'hash calculator', 'checksum generator'],
     added: '2026-02-20',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do I generate a SHA-256 hash?', a: 'Type or paste your text and pick SHA-256. Hashing uses the browser Web Crypto API, so the input never leaves your device.' },
       { q: 'Can I use this to hash passwords?', a: 'No. Use a deliberately slow, salted algorithm such as bcrypt, scrypt or Argon2. A plain SHA or MD5 hash of a common password is trivially reversed with a lookup table.' },
@@ -242,6 +250,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'database',
     keywords: ['beautify sql', 'query', 'pretty print', 'postgres', 'mysql', 'format sql', 'sql beautifier', 'sql pretty print'],
     added: '2026-03-12',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which SQL dialects are supported?', a: 'The formatter is dialect-agnostic. It recognises standard clauses and operators shared by PostgreSQL, MySQL, SQL Server and SQLite.' },
       { q: 'Will it change my query?', a: 'No. Only whitespace and keyword casing change; string literals, identifiers and comments are preserved exactly.' },
@@ -279,6 +288,7 @@ export const DEVELOPER_TOOLS: Tool[] = [
     icon: 'file-text',
     keywords: ['yml', 'yaml parser', 'json to yaml', 'config', 'kubernetes', 'yaml to json', 'yaml converter', 'yaml validator'],
     added: '2026-03-20',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do I convert YAML to JSON?', a: 'Paste the YAML and the JSON equivalent appears, which shows exactly how a tool will interpret your indentation. The reverse direction converts JSON back to YAML.' },
       { q: 'Which YAML features are supported?', a: 'The common configuration subset: nested mappings, sequences, scalars, quoted strings, comments, multi-line block scalars and inline flow collections.' },

@@ -9,6 +9,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'shadow',
     keywords: ['drop shadow', 'elevation', 'inset', 'material shadow', 'css box shadow generator', 'box shadow css'],
     added: '2026-01-14',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'What do the four lengths mean?', a: 'In order: horizontal offset, vertical offset, blur radius and spread radius. Offsets move the shadow, blur softens the edge and spread grows or shrinks it.' },
@@ -28,6 +29,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'gradient',
     keywords: ['linear gradient', 'radial', 'conic', 'background', 'color stops', 'css gradient generator', 'linear gradient css', 'gradient background'],
     added: '2026-01-14',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -48,6 +50,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'corner',
     keywords: ['rounded corners', 'blob', 'squircle', 'elliptical', 'border radius css', 'rounded corners css'],
     added: '2026-02-12',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What does the slash in the shorthand mean?', a: 'Values before the slash are horizontal radii and values after it are vertical radii, which is how you make elliptical rather than circular corners.' },
       { q: 'How do I make a circle?', a: 'Set every corner to 50% on a square element.' },
@@ -66,6 +69,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'ruler',
     keywords: ['fluid typography', 'responsive', 'vw', 'rem', 'min max', 'css clamp calculator', 'fluid typography calculator'],
     added: '2026-02-28',
+    updated: '2026-11-04',
     trending: true,
     faqs: [
       { q: 'How does clamp work?', a: 'It takes a minimum, a preferred value and a maximum, and returns the preferred value clamped between the other two.' },
@@ -85,6 +89,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'columns',
     keywords: ['flex', 'justify content', 'align items', 'layout', 'flex-wrap', 'flexbox generator', 'css flexbox playground'],
     added: '2026-03-08',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What is the difference between justify-content and align-items?', a: 'justify-content distributes items along the main axis, align-items positions them on the cross axis. Flex direction decides which axis is which.' },
       { q: 'Why do my items not wrap?', a: 'flex-wrap defaults to nowrap, so items shrink instead of moving to a new line. Set it to wrap.' },
@@ -103,6 +108,7 @@ export const CSS_TOOLS: Tool[] = [
     icon: 'grid',
     keywords: ['grid template', 'columns', 'rows', 'gap', 'layout', 'fr', 'css grid generator', 'grid layout generator'],
     added: '2026-03-08',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What is the fr unit?', a: 'A fraction of the free space left after fixed-size tracks are laid out. Two tracks of 1fr each take half the remaining space.' },
       { q: 'When should I use grid instead of flexbox?', a: 'Grid controls rows and columns at once. Reach for it whenever alignment has to work in both directions.' },

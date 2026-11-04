@@ -66,7 +66,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
           <div class="ml-auto flex items-center gap-0.5 sm:gap-2">
             <button
               type="button"
-              class="hidden items-center gap-2 rounded-lg border border-line bg-bg-subtle px-3 py-1.5 text-sm text-faint transition-colors hover:border-line-strong hover:text-fg lg:flex"
+              class="hidden items-center gap-2 rounded-lg border border-line bg-bg-subtle px-3 py-1.5 text-sm text-faint transition-colors hover:border-line-strong hover:text-fg whitespace-nowrap xl:flex"
               (click)="palette.open()"
             >
               <app-icon name="search" class="h-4 w-4" />
@@ -76,7 +76,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
 
             <button
               type="button"
-              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9 lg:hidden"
+              class="btn btn-ghost h-8 w-8 !p-0 sm:h-9 sm:w-9 xl:hidden"
               (click)="palette.open()"
               aria-label="Search tools"
             >
@@ -87,7 +87,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="header-coffee hidden items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors lg:inline-flex"
+              class="header-coffee hidden items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors xl:inline-flex"
             >
               <app-icon name="coffee" class="h-4 w-4" />
               Buy me a coffee
@@ -97,7 +97,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               [href]="donationUrl"
               target="_blank"
               rel="noopener nofollow"
-              class="header-coffee flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9 lg:hidden"
+              class="header-coffee flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9 xl:hidden"
               aria-label="Buy me a coffee"
             >
               <app-icon name="coffee" class="h-4.5 w-4.5" />
@@ -264,6 +264,7 @@ export class MainLayoutComponent {
   protected readonly navLinks = [
     { path: '/', label: 'Home' },
     { path: '/tools', label: 'All tools' },
+    { path: '/guides', label: 'Guides' },
     { path: '/favorites', label: 'Favourites' },
   ];
 
@@ -288,6 +289,8 @@ export class MainLayoutComponent {
         title: 'Site',
         items: [
           { path: '/tools', label: 'All tools', external: false },
+          { path: '/guides', label: 'Guides', external: false },
+          { path: '/changelog', label: 'What’s new', external: false },
           { path: '/favorites', label: 'Favourites', external: false },
           { path: '/about', label: 'About', external: false },
           { path: '/contact', label: 'Contact', external: false },

@@ -16,6 +16,8 @@ import { UnitGroup, formatUnitValue } from '../lib/units';
   template: `
     <app-tool-layout [toolId]="toolId()">
       <div class="flex flex-col gap-5">
+        <ng-content select="[converterControls]" />
+
         <div class="grid gap-4 sm:grid-cols-[1fr_200px]">
           <div>
             <label class="label" for="uc-value">Value</label>
@@ -32,11 +34,13 @@ import { UnitGroup, formatUnitValue } from '../lib/units';
             <select
               id="uc-unit"
               class="select"
-              [value]="selectedId()"
               (change)="unitId.set($any($event.target).value)"
             >
+              <!-- Selection is bound per option: a [value] on the select is applied
+                   before the options of a newly chosen quantity exist, so the browser
+                   would fall back to the first option while results used another. -->
               @for (unit of group().units; track unit.id) {
-                <option [value]="unit.id">{{ unit.name }} ({{ unit.symbol }})</option>
+                <option [value]="unit.id" [selected]="unit.id === selectedId()">{{ unit.name }} ({{ unit.symbol }})</option>
               }
             </select>
           </div>
@@ -112,10 +116,16 @@ export class UnitConverterComponent {
     return raw === '' || !Number.isFinite(Number(raw));
   });
 
-  /** Falls back to the wrapper's default until the user picks a unit. */
-  protected readonly selectedId = computed(
-    () => this.unitId() || this.defaultUnit() || this.group().units[0].id,
-  );
+  /**
+   * Falls back to the wrapper's default until the user picks a unit, and again
+   * when the group changes to one that does not contain the picked unit.
+   */
+  protected readonly selectedId = computed(() => {
+    const units = this.group().units;
+    const picked = this.unitId();
+    if (picked && units.some((u) => u.id === picked)) return picked;
+    return this.defaultUnit() || units[0].id;
+  });
 
   private readonly activeUnit = computed(() => {
     const units = this.group().units;

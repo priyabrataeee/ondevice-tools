@@ -9,6 +9,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'percent',
     keywords: ['percent', 'increase', 'decrease', 'ratio', 'change', 'percentage increase', 'percentage decrease', 'percent of a number', 'percentage change'],
     added: '2026-01-12',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'What is the difference between percentage change and percentage points?', a: 'Going from 10% to 12% is a two percentage point rise but a 20% relative increase. The two are often confused in reporting.' },
@@ -28,6 +29,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'bank',
     keywords: ['loan', 'mortgage', 'home loan', 'car loan', 'amortisation', 'instalment', 'home loan emi calculator', 'car loan emi calculator', 'personal loan emi', 'loan calculator', 'emi calculation', 'amortisation schedule'],
     added: '2026-02-06',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -50,6 +52,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'receipt',
     keywords: ['tax', 'vat', 'gst india', 'inclusive', 'exclusive', 'cgst', 'sgst', 'gst calculator india', 'reverse gst', 'gst inclusive', 'gst exclusive', 'igst'],
     added: '2026-02-06',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do I remove GST from a price?', a: 'Divide the inclusive price by (1 + rate/100). At 18 percent, divide by 1.18; the difference between the two figures is the tax.' },
       { q: 'What is the difference between CGST, SGST and IGST?', a: 'Intra-state supply splits the tax equally into CGST and SGST. Inter-state supply uses a single IGST at the full rate.' },
@@ -70,6 +73,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'trending-up',
     keywords: ['mutual fund', 'investment', 'monthly', 'returns', 'wealth', 'sip return calculator', 'mutual fund calculator', 'step up sip', 'sip maturity'],
     added: '2026-02-16',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'How much will a 5,000 monthly SIP grow to?', a: 'That depends on the return and the period. Enter the amount, expected annual return and duration, and the calculator separates what you invested from the projected gain. Market returns vary, so treat it as an illustration.' },
@@ -90,6 +94,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'chart',
     keywords: ['interest', 'savings', 'growth', 'annual', 'quarterly', 'monthly', 'compound interest', 'fd calculator', 'rd calculator', 'interest calculator'],
     added: '2026-02-16',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How does compounding frequency change the result?', a: 'More frequent compounding earns interest on interest sooner, so the effective annual rate rises slightly as frequency increases.' },
       { q: 'What is the difference from simple interest?', a: 'Simple interest is always calculated on the original principal. Compound interest is calculated on principal plus accumulated interest, which is what makes growth exponential.' },
@@ -108,6 +113,7 @@ export const CALCULATOR_TOOLS: Tool[] = [
     icon: 'tag',
     keywords: ['sale', 'off', 'markdown', 'price', 'savings', 'coupon', 'discount percentage', 'sale price calculator', 'percent off'],
     added: '2026-02-22',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do stacked discounts work?', a: 'They multiply rather than add. 20% off then a further 10% off is 28% off in total, not 30%.' },
       { q: 'Can I work backwards from the sale price?', a: 'Yes, enter the original and final price and the tool reports the effective discount percentage.' },

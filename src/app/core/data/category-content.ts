@@ -17,454 +17,447 @@ export interface CategoryContent {
   }[];
 }
 
+/**
+ * Category hub copy. Every claim here must match what the tools actually do:
+ * reviewers and visitors check, and a confident claim the tool cannot back up
+ * costs more trust than a modest accurate one.
+ */
 export const CATEGORY_CONTENT: Record<CategoryId, CategoryContent> = {
   developer: {
-    headline: 'Private Developer Utilities for Coding, Debugging and Data Interchange',
+    headline: 'Developer tools for inspecting and reshaping data',
     leadParagraph:
-      'Modern software engineering requires frequent inspection, transformation and validation of sensitive payloads — from production JWT tokens and database credentials to raw API responses and environment configs. OnDevice Tools executes every developer utility locally inside your browser engine, guaranteeing that proprietary schemas, keys and customer payloads are never transmitted to external servers.',
+      'Format and validate JSON, decode JWTs, test regular expressions, build cron schedules, hash text and files, and tidy SQL, XML and YAML. Inputs are processed by JavaScript in your tab; the page also loads analytics and, on tool pages, advertising scripts, which never receive what you type.',
     sections: [
       {
-        heading: 'Why Local Browser Execution Matters for Developers',
+        heading: 'What runs where',
         body: [
-          'Many hosted developer utilities operate as cloud proxies: when you paste a JSON payload, format an SQL query, or decode a JWT, your data travels over the public internet to third-party servers. If that payload contains authentication headers, session IDs, private API keys, or GDPR-governed personal data, sending it to an unverified third-party host constitutes a serious security and compliance breach.',
-          'OnDevice Tools completely eliminates that risk by utilizing native JavaScript and browser web APIs. JSON manipulation runs directly through the V8/SpiderMonkey JSON engine (RFC 8259). Hashing is executed via the browser’s audited Web Crypto API (SubtleCrypto), and regex matching compiles against the native RegExp engine. Nothing is uploaded, cached, or logged on any remote server.',
+          'JSON parsing uses a formatter that preserves number literals and duplicate keys exactly as written. Hashing uses the browser’s Web Crypto API (SHA-1, SHA-256, SHA-384, SHA-512). Regular expressions run in a separate worker with a time limit, so a catastrophic pattern cannot freeze the page.',
+          'The SQL formatter is a small dialect-agnostic pretty-printer: it re-indents and re-cases keywords but does not validate SQL against any particular database. The YAML tool covers the configuration subset — mappings, sequences, scalars, block scalars and flow collections — and reports anchors, aliases, tags and multi-document files instead of guessing.',
         ],
       },
       {
-        heading: 'Built-in Syntax Integrity and Standard Compliance',
+        heading: 'Limits worth knowing',
         body: [
-          'Every formatter and parser in this collection strictly follows industry standards rather than heuristic guessing. The JSON tools adhere to ECMA-404 / RFC 8259; the SQL formatter enforces ANSI/ISO SQL grammar; the YAML engine handles standard YAML 1.2 configuration structures; and the JWT decoder parses RFC 7519 claims without requesting or exposing your signing keys.',
-          'Because these tools run natively on your machine, there are zero artificial rate limits, no CAPTCHA interruptions, and zero latency introduced by server round-trips.',
+          'Everything is held in your tab’s memory, so very large inputs are limited by your device rather than a server quota. A formatted multi-megabyte JSON file renders slowly on a phone. The JWT decoder shows the header and claims but does not verify signatures, because that would require your signing key.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Inspecting and Debugging Production API Responses',
+        title: 'Debugging an API response',
         steps: [
-          'Copy minified or obfuscated JSON payloads directly from your browser DevTools Network tab or server logs.',
-          'Use the JSON Formatter to pretty-print with consistent 2-space or 4-space indentation and inspect nested objects.',
-          'Verify syntax errors with the JSON Validator to locate line and column offsets of malformed characters.',
-          'Minify the cleaned payload for efficient production transmission or Git fixture storage.',
+          'Copy the response body from your browser’s network panel or a log line.',
+          'Paste it into JSON Formatter to indent it, or JSON Validator to get the line and column of the first syntax error.',
+          'Minify the corrected payload with JSON Minifier if you need it back on one line.',
         ],
       },
       {
-        title: 'Verifying Authentication Tokens and Claims',
+        title: 'Checking why a token is rejected',
         steps: [
-          'Paste a JSON Web Token into the JWT Decoder to inspect header algorithms (alg) and token type (typ).',
-          'Audit payload claims including expiration timestamps (exp), issued-at (iat), roles, and tenant identifiers.',
-          'Compare timestamps against current UTC time to diagnose unexpected 401 Unauthorized errors without exposing secrets.',
+          'Paste the token into JWT Decoder and read the exp, iat and nbf claims, shown as readable dates.',
+          'Compare exp with the current time in Unix Timestamp Converter to confirm whether it has expired.',
+          'Use a synthetic or expired token where possible; avoid pasting live credentials into any website.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Are production tokens, passwords or database queries uploaded to any server?',
-        a: 'No. Every calculation, decoding and formatting operation occurs 100% inside your browser session. You can inspect the Network tab in your developer tools or run the tools completely offline to verify zero data egress.',
+        q: 'Is what I paste sent to a server?',
+        a: 'No. Tool inputs are processed in your browser and there is no processing backend. You can confirm this in your browser’s network panel: typing into a tool makes no requests.',
       },
       {
-        q: 'How large a JSON or SQL document can be processed?',
-        a: 'Because processing is constrained only by your device memory and browser JavaScript heap, you can comfortably format documents spanning tens of megabytes without hitting hosted API payload limits.',
+        q: 'Does the SQL formatter support my database?',
+        a: 'It formats common SQL in any dialect by tokenising keywords, strings, identifiers and comments. It does not check syntax, so invalid SQL is formatted rather than rejected.',
       },
       {
         q: 'Can the JWT decoder verify signatures?',
-        a: 'No, and by design. Signature verification requires sharing your public certificate or signing secret. A web-based tool asking for signing secrets creates severe security risks; token decoding allows claim inspection while keeping secrets securely inside your private infrastructure.',
+        a: 'No. Verification needs the issuer’s secret or public key, and asking for a signing secret on a web page would be unsafe. Decoding shows what a token claims; only your backend can confirm it.',
       },
     ],
   },
 
   text: {
-    headline: 'High-Performance Text Analysis, Cleanup and Manipulation',
+    headline: 'Text tools for counting, cleaning and comparing',
     leadParagraph:
-      'Writing, content editing, and text normalization frequently involve sensitive manuscripts, internal drafts, code comments, and legal briefs. Our text tools run on-device, offering instant line sorting, deduplication, word counts, and diff comparisons with zero network transmission.',
+      'Compare two versions of a document, count words and characters, estimate reading time, remove duplicate lines or extra spaces, sort lines, change case, make URL slugs and generate placeholder text. Your text stays in the page.',
     sections: [
       {
-        heading: 'Instantaneous Text Processing Without Cloud Latency',
+        heading: 'How the main tools work',
         body: [
-          'Sending large text documents to remote servers for simple operations like sorting lines or counting words introduces latency, bandwidth waste, and confidentiality concerns. OnDevice Tools handles string manipulation directly in memory using optimized JavaScript algorithms.',
-          'Whether you are diffing two configuration revisions, generating URL-friendly slugs for articles, or normalizing erratic whitespace across thousands of lines, all computations finish in milliseconds without waiting for server response queues.',
-        ],
-      },
-      {
-        heading: 'Precision Diffing and Text Statistics',
-        body: [
-          'Our Text Compare utility implements an in-memory diff algorithm that highlights character-by-character and line-by-line variances cleanly. Meanwhile, our word and character counters compute reading time, sentence density, and byte sizes accurately across Unicode scripts.',
+          'Text Compare aligns lines with the Myers diff algorithm, the approach behind git diff, then highlights the changed words inside each changed line. Case, whitespace and blank lines can each be ignored, and the result downloads as a unified diff.',
+          'Word Counter counts characters as you see them, so an emoji or an accented letter counts as one. It also reports sentences, paragraphs, unique words, reading time and speaking time. Reading Time lets you set your own reading and speaking speeds.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Cleaning Up Raw Datasets and Lists',
+        title: 'Cleaning a pasted list',
         steps: [
-          'Paste raw data containing duplicate entries or sporadic spacing into Remove Extra Spaces or Remove Duplicate Lines.',
-          'Use Sort Lines to alphabetize or organize records in ascending or descending sequence.',
-          'Copy the sanitized, normalized output directly into your application, spreadsheet, or code repository.',
+          'Paste the list into Remove Extra Spaces to collapse repeated spaces and trim each line.',
+          'Run it through Remove Duplicate Lines, with case-insensitive matching if needed.',
+          'Order it with Sort Lines: alphabetical, natural (item2 before item10) or numeric.',
         ],
       },
       {
-        title: 'Draft Auditing and Publishing Preparation',
+        title: 'Preparing an article for publishing',
         steps: [
-          'Check word count, character count, and estimated reading time using the Reading Time calculator.',
-          'Generate clean, kebab-case URL slugs from your draft headlines with the Slug Generator.',
-          'Standardize capitalization across headlines using the Case Converter (Title Case, camelCase, UPPERCASE, lowercase).',
+          'Check length and reading time in Word Counter.',
+          'Turn the headline into a URL slug with Slug Generator.',
+          'Fix capitalisation of headings with Case Converter.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Is my text cached or logged by OnDevice Tools?',
-        a: 'Never. Your text exists only in the DOM and memory of your current browser tab. Once you close the tab or clear the input, all data is permanently discarded.',
+        q: 'Is my text stored anywhere?',
+        a: 'Not by these tools. Text lives in the page while it is open and is not sent to a server. Close the tab or clear the field to discard it.',
       },
       {
-        q: 'Does the text comparison tool work with code files?',
-        a: 'Yes. It accurately diffs code snippets, JSON payloads, Markdown articles, and plain text files with syntax whitespace preservation.',
+        q: 'Can Text Compare diff code?',
+        a: 'Yes, as plain text. It compares line by line, so reformatted code or JSON with reordered keys shows as changes; format both sides first for a cleaner diff.',
       },
       {
-        q: 'How does the reading time calculator estimate duration?',
-        a: 'It uses standard reading speed averages (typically 200–250 words per minute for silent adult reading) and adjusts for sentence complexity and word density.',
+        q: 'How is reading time estimated?',
+        a: 'Word count divided by a words-per-minute rate. Reading Time lets you choose the rate. Neither tool adjusts for how difficult the text is.',
       },
     ],
   },
 
   image: {
-    headline: 'Client-Side Image Compression, Resizing and Conversion',
+    headline: 'Image tools that work on your own device',
     leadParagraph:
-      'Optimize web graphics, generate custom favicons, create QR codes, and convert image formats without uploading personal photos or proprietary artwork to cloud conversion queues. Everything is rendered and compressed using hardware-accelerated HTML5 Canvas and Web APIs.',
+      'Compress, resize, crop and convert images, extract colour palettes, convert to and from Base64, generate favicons and make QR codes. Images are decoded and re-encoded by your browser’s own canvas, so they are not uploaded.',
     sections: [
       {
-        heading: 'Browser-Native Graphic Processing with Canvas & Web APIs',
+        heading: 'What the canvas pipeline means for your files',
         body: [
-          'Traditional online image compressors require uploading megabytes of image data to a remote server, where they sit in cloud storage buckets before being compressed and returned. This model is slow, consumes mobile data, and exposes private photos, personal identification scans, and proprietary design mockups to third-party cloud infrastructure.',
-          'OnDevice Tools utilizes the HTML5 Canvas API and browser-native image codecs (JPEG, PNG, WebP). Your image is read directly from your local file system via the File API, drawn to an in-memory canvas, downscaled or cropped, and re-encoded using native browser methods. The entire pipeline happens on your local CPU/GPU.',
+          'Each tool reads the file with the File API, draws it onto a canvas and exports the result as PNG, JPEG or WebP using the codecs your browser already has. Which formats you can open depends on the browser; JPEG, PNG, WebP and GIF work everywhere current, and AVIF in most.',
+          'Two side effects follow. Metadata such as camera details and GPS location is not copied into the output, which is useful before sharing a photo. And JPEG has no transparency, so transparent areas are filled with white when you export to JPEG.',
         ],
       },
       {
-        heading: 'Lossy and Lossless Optimization for Web Performance',
+        heading: 'Choosing quality and format',
         body: [
-          'Web performance depends on minimal payload sizes. Our image compression and format conversion tools enable precise quality adjustments so you can achieve the ideal balance between visual clarity and file size reduction before deploying assets to production.',
+          'For photos, JPEG or WebP at 75–85% quality usually removes most of the file size without a visible change. Use PNG for screenshots, line art and anything needing exact pixels or transparency. Re-encoding an already-optimised PNG can make it larger; converting it to WebP is often the better move.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Optimizing Images for Web and Mobile Apps',
+        title: 'Getting a photo under an upload limit',
         steps: [
-          'Select source photos or artwork from your device via drag-and-drop.',
-          'Adjust dimensions in Image Resizer or crop to specific aspect ratios using Crop Image.',
-          'Tune compression quality in Image Compressor or convert to modern WebP for smaller asset sizes.',
-          'Download the compressed asset immediately with zero upload waiting time.',
+          'Open the photo in Image Compressor and lower the quality until the preview still looks right.',
+          'If it is still too large, set a maximum width; a 4000 px camera photo rarely needs to be wider than 1600 px on the web.',
+          'Compare the before and after sizes, then download.',
         ],
       },
       {
-        title: 'Generating Production Favicon Bundles',
+        title: 'Making a favicon set',
         steps: [
-          'Upload your brand logo or icon into the Favicon Generator.',
-          'Preview automatic scaling across standard browser resolutions (16x16, 32x32, 48x48, 180x180 Apple Touch Icon, 192x192 PWA, 512x512 splash).',
-          'Download the packaged icon set and integrate it directly into your HTML head tags.',
+          'Open a square logo in Favicon Generator.',
+          'Check the previews at 16 and 32 px, where detail disappears first.',
+          'Download the nine PNG sizes from 16 to 512 px, then paste the generated link tags and manifest entries into your site.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Are my photos or images sent to a server for compression?',
-        a: 'No. The image never leaves your device. All decoding, pixel resampling, and re-encoding occur locally inside your browser via the HTML5 Canvas API.',
+        q: 'Are my images uploaded?',
+        a: 'No. Decoding, resizing and encoding happen in your browser. Nothing about the image is sent to a server.',
       },
       {
-        q: 'Can I compress or resize large high-resolution images?',
-        a: 'Yes. Modern desktop and mobile browsers can easily handle photos from DSLR cameras and modern smartphones up to several dozen megapixels.',
+        q: 'How large an image can I process?',
+        a: 'That depends on your device memory. Phone photos of 12–50 megapixels work on most current devices; very large panoramas can fail on older phones.',
       },
       {
-        q: 'Which output formats are supported?',
-        a: 'We support modern web formats including WebP, PNG, JPEG, Base64 data URIs, and ICO bundles for favicons.',
+        q: 'Which output formats are available?',
+        a: 'PNG, JPEG and WebP for image files, Base64 data URIs from Image to Base64, and PNG icon sets from Favicon Generator. No ICO file is produced; current browsers use PNG favicons.',
       },
     ],
   },
 
   pdf: {
-    headline: 'Private In-Browser PDF Assembly, Splitting and Page Rotation',
+    headline: 'PDF tools that keep documents on your device',
     leadParagraph:
-      'Manage business contracts, financial statements, academic papers, and tax documents with complete peace of mind. Our PDF suite merges, splits, rotates, and converts images to PDF directly in browser memory without sending a single byte to an external server.',
+      'Merge PDFs, split out page ranges, rotate pages and turn images into a PDF. Files are read into your tab’s memory, edited with the open-source pdf-lib JavaScript library and saved straight back to your downloads.',
     sections: [
       {
-        heading: 'Zero-Upload Document Security for Sensitive Records',
+        heading: 'What changes and what does not',
         body: [
-          'Uploading sensitive PDF documents (containing bank statements, tax IDs, signed contracts, or medical records) to cloud PDF services is one of the most common vectors for unintended data exposure. Many third-party online PDF tools retain documents in temporary storage or utilize cloud workers that parse text and metadata.',
-          'OnDevice Tools processes PDF files using a pure client-side WebAssembly and JavaScript PDF engine (`pdf-lib`). The binary stream is parsed directly in browser memory, pages are rearranged, rotated, or merged, and the new PDF file is generated and saved directly to your downloads folder.',
+          'These tools copy and rearrange existing page objects, so text stays selectable and vector graphics stay sharp; nothing is rasterised or recompressed. Rotation changes each page’s rotation setting rather than redrawing it.',
+          'Document-level features do not always survive. Merged files drop form field values and digital signatures, because a signature covers one specific document. Password-protected PDFs need to be unlocked before they can be opened.',
         ],
       },
       {
-        heading: 'Full Structural Fidelity and Cross-Platform Compatibility',
+        heading: 'Why local processing matters for PDFs',
         body: [
-          'Our PDF utilities preserve vector graphics, fonts, embedded images, and document structures without rasterization artifacts. Because operations do not involve server round-trips, even multi-hundred-page documents can be re-indexed and exported in seconds.',
+          'Bank statements, contracts, payslips and medical letters are exactly the files people need to merge or split, and the files least suited to an upload service. Here the work happens in your browser, and splitting out a page range produces a file that does not contain the other pages at all.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Merging Multi-Part Documents and Invoices',
+        title: 'Combining scanned pages into one file',
         steps: [
-          'Select two or more PDF files from your local storage in Merge PDF.',
-          'Arrange the files in your preferred sequence.',
-          'Click Merge to instantaneously bundle all pages into a unified document and download it locally.',
+          'Add the PDFs to Merge PDF.',
+          'Use the up and down buttons to put them in order.',
+          'Merge and download the combined document.',
         ],
       },
       {
-        title: 'Extracting and Splitting Key Sections',
+        title: 'Sending only the pages someone needs',
         steps: [
-          'Open your document in Split PDF and specify the desired page ranges or individual page numbers.',
-          'Export the exact pages needed for client delivery or archival without exposing the rest of the file.',
+          'Open the document in Split PDF.',
+          'Enter the pages or ranges to keep.',
+          'Download the new file; the original is not modified.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Is there any file size limit for PDF processing?',
-        a: 'There is no artificial server limit. Because processing uses your local device RAM, most modern computers and phones can comfortably handle PDFs with hundreds of pages.',
+        q: 'Is there a file size limit?',
+        a: 'No fixed limit, but everything is held in memory, so the practical limit is your device’s RAM. Large scanned documents are the most likely to fail on a phone.',
       },
       {
-        q: 'Does splitting or rotating a PDF degrade text or image quality?',
-        a: 'No. Operations modify document page trees and orientation metadata directly without re-compressing or rasterizing vector text or images.',
+        q: 'Does rotating or splitting reduce quality?',
+        a: 'No. Pages are copied as they are, without re-encoding text or images.',
       },
       {
-        q: 'Can I use these PDF tools while offline?',
-        a: 'Yes. Once cached by our Service Worker, the PDF tools function fully without an internet connection.',
+        q: 'Do the PDF tools work offline?',
+        a: 'Usually, after your first visit. A service worker caches the application files, so a browser that has loaded the site before can open the tools without a connection.',
       },
     ],
   },
 
   css: {
-    headline: 'Modern CSS Generators and Layout Assistants',
+    headline: 'Visual generators for everyday CSS',
     leadParagraph:
-      'Craft modern, responsive user interfaces with visual generators that output clean, performant CSS code. Design layered box shadows, fluid clamp typography, smooth gradients, flexbox alignments, and responsive CSS grid architectures visually.',
+      'Build box shadows, gradients, border radii, fluid clamp() values, flexbox layouts and grid templates by adjusting controls and watching a live preview, then copy plain CSS.',
     sections: [
       {
-        heading: 'Interactive Visual Design with Zero-Boilerplate Output',
+        heading: 'Plain output you can paste anywhere',
         body: [
-          'Writing complex modern CSS features by hand — such as multi-layered ambient shadows, complex linear/radial gradients, or fluid typography formulas with `clamp()` — often involves tedious trial-and-error in developer tools.',
-          'Our CSS generators provide real-time interactive previews and immediately generate clean, standard-compliant CSS properties that you can paste directly into your stylesheets, Tailwind configuration, or CSS-in-JS components.',
+          'Each generator writes standard CSS properties with no preprocessor syntax or framework classes. The output works in any current browser and can go into a stylesheet, a CSS module or an inline style.',
+          'Box Shadow Generator supports several layers per shadow, including inset layers, because realistic depth usually comes from a tight dark shadow combined with a wide soft one.',
         ],
       },
       {
-        heading: 'Fluid Typography and Modern Layout Systems',
+        heading: 'Fluid sizes with clamp()',
         body: [
-          'Modern responsive design has moved beyond rigid media queries. Our Clamp Generator formulates mathematically smooth viewport-based fluid scaling between defined minimum and maximum dimensions, ensuring seamless transitions across mobile, tablet, and ultra-wide screens.',
+          'Clamp Generator turns a minimum size at a small viewport and a maximum size at a large viewport into one clamp() expression — for example, 16 px at 320 px wide growing to 24 px at 1280 px wide. It rejects reversed or non-positive viewport bounds rather than producing a formula that shrinks as the screen grows.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Designing Multi-Layered Soft Box Shadows',
+        title: 'Designing a soft card shadow',
         steps: [
-          'Adjust elevation, blur radius, spread, opacity, and color in the Box Shadow Generator.',
-          'Layer multiple shadow passes to create realistic lighting and depth.',
-          'Copy the synthesized `box-shadow` CSS rule directly into your design system.',
+          'Start from a preset in Box Shadow Generator.',
+          'Add a second layer with a larger blur and lower opacity.',
+          'Copy the box-shadow declaration.',
         ],
       },
       {
-        title: 'Building Fluid Responsive Typography',
+        title: 'Making headings scale with the screen',
         steps: [
-          'Define minimum font size for mobile viewports (e.g. 320px) and maximum font size for desktop viewports (e.g. 1280px).',
-          'Let the Clamp Generator calculate the precise viewport slope and intercept values.',
-          'Copy the single-line `font-size: clamp(...)` rule to replace multiple media queries.',
+          'Enter the smallest and largest font sizes and the viewport widths where each should apply.',
+          'Check the preview at both ends.',
+          'Copy the clamp() value in place of separate media queries.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Do the generated CSS properties work across all modern browsers?',
-        a: 'Yes. All generated styles adhere to modern W3C CSS specifications supported by all major evergreen browsers (Chrome, Edge, Firefox, Safari).',
+        q: 'Which browsers support the generated CSS?',
+        a: 'All current versions of Chrome, Edge, Firefox and Safari. clamp() and gap in flexbox need browsers released from 2020 onwards.',
       },
       {
-        q: 'Can I use the CSS output in frameworks like React, Vue, or Tailwind?',
-        a: 'Yes. The generated CSS rules can be pasted into standard stylesheets, inline styles, CSS modules, or mapped to Tailwind theme configuration.',
+        q: 'Can I use the output with Tailwind or CSS-in-JS?',
+        a: 'Yes, as arbitrary values or style objects. The generators output plain CSS, not framework-specific classes.',
       },
       {
-        q: 'Are any styles or user inputs transmitted to external analytics?',
-        a: 'No. Your adjustments and style configurations run entirely locally in your browser session.',
+        q: 'Are my settings saved?',
+        a: 'No. Settings reset when you leave the page, so copy the CSS before navigating away.',
       },
     ],
   },
 
   color: {
-    headline: 'Color Space Conversions and WCAG Accessibility Auditing',
+    headline: 'Colour conversion and contrast checking',
     leadParagraph:
-      'Translate color coordinates across HEX, RGB, HSL, and modern color spaces, and ensure digital interfaces meet WCAG 2.1 AA and AAA contrast accessibility standards for legible, inclusive design.',
+      'Convert a colour between HEX, RGB, HSL, HSB and CMYK, and check text and background pairs against the WCAG 2.1 contrast thresholds.',
     sections: [
       {
-        heading: 'Accessible Contrast Ratios for Inclusive Web Applications',
+        heading: 'Contrast that matches the specification',
         body: [
-          'Digital accessibility is a legal and ethical requirement for modern websites. WCAG guidelines mandate minimum contrast ratios between foreground text and background surfaces (4.5:1 for normal text and 3:1 for large text at Level AA; 7:1 and 4.5:1 at Level AAA).',
-          'Our Contrast Checker evaluates relative luminance precisely according to W3C formulas and gives clear pass/fail feedback for both small and large text sizes, helping designers and front-end developers catch accessibility barriers before shipping to production.',
+          'Contrast Checker linearises each sRGB channel, computes relative luminance with the 0.2126, 0.7152 and 0.0722 weights, and compares the two as (lighter + 0.05) / (darker + 0.05). AA needs 4.5:1 for normal text and 3:1 for large text; AAA needs 7:1 and 4.5:1.',
+          'Results are not rounded up to a pass. Grey #777777 on white is about 4.48:1 and fails AA for normal text. The checker works with opaque colours, so check the actual composited background when you use transparency, gradients or images.',
         ],
       },
       {
-        heading: 'Accurate Multi-Format Color Conversion',
+        heading: 'Conversions',
         body: [
-          'Designers frequently collaborate across different tools and specifications requiring instant conversions between HEX hexadecimals, integer RGB, and cylindrical HSL coordinates. Our Color Converter ensures lossless color coordinate round-tripping with visual color swatch inspection.',
+          'Color Converter shows HEX, RGB, RGBA, HSL, HSLA, HSB and CMYK together, with alpha carried into RGBA and HSLA. CMYK here is a simple device-independent formula; printers use colour profiles, so ask your printer for exact values.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Validating Brand Colors for Web Accessibility',
+        title: 'Checking brand colours for accessibility',
         steps: [
-          'Enter your brand foreground text color and background container color in the Contrast Checker.',
-          'Inspect the computed contrast ratio and pass/fail indicators for WCAG AA and AAA standards.',
-          'Fine-tune color brightness or saturation live to achieve required compliance thresholds.',
+          'Enter the text and background colours in Contrast Checker.',
+          'Read the ratio and the AA and AAA results for normal and large text.',
+          'If it fails, lower or raise the lightness of one colour and check again.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'What is the minimum WCAG contrast ratio for body text?',
-        a: 'WCAG 2.1 Level AA requires a minimum contrast ratio of 4.5:1 for regular text (under 18pt or 14pt bold) and 3:1 for large text.',
+        q: 'What contrast does body text need?',
+        a: 'At least 4.5:1 for WCAG 2.1 Level AA. Large text, meaning 18 pt or 14 pt bold and above, needs 3:1.',
       },
       {
-        q: 'Are color inputs logged or sent to any server?',
-        a: 'No. Color calculations use client-side colorimetric formulas executed locally in JavaScript.',
+        q: 'Does the contrast checker handle transparent colours?',
+        a: 'No. Enter the colour as it appears after blending with the background; transparency changes the effective contrast.',
       },
       {
-        q: 'Does the tool support alpha transparency?',
-        a: 'Yes, alpha channels are supported for color representations and luminance blending.',
+        q: 'Is the CMYK value print-ready?',
+        a: 'Treat it as a starting point. Print output depends on the printer’s colour profile and paper.',
       },
     ],
   },
 
   calculator: {
-    headline: 'Everyday Financial and Mathematical Calculators',
+    headline: 'Everyday finance and percentage calculators',
     leadParagraph:
-      'Make informed decisions on home loans, recurring investments, GST taxes, compound interest, and percentage variations. Compute accurate amortisation schedules and financial projections privately without submitting your personal finances to lead-generation brokers.',
+      'Work out percentages, discounts, GST, loan EMIs, SIP returns and compound interest. The calculators run in your browser, with no sign-up and no lead form.',
     sections: [
       {
-        heading: 'Private Financial Calculations Without Lead-Gen Tracking',
+        heading: 'The formulas behind the numbers',
         body: [
-          'Most online financial calculators are operated by loan aggregators, banks, or lead-generation agencies. When you type in loan amounts, salary estimates, or investment figures, your inputs and IP address are frequently collected, profiled, and sold to financial telemarketers.',
-          'OnDevice Tools provides pure mathematical calculators that execute 100% on your device. Your loan principals, interest rates, tenures, and investment goals stay entirely in your browser tab. We have no backend database and no lead-capture forms.',
-        ],
-      },
-      {
-        heading: 'Mathematically Rigorous Financial Models',
-        body: [
-          'Our EMI calculator uses the exact standard annuity formulation to project monthly payments and generate month-by-month amortisation schedules. The SIP and Compound Interest calculators compute compounding frequency yields with precision, allowing instant comparison across investment horizons.',
+          'EMI Calculator uses the standard reducing-balance formula, EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), with r as the monthly rate, and shows a yearly amortisation table. Compound Interest supports annual, half-yearly, quarterly, monthly and daily compounding. SIP Calculator assumes a fixed monthly contribution and a constant expected return.',
+          'Real products differ from these models. Lenders add processing fees and insurance, and fund returns are not constant. Use the results to compare options, then confirm figures with the institution.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Planning a Home or Personal Loan',
+        title: 'Comparing two loan offers',
         steps: [
-          'Enter principal amount, annual interest rate, and repayment tenure in the EMI Calculator.',
-          'Review the monthly instalment, total interest payable, and the total cost of the loan.',
-          'Inspect the month-by-month amortisation schedule to see how your balance reduces over time.',
+          'Enter the amount, annual rate and tenure for the first offer in EMI Calculator.',
+          'Note the monthly EMI and total interest, then repeat for the second offer.',
+          'Use the yearly table to see how much principal each option repays early on.',
         ],
       },
       {
-        title: 'Evaluating Systematic Investment Returns (SIP)',
+        title: 'Estimating a monthly investment',
         steps: [
-          'Input your monthly investment amount, expected annual return rate, and investment tenure in the SIP Calculator.',
-          'Instantly view your total invested capital versus total wealth created through compounding.',
+          'Enter the monthly amount, expected annual return and number of years in SIP Calculator.',
+          'Compare total invested with the projected value, remembering that returns vary.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Are the financial calculations legally binding?',
-        a: 'No. They provide mathematical projections based on standard formulas. Real-world financial products may include institution-specific processing fees, taxes, insurance, or daily-reducing interest variations.',
+        q: 'Are the results exact?',
+        a: 'They are exact for the formula used, rounded for display. Real loans and investments include fees, taxes and changing rates the formulas do not model.',
       },
       {
-        q: 'Does anyone see the financial figures I enter?',
-        a: 'No. All calculations run strictly in your browser using JavaScript arithmetic. Nothing is sent over the network.',
+        q: 'Is anything I enter stored or sent?',
+        a: 'No. The arithmetic runs in your browser and there are no forms that submit your figures.',
       },
       {
-        q: 'What is the formula for loan EMI calculation?',
-        a: 'EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is principal, r is the monthly interest rate, and n is the tenure in months.',
+        q: 'What is the EMI formula?',
+        a: 'EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the principal, r the monthly interest rate and n the number of monthly payments.',
       },
     ],
   },
 
   converter: {
-    headline: 'Universal Unit and Metric-to-Imperial Converters',
+    headline: 'Unit, temperature and currency converters',
     leadParagraph:
-      'Convert physical measurements, storage capacities, temperatures, speeds, and currencies accurately. Instant bidirectional unit conversion with standard international conversion constants.',
+      'Convert length, weight, area, volume and speed in one Unit Converter, temperatures between four scales, and currency amounts using a rate you supply.',
     sections: [
       {
-        heading: 'Standardized Conversion Factors and Precision',
+        heading: 'Exact factors, explicit definitions',
         body: [
-          'Converting engineering, culinary, scientific, and geographical units requires reliable, standardized physical conversion factors (NIST / SI standards). Our converter utilities maintain high floating-point precision to prevent rounding drift during multi-stage conversions.',
-          'From digital storage conversions (bytes, KB, MB, GB, TB) to length, area, volume, and temperature scales (Celsius, Fahrenheit, Kelvin), conversions update instantaneously as you type.',
+          'Unit Converter stores every unit as an exact factor against a base unit, using the international definitions: one inch is 25.4 mm, one pound 0.45359237 kg, one US gallon 3.785411784 L. Every unit in the chosen family updates at once, so nothing is chained and rounding happens only on display.',
+          'Ambiguous names are listed separately rather than guessed: metric, US short and UK long tons; US and imperial pints and gallons; US legal and metric cups. Temperature has its own converter because Celsius and Fahrenheit differ in their zero point as well as their scale.',
         ],
       },
       {
-        heading: 'Currency Conversion Transparency',
+        heading: 'Currency rates are yours to set',
         body: [
-          'Our currency converter operates on bundled reference exchange rates and clearly indicates rate snapshot timestamps, allowing you to quickly estimate international prices without triggering third-party financial API trackers.',
+          'Currency Converter ships with illustrative example values, not live market rates, and does not claim a date for them. Enter the rate your bank or card provider quotes to get a result you can rely on.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Converting Engineering and Construction Dimensions',
+        title: 'Converting construction measurements',
         steps: [
-          'Select source and target units in the Length or Area Converter (e.g., meters to feet, square meters to square feet).',
-          'Enter values to see simultaneous conversion across all related units in the conversion table.',
+          'Open Unit Converter and choose Length or Area.',
+          'Enter the value and pick its unit, for example 12 ft or 200 gaj.',
+          'Read the equivalent in every other unit and copy the one you need.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'Are conversions calculated locally?',
-        a: 'Yes. All unit conversions use fixed mathematical coefficients evaluated in your browser in real time.',
+        q: 'How accurate are the unit conversions?',
+        a: 'The factors are exact definitions, so the only error is display rounding, which you set with the Decimals buttons.',
       },
       {
-        q: 'Are currency conversion rates live?',
-        a: 'Currency conversions use periodic reference rate snapshots. For financial transactions, always confirm live rates with your bank or payment provider.',
+        q: 'Are currency rates live?',
+        a: 'No. The bundled values are examples. Enter the rate from your provider for any real transaction.',
       },
     ],
   },
 
   datetime: {
-    headline: 'Date Arithmetic, Age Calculators and Global Timezone Conversion',
+    headline: 'Dates, ages, working days and time zones',
     leadParagraph:
-      'Calculate exact calendar age, elapsed days between dates, exclude weekends and holidays for business working day schedules, and coordinate international meetings across global timezones.',
+      'Find the gap between two dates, an exact age, the number of working days in a range and the same moment in different time zones.',
     sections: [
       {
-        heading: 'Accurate Calendar Calculations Accounting for Leap Years',
+        heading: 'Calendar arithmetic, not division',
         body: [
-          'Calendar mathematics is surprisingly tricky due to varying month lengths, leap years, and daylight saving time (DST) shifts. Our date utilities handle Gregorian calendar irregularities correctly, providing breakdown in years, months, days, hours, and minutes.',
-          'The Working Days calculator enables project managers and contractors to compute business delivery timelines by stripping out Saturdays and Sundays automatically.',
+          'Ages and date gaps are counted in calendar years, months and days, so leap years and month lengths come out right. Someone born on 29 February is treated as having a birthday on 1 March in common years. Date Difference can include or exclude the end date, and shows totals in days, weeks, hours and minutes.',
+          'Working Days Calculator lets you choose which days count as the weekend and paste a list of public holidays, one YYYY-MM-DD date per line, because neither is the same everywhere.',
         ],
       },
       {
-        heading: 'Frictionless Global Timezone Coordination',
+        heading: 'Time zones from the browser’s own database',
         body: [
-          'Distributed teams often struggle with time zone math across UTC offsets and daylight saving transitions. Our Timezone Converter utilizes the browser’s native `Intl.DateTimeFormat` engine (grounded in the audited IANA Time Zone Database) to provide reliable local time translations.',
+          'Timezone Converter uses the browser’s Intl API, which carries the IANA time zone database, so daylight-saving changes are applied for the date you pick rather than today’s offset.',
         ],
       },
     ],
     workflows: [
       {
-        title: 'Calculating Project Milestones and Business Days',
+        title: 'Counting business days to a deadline',
         steps: [
-          'Select start date and end date in the Working Days Calculator.',
-          'Review the total elapsed calendar days versus actual business working days (excluding weekends).',
+          'Enter the start and end dates in Working Days Calculator.',
+          'Set your weekend days and paste any public holidays.',
+          'Read calendar days, weekend days, holidays and working days.',
         ],
       },
       {
-        title: 'Verifying Exact Age and Milestone Dates',
+        title: 'Scheduling a call across countries',
         steps: [
-          'Enter date of birth in the Age Calculator.',
-          'View exact chronological age broken down into years, months, days, and total days lived.',
+          'Pick the date and time in Timezone Converter.',
+          'Check the local time in each zone, including any daylight-saving shift.',
         ],
       },
     ],
     faqs: [
       {
-        q: 'How does the timezone converter handle Daylight Saving Time (DST)?',
-        a: 'It uses the browser’s built-in IANA timezone database, which accounts for historical and upcoming daylight saving transitions automatically.',
+        q: 'Does the timezone converter handle daylight saving?',
+        a: 'Yes. It applies the offset in force on the date you choose, using the time zone data built into your browser.',
       },
       {
-        q: 'Are my calendar dates transmitted to any server?',
-        a: 'No. All date arithmetic is processed locally in client-side JavaScript.',
+        q: 'Which holidays are excluded from working days?',
+        a: 'Only the ones you enter. Public holidays vary by country and region, so the tool does not assume a list.',
       },
     ],
   },

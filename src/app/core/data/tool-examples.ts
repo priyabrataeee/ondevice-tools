@@ -1,3 +1,10 @@
+import { CALCULATOR_GUIDES } from './examples/calculator';
+import { COLOR_CONVERTER_GUIDES } from './examples/color-converter';
+import { CSS_DATETIME_GUIDES } from './examples/css-datetime';
+import { DEVELOPER_GUIDES } from './examples/developer';
+import { IMAGE_PDF_GUIDES } from './examples/image-pdf';
+import { TEXT_GUIDES } from './examples/text';
+
 export interface WorkedExample {
   title: string;
   settings: string;
@@ -220,4 +227,10 @@ export const TOOL_GUIDES: Record<string, ToolGuide> = {
       'Choose Seconds or Milliseconds explicitly for very old or very distant dates, where digit-count detection can guess the wrong unit.',
     ],
   },
+  ...TEXT_GUIDES,
+  ...DEVELOPER_GUIDES,
+  ...CALCULATOR_GUIDES,
+  ...COLOR_CONVERTER_GUIDES,
+  ...CSS_DATETIME_GUIDES,
+  ...IMAGE_PDF_GUIDES,
 };

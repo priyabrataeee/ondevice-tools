@@ -1,6 +1,6 @@
 # OnDevice Tools — Full Capabilities Index
 
-> Machine-readable index of all 64 browser utilities available at https://ondevice-tools.org.
+> Machine-readable index of all 60 browser utilities available at https://ondevice-tools.org.
 > Core architecture: 100% in-browser, fully client-side JavaScript execution.
 > Zero server uploads, zero server processing, zero accounts required, offline-capable via Service Worker.
 > Published by Priyabrata Saha under AGPL-3.0.
@@ -173,49 +173,7 @@
   * Q: Does contrast apply to icons and borders?
     A: Yes. Meaningful non-text elements such as icons and input borders need at least 3:1 under WCAG 2.1.
 
-### Unit & Data Converters (7 tools)
-
-#### Length Converter
-- Canonical URL: https://ondevice-tools.org/tools/length-converter/
-- Category: Unit & Data Converters
-- Description: Convert between metres, feet, inches, miles and eleven other units.
-- Technical Implementation: Every unit is stored as an exact factor relative to the metre, using the international definitions — one inch is exactly 25.4 mm, one foot 0.3048 m and one nautical mile 1852 m. Your value is converted to metres once and then out to every other unit, so all results are consistent with each other. Because the factors are exact, the only error is display rounding, which you can control with the precision setting.
-- Use Cases:
-  * Converting drawing or construction measurements between metric and imperial.
-  * Reading product dimensions listed in inches or feet.
-  * Translating distances in miles or nautical miles into kilometres.
-- Key FAQs:
-  * Q: How many centimetres are in an inch?
-    A: Exactly 2.54. One inch is defined as 25.4 millimetres, so the conversion is exact rather than approximate.
-  * Q: How do I convert kilometres to miles?
-    A: Divide by 1.609344. A kilometre is about 0.621 miles, so 5 km is roughly 3.1 miles.
-  * Q: How exact are the conversions?
-    A: They use the internationally agreed definitions - one inch is exactly 25.4 millimetres - so the only error is display rounding.
-  * Q: What is a nautical mile?
-    A: Exactly 1852 metres, defined as one minute of latitude, and used in marine and air navigation.
-  * Q: Can I convert several units at once?
-    A: Yes. Enter one value and every supported unit updates simultaneously.
-
-#### Weight Converter
-- Canonical URL: https://ondevice-tools.org/tools/weight-converter/
-- Category: Unit & Data Converters
-- Description: Convert kilograms, pounds, ounces, stones and tonnes instantly.
-- Technical Implementation: All units are converted through the kilogram using exact definitions — one pound is exactly 0.45359237 kg and one stone is fourteen pounds. The three meanings of "ton" are kept separate: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb. Every supported unit updates at once from a single input, so you never need to chain conversions and accumulate rounding.
-- Use Cases:
-  * Converting recipe quantities between grams, ounces and pounds.
-  * Reading body weight given in stones and pounds.
-  * Checking shipping weights on a label that uses a different system.
-- Key FAQs:
-  * Q: How many pounds are in a kilogram?
-    A: About 2.20462. One pound is defined as exactly 0.45359237 kg, so 70 kg is roughly 154.3 lb.
-  * Q: How do I convert grams to ounces?
-    A: Divide by 28.349523125. One ounce is exactly that many grams, so 100 g is about 3.53 oz.
-  * Q: Is weight the same as mass?
-    A: Strictly no - mass is intrinsic while weight is a force - but in everyday use these units all measure mass.
-  * Q: Which ton is used?
-    A: All three: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb.
-  * Q: What is a stone?
-    A: Fourteen pounds, still commonly used for body weight in the UK and Ireland.
+### Unit & Data Converters (3 tools)
 
 #### Temperature Converter
 - Canonical URL: https://ondevice-tools.org/tools/temperature-converter/
@@ -238,70 +196,32 @@
   * Q: Where do the scales cross?
     A: At minus 40 degrees, Celsius and Fahrenheit read the same number.
 
-#### Area Converter
-- Canonical URL: https://ondevice-tools.org/tools/area-converter/
+#### Unit Converter
+- Canonical URL: https://ondevice-tools.org/tools/unit-converter/
 - Category: Unit & Data Converters
-- Description: Convert square metres, acres, hectares, square feet and more.
-- Technical Implementation: Areas are converted through the square metre. Because an area is a length squared, the factors are the square of the length factors — one square foot is exactly 0.09290304 m² — and land units such as the acre and hectare are defined against those same base units. Showing every unit at once makes it easy to compare listings that quote the same plot in square feet, square yards, acres or hectares.
+- Description: Convert length, weight, area, volume and speed units in one place.
+- Technical Implementation: Every unit stores one exact factor against its family’s base unit: the metre, kilogram, square metre, litre or metre per second. Your value is multiplied into the base once and divided out into every other unit, so all rows agree with each other and nothing is chained. The factors are the international definitions: one inch is exactly 25.4 mm, one pound exactly 0.45359237 kg and one US gallon exactly 3.785411784 L. Area factors are the squares of length factors, so one square foot is exactly 0.09290304 m². The only error you see is display rounding, which the Decimals buttons control. Where a name means more than one thing, each meaning gets its own row: metric tonne, US short ton and UK long ton; US and imperial pints and gallons; US legal and metric cups. Mach is the exception to exactness, because the speed of sound changes with temperature; the tool uses the sea-level standard of 340.29 m/s.
 - Use Cases:
-  * Comparing property listings that use different area units.
-  * Converting farm or plot sizes between acres and hectares.
-  * Estimating flooring or paint quantities from room sizes in square feet.
+  * Converting drawing or construction measurements between metric and imperial.
+  * Comparing property listings quoted in square feet, gaj, acres or hectares.
+  * Converting recipe quantities between grams, ounces, cups and millilitres.
+  * Reading fuel or tank sizes quoted in US and imperial gallons.
+  * Checking a speed limit, wind speed or boat speed given in km/h, mph or knots.
 - Key FAQs:
+  * Q: How many centimetres are in an inch?
+    A: Exactly 2.54. One inch is defined as 25.4 millimetres, so the conversion is exact rather than approximate.
+  * Q: How many pounds are in a kilogram?
+    A: About 2.20462. One pound is defined as exactly 0.45359237 kg, so 70 kg is roughly 154.32 lb.
   * Q: What is a gaj in square feet?
-    A: One gaj is one square yard, which is 9 square feet. A 200 gaj plot is 1,800 square feet.
-  * Q: How do I convert square feet to square metres?
-    A: Multiply by 0.09290304. A 1,000 sq ft flat is about 92.9 square metres.
-  * Q: Why is bigha not listed?
-    A: Because it has no single value. A bigha differs between states and sometimes between districts, so any one factor would be wrong for most users. Convert via square feet or square metres instead.
-  * Q: How big is an acre?
-    A: 4046.86 square metres, historically the area one team of oxen could plough in a day.
-  * Q: Acre or hectare?
-    A: A hectare is 10,000 square metres, about 2.47 acres. Hectares are the metric standard for land area.
-  * Q: Are regional units included?
-    A: Yes - square yard (gaj), bigha-scale units vary regionally so the standard international units are provided alongside them.
-
-#### Speed Converter
-- Canonical URL: https://ondevice-tools.org/tools/speed-converter/
-- Category: Unit & Data Converters
-- Description: Convert km/h, mph, m/s, knots and mach.
-- Technical Implementation: Speeds are converted through metres per second using exact factors: a knot is one nautical mile (1852 m) per hour, and a mile per hour is 0.44704 m/s. Mach has no fixed value because the speed of sound depends on temperature, so the converter uses the standard sea-level figure. Running pace is the inverse of speed, so it is shown separately as minutes per kilometre and per mile rather than as another multiplier.
-- Use Cases:
-  * Converting a treadmill speed in km/h into a running pace per mile.
-  * Reading wind speeds or boat speeds quoted in knots.
-  * Checking speed limits when driving in a country that uses the other system.
-- Key FAQs:
-  * Q: How do I convert km/h to mph?
-    A: Divide by 1.609344. So 100 km/h is about 62 mph.
-  * Q: What pace is 10 km/h?
-    A: Six minutes per kilometre, or about 9 minutes 39 seconds per mile. Pace is the inverse of speed, so the tool shows both.
-  * Q: What is a knot?
-    A: One nautical mile per hour, roughly 1.852 km/h, used in marine and aviation contexts.
-  * Q: Is mach a fixed speed?
-    A: No. It is the ratio to the local speed of sound, which varies with temperature. The converter uses the standard sea-level value of 1225 km/h.
-  * Q: How do I convert running pace?
-    A: Pace is the inverse of speed. The tool shows minutes per kilometre and per mile alongside the speed units.
-
-#### Volume Converter
-- Canonical URL: https://ondevice-tools.org/tools/volume-converter/
-- Category: Unit & Data Converters
-- Description: Convert litres, gallons, cups, pints and cubic units.
-- Technical Implementation: Volumes are converted through the litre, and each unit is explicit about which definition it uses. The US gallon (3.785 L) and imperial gallon (4.546 L) differ by about a fifth, and so do their pints, while cups come in US legal, US customary and metric sizes — all listed separately rather than guessed. Volume cannot be converted to weight without knowing the density of the substance, so the tool deliberately does not offer that conversion.
-- Use Cases:
-  * Converting recipe measures between cups, millilitres and fluid ounces.
-  * Comparing fuel economy or tank sizes quoted in US and imperial gallons.
-  * Working out container capacity in litres from cubic dimensions.
-- Key FAQs:
-  * Q: How many millilitres are in a cup?
-    A: It depends which cup. A US legal cup is 240 ml, a US customary cup about 236.6 ml, and a metric cup 250 ml. All three are listed separately.
-  * Q: How do I convert litres to gallons?
-    A: Divide by 3.785 for US gallons or 4.546 for imperial gallons. The two differ by about 20 percent.
+    A: One gaj is one square yard, which is 9 square feet. A 200 gaj plot is 1,800 square feet. Bigha is not listed because its size differs between states.
   * Q: US or imperial gallon?
-    A: Both. A US gallon is 3.785 litres and an imperial gallon is 4.546 litres, a difference of about 20 percent.
-  * Q: Is a cup a standard measure?
-    A: A US legal cup is 240 ml, a US customary cup is about 236.6 ml, and a metric cup is 250 ml. All three are listed.
-  * Q: Can I convert to weight?
-    A: Not directly - that depends on the density of the substance. Volume and mass are different quantities.
+    A: Both are listed. A US gallon is 3.785411784 litres and an imperial gallon is 4.54609 litres, about 20 percent larger. Pints differ in the same way.
+  * Q: How many millilitres are in a cup?
+    A: The tool lists two cups: the US legal cup of 240 ml, used on US nutrition labels, and the metric cup of 250 ml. Older US recipes may use a customary cup of about 236.6 ml, which is not listed.
+  * Q: How do I convert km/h to mph?
+    A: Divide by 1.609344. So 100 km/h is about 62.14 mph. Knots and Mach are listed too; Mach uses the sea-level value of 340.29 m/s.
+  * Q: Can I convert volume to weight?
+    A: No. That depends on the density of the substance, so a cup of flour and a cup of water weigh different amounts.
 
 #### Currency Converter
 - Canonical URL: https://ondevice-tools.org/tools/currency-converter/
@@ -1055,7 +975,7 @@
 - Canonical URL: https://ondevice-tools.org/tools/word-counter/
 - Category: Text Tools
 - Description: Count words, characters, sentences and paragraphs as you type.
-- Technical Implementation: Words are counted by splitting on Unicode whitespace and discarding empty results, which handles multiple spaces, tabs and line breaks without inflating the total. Characters are counted both with and without spaces, because the two are asked for in different contexts. One subtlety worth knowing: JavaScript strings are UTF-16, so a naive .length counts an emoji or certain CJK characters as two. The count here iterates by code point, so what is reported matches what you would count by eye. Reading time is derived at roughly 200–250 words per minute, which is the accepted range for adult reading of general prose. Dense technical material runs slower and light narrative faster, so treat it as an estimate rather than a measurement.
+- Technical Implementation: Words are counted by splitting on Unicode whitespace and discarding empty results, which handles multiple spaces, tabs and line breaks without inflating the total. Characters are counted both with and without spaces, because the two are asked for in different contexts. One subtlety worth knowing: JavaScript strings are UTF-16, so a naive .length counts an emoji as two characters, and a flag or skin-tone emoji as four or more. Characters here are counted as visible units (grapheme clusters), so what is reported matches what you would count by eye. Character Counter shows both numbers if you need the raw length for a database column. Reading time uses 225 words per minute, the middle of the 200–250 range usually quoted for adult reading of general prose, and speaking time uses 150. Dense technical material runs slower and light narrative faster, so treat it as an estimate rather than a measurement.
 - Use Cases:
   * Checking an essay, application or article against a strict word limit before submitting it.
   * Fitting copy into a meta description, a tweet, or an ad slot with a hard character cap.

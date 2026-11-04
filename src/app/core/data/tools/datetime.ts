@@ -9,6 +9,7 @@ export const DATETIME_TOOLS: Tool[] = [
     icon: 'cake',
     keywords: ['birthday', 'date of birth', 'how old', 'years old', 'age calculator', 'how old am i', 'date of birth calculator', 'age in years months days'],
     added: '2026-01-26',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'How do I work out my exact age?', a: 'Enter your date of birth. The result is counted in calendar years, months and days rather than by dividing total days, which is how age is defined legally.' },
@@ -29,6 +30,7 @@ export const DATETIME_TOOLS: Tool[] = [
     icon: 'calendar',
     keywords: ['days between', 'duration', 'date range', 'countdown', 'days between dates', 'date calculator', 'days until', 'date duration'],
     added: '2026-01-26',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Is the end date included?', a: 'By default the difference is exclusive of the end date. There is a toggle to count both endpoints inclusively.' },
       { q: 'Does it account for daylight saving?', a: 'Whole-day differences are computed on calendar dates, so a clock change never adds or removes a day.' },
@@ -47,6 +49,7 @@ export const DATETIME_TOOLS: Tool[] = [
     icon: 'calendar-check',
     keywords: ['business days', 'weekdays', 'holidays', 'project', 'sla', 'business days calculator', 'working days between dates', 'weekday calculator'],
     added: '2026-02-04',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which days count as the weekend?', a: 'Saturday and Sunday by default, and you can change which days are non-working to match a different week.' },
       { q: 'How do I exclude public holidays?', a: 'Add them as a list of dates and they are subtracted from the total, provided they fall on a working day.' },
@@ -65,6 +68,7 @@ export const DATETIME_TOOLS: Tool[] = [
     icon: 'globe',
     keywords: ['utc', 'gmt', 'meeting', 'world clock', 'dst', 'time zone converter', 'ist to est', 'utc to ist', 'meeting time'],
     added: '2026-03-22',
+    updated: '2026-11-04',
     trending: true,
     faqs: [
       { q: 'How do I convert IST to EST?', a: 'Pick the two zones and a date. IST is UTC+5:30 year round, while the US Eastern zone shifts between EST and EDT, so the difference changes with the date. The converter applies the correct offset for the day you choose.' },

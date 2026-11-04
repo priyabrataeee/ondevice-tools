@@ -1,4 +1,41 @@
-# SEO and AdSense remediation — updated 31 October 2026
+# SEO and AdSense remediation — updated 4 November 2026
+
+## AdSense “Low-value content” — 4 November
+
+Google’s rejection asks for substantial unique value, ongoing curation and genuine user interest. Code can address the first two. Only time and real visitors address the third.
+
+Audit findings:
+
+- 55 of 64 tool pages had no original examples; median page length was 506 words of templated copy.
+- Category pages made claims the tools could not back up: WebAssembly PDF processing, ANSI SQL validation, data-storage unit conversion, live currency snapshots, a favicon .ico file, monthly amortisation schedules.
+- Two tool FAQs were false: Speed Converter claimed a running-pace display, Volume Converter a US customary cup.
+- Two real bugs: Date Difference and Age Calculator returned negative days for spans starting on the 29th–31st; Word Counter counted an emoji as two characters while claiming otherwise.
+- Five near-identical converter pages.
+
+Changes:
+
+- **Worked examples on all 60 tools.** Each has two examples and a limits list. Every output is produced by the tool’s own code in a unit test (`src/app/core/data/examples/*.spec.ts`; regex examples in `tests/regex-worker.test.mjs`). A test fails if any tool lacks examples.
+- **Unit Converter.** Length, weight, area, volume and speed merged into `/tools/unit-converter/` with a quantity selector and `?type=`. Old URLs 301 there. Fixed the unit dropdown showing the wrong unit after switching quantity.
+- **Category pages rewritten** to match verified behaviour; false FAQs corrected.
+- **Bug fixes:** `calendarDiff` steps back to the last real monthly anniversary (regression tests added); Word Counter counts grapheme clusters.
+- **Guides:** five long-form articles at `/guides/`, with Article and breadcrumb structured data, linked from relevant tool pages.
+- **What’s new** page at `/changelog/` built from real dates.
+- Tool pages show their last-updated date and that examples are test-checked. About explains the testing.
+- Sitemap `lastmod` covers guides. Header search and donate labels collapse to icons below 1280 px to fit the new Guides link.
+
+Validation: build, lint, 164 unit tests, 6 worker tests and `verify:review` (84 pages, 82 sitemap URLs, 60 example pages) pass. Unit Converter, a guide, the changelog and a tool page were checked in Wrangler preview.
+
+**Owner review needed before deploy:** the five guides and the rewritten category copy were drafted by an assistant from the code. Read them for accuracy and voice; you are named as the author.
+
+### AdSense checklist
+
+1. Deploy, then resubmit `sitemap.xml` in Search Console.
+2. Request indexing for `/guides/`, the five guides, `/changelog/` and `/tools/unit-converter/`.
+3. Do not request review yet. Wait 4–8 weeks while Google recrawls.
+4. Build real interest: share specific guides where the question is asked (Stack Overflow answers, Reddit threads, dev forums), list the project on GitHub topics and directories of privacy-respecting tools. Avoid link schemes.
+5. Keep curating: add one guide or meaningful tool improvement every week or two, and log it on What’s new.
+6. In AdSense, publish the consent message (Privacy & messaging) for EEA/UK visitors.
+7. Request review when most sitemap URLs are indexed and Search Console shows steady organic clicks, not just impressions.
 
 ## Search Console review — 31 October
 

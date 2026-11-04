@@ -25,8 +25,10 @@ export function analyseText(text: string, wpm = 225, spm = 150): TextStats {
 
   return {
     words: words.length,
-    characters: text.length,
-    charactersNoSpaces: text.replace(/\s/g, '').length,
+    // Counted as visible characters, so an emoji or an accented letter built
+    // from combining marks is one, as a reader would count it.
+    characters: graphemes(text).length,
+    charactersNoSpaces: graphemes(text.replace(/\s/g, '')).length,
     sentences,
     paragraphs,
     lines: text ? text.split('\n').length : 0,

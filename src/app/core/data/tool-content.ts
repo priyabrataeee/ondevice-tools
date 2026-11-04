@@ -127,8 +127,8 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
   'word-counter': {
     howItWorks: [
       'Words are counted by splitting on Unicode whitespace and discarding empty results, which handles multiple spaces, tabs and line breaks without inflating the total. Characters are counted both with and without spaces, because the two are asked for in different contexts.',
-      'One subtlety worth knowing: JavaScript strings are UTF-16, so a naive .length counts an emoji or certain CJK characters as two. The count here iterates by code point, so what is reported matches what you would count by eye.',
-      'Reading time is derived at roughly 200–250 words per minute, which is the accepted range for adult reading of general prose. Dense technical material runs slower and light narrative faster, so treat it as an estimate rather than a measurement.',
+      'One subtlety worth knowing: JavaScript strings are UTF-16, so a naive .length counts an emoji as two characters, and a flag or skin-tone emoji as four or more. Characters here are counted as visible units (grapheme clusters), so what is reported matches what you would count by eye. Character Counter shows both numbers if you need the raw length for a database column.',
+      'Reading time uses 225 words per minute, the middle of the 200–250 range usually quoted for adult reading of general prose, and speaking time uses 150. Dense technical material runs slower and light narrative faster, so treat it as an estimate rather than a measurement.',
     ],
     useCases: [
       'Checking an essay, application or article against a strict word limit before submitting it.',

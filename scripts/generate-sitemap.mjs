@@ -47,7 +47,8 @@ function lastmodFor(path) {
   const script = /<script\b[^>]*\bdata-qt-ld\b[^>]*>([\s\S]*?)<\/script>/i.exec(html);
   if (!script) return undefined;
   const nodes = JSON.parse(script[1])['@graph'] ?? [];
-  const date = nodes.find((node) => node['@type'] === 'SoftwareApplication')?.dateModified;
+  // Tools and guides record a real modification date; other pages have none.
+  const date = nodes.find((node) => node['@type'] === 'SoftwareApplication' || node['@type'] === 'Article')?.dateModified;
   if (!date) return undefined;
   // A calendar date may be the next UTC day in the publisher's time zone.
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date)) || Date.parse(date) > Date.now() + 86_400_000) {

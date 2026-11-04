@@ -82,27 +82,18 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
   },
 
   // ----------------------------------------------------------------- converters
-  'length-converter': {
+  'unit-converter': {
     howItWorks: [
-      'Every unit is stored as an exact factor relative to the metre, using the international definitions — one inch is exactly 25.4 mm, one foot 0.3048 m and one nautical mile 1852 m. Your value is converted to metres once and then out to every other unit, so all results are consistent with each other.',
-      'Because the factors are exact, the only error is display rounding, which you can control with the precision setting.',
+      'Every unit stores one exact factor against its family’s base unit: the metre, kilogram, square metre, litre or metre per second. Your value is multiplied into the base once and divided out into every other unit, so all rows agree with each other and nothing is chained.',
+      'The factors are the international definitions: one inch is exactly 25.4 mm, one pound exactly 0.45359237 kg and one US gallon exactly 3.785411784 L. Area factors are the squares of length factors, so one square foot is exactly 0.09290304 m². The only error you see is display rounding, which the Decimals buttons control.',
+      'Where a name means more than one thing, each meaning gets its own row: metric tonne, US short ton and UK long ton; US and imperial pints and gallons; US legal and metric cups. Mach is the exception to exactness, because the speed of sound changes with temperature; the tool uses the sea-level standard of 340.29 m/s.',
     ],
     useCases: [
       'Converting drawing or construction measurements between metric and imperial.',
-      'Reading product dimensions listed in inches or feet.',
-      'Translating distances in miles or nautical miles into kilometres.',
-    ],
-  },
-
-  'weight-converter': {
-    howItWorks: [
-      'All units are converted through the kilogram using exact definitions — one pound is exactly 0.45359237 kg and one stone is fourteen pounds. The three meanings of "ton" are kept separate: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb.',
-      'Every supported unit updates at once from a single input, so you never need to chain conversions and accumulate rounding.',
-    ],
-    useCases: [
-      'Converting recipe quantities between grams, ounces and pounds.',
-      'Reading body weight given in stones and pounds.',
-      'Checking shipping weights on a label that uses a different system.',
+      'Comparing property listings quoted in square feet, gaj, acres or hectares.',
+      'Converting recipe quantities between grams, ounces, cups and millilitres.',
+      'Reading fuel or tank sizes quoted in US and imperial gallons.',
+      'Checking a speed limit, wind speed or boat speed given in km/h, mph or knots.',
     ],
   },
 
@@ -115,42 +106,6 @@ export const MORE_TOOL_CONTENT: Record<string, ToolContent> = {
       'Converting an oven temperature from a recipe written for another country.',
       'Reading weather forecasts or medical temperatures in an unfamiliar scale.',
       'Working with Kelvin values in science or engineering coursework.',
-    ],
-  },
-
-  'area-converter': {
-    howItWorks: [
-      'Areas are converted through the square metre. Because an area is a length squared, the factors are the square of the length factors — one square foot is exactly 0.09290304 m² — and land units such as the acre and hectare are defined against those same base units.',
-      'Showing every unit at once makes it easy to compare listings that quote the same plot in square feet, square yards, acres or hectares.',
-    ],
-    useCases: [
-      'Comparing property listings that use different area units.',
-      'Converting farm or plot sizes between acres and hectares.',
-      'Estimating flooring or paint quantities from room sizes in square feet.',
-    ],
-  },
-
-  'speed-converter': {
-    howItWorks: [
-      'Speeds are converted through metres per second using exact factors: a knot is one nautical mile (1852 m) per hour, and a mile per hour is 0.44704 m/s. Mach has no fixed value because the speed of sound depends on temperature, so the converter uses the standard sea-level figure.',
-      'Running pace is the inverse of speed, so it is shown separately as minutes per kilometre and per mile rather than as another multiplier.',
-    ],
-    useCases: [
-      'Converting a treadmill speed in km/h into a running pace per mile.',
-      'Reading wind speeds or boat speeds quoted in knots.',
-      'Checking speed limits when driving in a country that uses the other system.',
-    ],
-  },
-
-  'volume-converter': {
-    howItWorks: [
-      'Volumes are converted through the litre, and each unit is explicit about which definition it uses. The US gallon (3.785 L) and imperial gallon (4.546 L) differ by about a fifth, and so do their pints, while cups come in US legal, US customary and metric sizes — all listed separately rather than guessed.',
-      'Volume cannot be converted to weight without knowing the density of the substance, so the tool deliberately does not offer that conversion.',
-    ],
-    useCases: [
-      'Converting recipe measures between cups, millilitres and fluid ounces.',
-      'Comparing fuel economy or tank sizes quoted in US and imperial gallons.',
-      'Working out container capacity in litres from cubic dimensions.',
     ],
   },
 

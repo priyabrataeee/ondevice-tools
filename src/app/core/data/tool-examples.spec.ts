@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { TOOL_GUIDES } from './tool-examples';
+import { TOOLS } from './tools.data';
+import { TEXT_GUIDES } from './examples/text';
+import { DEVELOPER_GUIDES } from './examples/developer';
+import { CALCULATOR_GUIDES } from './examples/calculator';
+import { COLOR_CONVERTER_GUIDES } from './examples/color-converter';
+import { CSS_DATETIME_GUIDES } from './examples/css-datetime';
+import { IMAGE_PDF_GUIDES } from './examples/image-pdf';
 import { SortLinesComponent } from '../../tools/text/sort-lines/sort-lines.component';
 import { RemoveDuplicateLinesComponent } from '../../tools/text/remove-duplicate-lines/remove-duplicate-lines.component';
 import { ReverseTextComponent } from '../../tools/text/reverse-text/reverse-text.component';
@@ -67,7 +74,14 @@ describe('published worked examples', () => {
     'text-compare': (input, i) => diffExample(input, i === 1),
     'timestamp-converter': (input) => inContext(() => new TimestampCheck()).run(input),
   };
+  // Guides kept in examples/*.ts are checked by the spec beside each file. Any
+  // other guide must have an executor here, or its test fails.
+  const checkedElsewhere = new Set(Object.keys({
+    ...TEXT_GUIDES, ...DEVELOPER_GUIDES, ...CALCULATOR_GUIDES,
+    ...COLOR_CONVERTER_GUIDES, ...CSS_DATETIME_GUIDES, ...IMAGE_PDF_GUIDES,
+  }));
   for (const [id, guide] of Object.entries(TOOL_GUIDES)) {
+    if (checkedElsewhere.has(id)) continue;
     guide.examples.forEach((example, i) => {
       it(`${id}: ${example.title}`, () => {
         expect(execute[id](example.input, i)).toBe(example.output);
@@ -75,6 +89,10 @@ describe('published worked examples', () => {
       });
     });
   }
+  it('has a worked example for every tool', () => {
+    const missing = TOOLS.map((t) => t.id).filter((id) => !TOOL_GUIDES[id]);
+    expect(missing).toEqual([]);
+  });
   it('sorts descending stably, keeping nonnumeric lines last', () => {
     expect(new SortCheck().run('2 first\nunknown\n2 second\n9 high', 'numeric', true))
       .toBe('9 high\n2 first\n2 second\nunknown');

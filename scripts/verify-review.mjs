@@ -65,8 +65,10 @@ for (const file of pages) {
   if (adsEnabled) {
     check(document.querySelector('meta[name="google-adsense-account"]')?.content === client, 'Missing publisher verification');
   }
-  if (tool) check(sitemapDates.get(url) === tool.dateModified, 'Sitemap and structured-data dates disagree');
-  else check(!sitemapDates.get(url), 'Invented non-tool modification date');
+  const article = graph.find((node) => node['@type'] === 'Article');
+  const dated = tool ?? article;
+  if (dated) check(sitemapDates.get(url) === dated.dateModified, 'Sitemap and structured-data dates disagree');
+  else check(!sitemapDates.get(url), 'Invented modification date');
   if (document.getElementById('worked-examples-heading')) {
     examples++;
     check(document.getElementById('limitations-heading'), 'Examples lack limitations');

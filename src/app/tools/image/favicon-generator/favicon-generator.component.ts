@@ -6,7 +6,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
 import { UploadZoneComponent } from '../../../shared/components/upload-zone/upload-zone.component';
 
-const SIZES = [16, 32, 48, 96, 144, 180, 192, 256, 512];
+export const FAVICON_SIZES = [16, 32, 48, 96, 144, 180, 192, 256, 512];
 
 const HTML_SNIPPET = `<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png">
@@ -180,7 +180,7 @@ export class FaviconGeneratorComponent {
     this.revokeAll();
     const generated: GeneratedIcon[] = [];
 
-    for (const size of SIZES) {
+    for (const size of FAVICON_SIZES) {
       const canvas = document.createElement('canvas');
       canvas.width = size;
       canvas.height = size;

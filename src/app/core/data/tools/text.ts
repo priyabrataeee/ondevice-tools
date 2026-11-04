@@ -32,6 +32,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'text',
     keywords: ['word count', 'character count', 'essay', 'paragraph', 'count words', 'essay word counter', 'character and word count'],
     added: '2026-01-12',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'How many words is a 500 word essay?', a: 'The counter shows the exact figure as you type, along with characters, sentences and paragraphs, so you can check against a limit before submitting.' },
@@ -52,6 +53,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'type',
     keywords: ['letter count', 'sms', 'twitter', 'meta description', 'limit', 'character count', 'letter counter', 'count characters'],
     added: '2026-01-20',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Why do emoji count as more than one character?', a: 'A JavaScript string counts UTF-16 code units. Many emoji use two, and some use several joined together, so both the code-unit count and the visible grapheme count are shown.' },
       { q: 'Which limits are tracked?', a: 'Common ones: SMS segments, a 160 character meta description, a 60 character page title, and a 280 character social post.' },
@@ -70,6 +72,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'timer',
     keywords: ['read time', 'speech', 'blog', 'words per minute', 'reading time calculator', 'how long to read'],
     added: '2026-01-25',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What reading speed is used?', a: 'The default is 225 words per minute for silent reading, which is the commonly cited average for adults reading non-technical prose. You can change it.' },
       { q: 'Why is the speaking time longer?', a: 'Speech is slower than silent reading. The speaking estimate uses about 150 words per minute, a comfortable presentation pace.' },
@@ -145,6 +148,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'letter-case',
     keywords: ['uppercase', 'lowercase', 'title case', 'camelcase', 'snake_case', 'kebab-case', 'uppercase converter', 'lowercase converter', 'title case converter', 'camel case', 'snake case'],
     added: '2026-01-20',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -185,6 +189,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'paragraph',
     keywords: ['placeholder text', 'dummy text', 'filler', 'mockup', 'lorem ipsum generator', 'dummy text generator'],
     added: '2026-01-30',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'Why use Lorem Ipsum instead of real text?', a: 'Nonsense Latin has a natural distribution of word lengths but carries no meaning, so reviewers judge the layout rather than the copy.' },
@@ -204,6 +209,7 @@ export const TEXT_TOOLS: Tool[] = [
     icon: 'broom',
     keywords: ['trim', 'whitespace', 'clean text', 'tidy', 'remove extra spaces', 'trim whitespace', 'clean up text'],
     added: '2026-02-10',
+    updated: '2026-11-04',
     faqs: [
       { q: 'What exactly is removed?', a: 'Whichever options you enable: repeated spaces collapse to one, leading and trailing whitespace goes, tabs convert to spaces and repeated blank lines collapse.' },
       { q: 'Are line breaks preserved?', a: 'Yes, unless you explicitly choose to collapse all whitespace, in which case the text becomes a single line.' },

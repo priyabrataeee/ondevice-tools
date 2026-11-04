@@ -5,6 +5,19 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
 import { UploadZoneComponent } from '../../../shared/components/upload-zone/upload-zone.component';
 
+/**
+ * Output size for a maximum width, keeping the aspect ratio. A maximum of 0, or
+ * one wider than the image, leaves the size unchanged: compressing never
+ * upscales.
+ */
+export function fitWidth(width: number, height: number, maxWidth: number): { width: number; height: number } {
+  const scale = maxWidth > 0 && width > maxWidth ? maxWidth / width : 1;
+  return {
+    width: Math.max(1, Math.round(width * scale)),
+    height: Math.max(1, Math.round(height * scale)),
+  };
+}
+
 @Component({
   selector: 'app-image-compressor',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -213,14 +226,10 @@ export class ImageCompressorComponent implements OnDestroy {
     if (!image) return;
     const id = ++this.runId;
 
-    const scale =
-      this.maxWidth() > 0 && image.naturalWidth > this.maxWidth()
-        ? this.maxWidth() / image.naturalWidth
-        : 1;
-
+    const target = fitWidth(image.naturalWidth, image.naturalHeight, this.maxWidth());
     const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+    canvas.width = target.width;
+    canvas.height = target.height;
 
     const context = canvas.getContext('2d');
     if (!context) return;

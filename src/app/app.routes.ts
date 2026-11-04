@@ -49,6 +49,21 @@ export const routes: Routes = [
           import('./pages/terms/terms.component').then((m) => m.TermsComponent),
       },
       {
+        path: 'guides',
+        loadComponent: () =>
+          import('./pages/guides/guides.component').then((m) => m.GuidesComponent),
+      },
+      {
+        path: 'guides/:slug',
+        loadComponent: () =>
+          import('./pages/guides/guide.component').then((m) => m.GuideComponent),
+      },
+      {
+        path: 'changelog',
+        loadComponent: () =>
+          import('./pages/changelog/changelog.component').then((m) => m.ChangelogComponent),
+      },
+      {
         path: 'category/:id',
         loadComponent: () =>
           import('./pages/category/category.component').then((m) => m.CategoryComponent),
@@ -447,17 +462,10 @@ export const routes: Routes = [
       // Converters
       // ---------------------------------------------------------------------
       {
-        path: 'tools/length-converter',
+        path: 'tools/unit-converter',
         loadComponent: () =>
-          import('./tools/converter/length-converter/length-converter.component').then(
-            (m) => m.LengthConverterComponent,
-          ),
-      },
-      {
-        path: 'tools/weight-converter',
-        loadComponent: () =>
-          import('./tools/converter/weight-converter/weight-converter.component').then(
-            (m) => m.WeightConverterComponent,
+          import('./tools/converter/unit-converter/unit-converter-page.component').then(
+            (m) => m.UnitConverterPageComponent,
           ),
       },
       {
@@ -465,27 +473,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./tools/converter/temperature-converter/temperature-converter.component').then(
             (m) => m.TemperatureConverterComponent,
-          ),
-      },
-      {
-        path: 'tools/area-converter',
-        loadComponent: () =>
-          import('./tools/converter/area-converter/area-converter.component').then(
-            (m) => m.AreaConverterComponent,
-          ),
-      },
-      {
-        path: 'tools/speed-converter',
-        loadComponent: () =>
-          import('./tools/converter/speed-converter/speed-converter.component').then(
-            (m) => m.SpeedConverterComponent,
-          ),
-      },
-      {
-        path: 'tools/volume-converter',
-        loadComponent: () =>
-          import('./tools/converter/volume-converter/volume-converter.component').then(
-            (m) => m.VolumeConverterComponent,
           ),
       },
       {

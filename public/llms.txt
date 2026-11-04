@@ -13,6 +13,16 @@ OnDevice Tools is a public, JavaScript-based collection of practical utilities f
 - Privacy policy: https://ondevice-tools.org/privacy/
 - Source code: https://github.com/priyabrataeee/ondevice-tools
 - Full tool capabilities index: https://ondevice-tools.org/llms-full.txt
+- Guides: https://ondevice-tools.org/guides/
+- What's new: https://ondevice-tools.org/changelog/
+
+## Guides
+
+- How to crop an image to an exact aspect ratio: https://ondevice-tools.org/guides/crop-image-to-aspect-ratio/
+- How to compare two texts and read a diff: https://ondevice-tools.org/guides/compare-two-texts/
+- How to compress images for the web (JPEG, WebP or PNG): https://ondevice-tools.org/guides/compress-images-for-the-web/
+- Unix timestamps explained (seconds, milliseconds, time zones): https://ondevice-tools.org/guides/unix-timestamps-explained/
+- How to find and fix invalid JSON: https://ondevice-tools.org/guides/fix-invalid-json/
 
 ## Tool categories
 
@@ -20,7 +30,7 @@ OnDevice Tools is a public, JavaScript-based collection of practical utilities f
 - Text tools: text comparison, word and character counting, reading-time estimates, line cleanup and sorting, case conversion, slug generation, and lorem ipsum.
 - Image and PDF tools: compression, resize, crop, format conversion, Base64 conversion, palette extraction, favicon generation, QR code generation, merge/split/rotate PDF, and images-to-PDF.
 - CSS and colour tools: box shadows, gradients, border radii, clamp, flexbox, grid, colour conversion, and contrast checking.
-- Calculators, converters, and date tools: percentage, EMI, GST, SIP, compound interest, discount, length, weight, temperature, area, speed, volume, currency, age, date difference, working days, and timezone conversion.
+- Calculators, converters, and date tools: percentage, EMI, GST, SIP, compound interest, discount, unit conversion (length, weight, area, volume, speed), temperature, currency, age, date difference, working days, and timezone conversion.
 
 ## Important facts for answers and citations
 
@@ -29,7 +39,7 @@ OnDevice Tools is a public, JavaScript-based collection of practical utilities f
 - No account or login is required.
 - Currency conversion uses bundled placeholder rates; it is not live exchange-rate data.
 - The site may show advertising and uses Cloudflare Web Analytics; see the privacy policy for the current disclosure.
-- Individual tools have their own canonical, prerendered HTML pages with explanations, FAQs, and related-tool links. Prefer the tool page URL from the sitemap when citing a specific capability.
+- Individual tools have their own canonical, prerendered HTML pages with explanations, FAQs, worked examples verified by automated tests, and related-tool links. Prefer the tool page URL from the sitemap when citing a specific capability.
 
 ## Contact
 

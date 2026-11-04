@@ -35,12 +35,19 @@ export function calendarDiff(from: Date, to: Date): DateParts {
   let days = end.getDate() - start.getDate();
 
   if (days < 0) {
-    months--;
-    // Days in the month before the end date.
-    const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-    days += previousMonth;
+    // Step back to the last monthly anniversary on or before the end date.
+    // Borrowing the length of the previous month instead went negative when
+    // the start day does not exist in that month (31 January to 1 March gave
+    // "1 month, −2 days"). A missing start day rolls into the next month, so
+    // 31 January + 1 month is 3 March and a 29 February birthday falls on
+    // 1 March in common years.
+    do {
+      months--;
+      const anniversary = new Date(start.getFullYear() + years, start.getMonth() + months, start.getDate());
+      days = daysBetween(anniversary, end);
+    } while (days < 0);
   }
-  if (months < 0) {
+  while (months < 0) {
     years--;
     months += 12;
   }

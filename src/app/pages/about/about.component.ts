@@ -26,16 +26,16 @@ import { ToolService } from '../../core/tool.service';
       <div class="prose-qt mt-8">
         <h2>Why this site exists</h2>
         <p>
-          Some online utilities upload files for processing. Others work locally. It can be
-          difficult to tell which you are using before choosing a file. This project makes its
-          processing code public so you can inspect that choice and understand each tool's limits.
+          Some online utilities upload your file to a server to process it; others work entirely
+          in your browser. Before you choose a file, it is hard to tell which kind you are using.
         </p>
         <p>
-          OnDevice Tools was built to remove that decision. Every tool here is written in
-          JavaScript that runs on your own machine. Your file is read by the browser, processed by
-          the browser, and handed back by the browser. There is no upload step to opt out of,
-          in the tool-processing code. The public website still connects to its CDN, analytics
-          and advertising providers; local processing is not a guarantee against every privacy risk.
+          Every tool here is the second kind. Your file or text is read, processed and handed back
+          by JavaScript running in your own browser tab, and the processing code is public so you
+          can check that. The website itself still loads from a CDN and runs analytics and, on
+          tool pages, advertising scripts, so local processing is not a guarantee against every
+          privacy risk; the <a routerLink="/privacy">privacy page</a> explains exactly what those
+          scripts can see.
         </p>
 
         <h2>How it actually works</h2>
@@ -71,6 +71,25 @@ import { ToolService } from '../../core/tool.service';
           <li><strong>It works offline</strong> once cached, including on a plane or a train.</li>
           <li><strong>There is no account.</strong> Nothing to sign up for, nothing to cancel.</li>
         </ul>
+
+        <h2>How each tool is checked</h2>
+        <p>
+          Every tool page includes worked examples: a real input, the settings used and the exact
+          output. Those examples are not written by hand and hoped for. Each one is run against
+          the tool’s own code by an automated test on every build, so if a change altered a
+          result, the build would fail before the page could be published.
+        </p>
+        <p>
+          The tests have caught real problems. Writing them uncovered a date calculation that
+          returned negative days for spans starting on the 31st of a month, and a character count
+          that counted an emoji as two characters; both are fixed. Each page also lists the tool’s
+          limits, the cases where it is the wrong tool or needs a second check, and the date it was
+          last updated. Changes are listed on the <a routerLink="/changelog">What’s new</a> page.
+        </p>
+        <p>
+          Longer explanations of common tasks, such as fixing invalid JSON or choosing an image
+          format, are in the <a routerLink="/guides">guides</a>.
+        </p>
 
         <h2>Who builds it</h2>
         <p>

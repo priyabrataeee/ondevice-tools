@@ -37,3 +37,18 @@ test('a catastrophic pattern can be terminated outside the worker', async () => 
   const exitCode = await worker.terminate();
   assert.equal(exitCode, 1);
 });
+
+// The published worked examples on the Regex Tester page run through the real
+// worker, so the page can never show a result the tool does not produce.
+const guide = JSON.parse(readFileSync(new URL('../src/app/core/data/examples/regex-tester.json', import.meta.url), 'utf8'));
+for (const example of guide.examples) {
+  test(`worked example: ${example.title}`, () => {
+    const { pattern, flags, replacement } = example.run;
+    const result = evaluate(pattern, example.input, flags, replacement);
+    assert.equal(result.error, '');
+    const actual = replacement
+      ? result.replaced
+      : [`Matches: ${result.matches.length}`, ...result.matches.map((m, i) => `${i + 1}. ${m.value}`)].join('\n');
+    assert.equal(actual, example.output);
+  });
+}

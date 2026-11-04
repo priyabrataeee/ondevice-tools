@@ -1,6 +1,6 @@
 # OnDevice Tools
 
-**64 free browser tools that never upload your data.**
+**60 free browser tools that never upload your data.**
 
 [**ondevice-tools.org**](https://ondevice-tools.org) &nbsp;·&nbsp;
 [How it works](#how-it-works) &nbsp;·&nbsp;
@@ -54,7 +54,7 @@ mode, and a PWA install.
 
 ## How it works
 
-Each of the 64 tools is prerendered to plain HTML at build time and served as a static file from a
+Each of the 60 tools is prerendered to plain HTML at build time and served as a static file from a
 CDN — the same way an image is served. Opening a tool downloads a small JavaScript bundle for that
 one tool and runs it locally.
 
@@ -246,7 +246,7 @@ and can be run directly with `node file.ts`, which makes them straightforward to
 - **CSS (6)** — box shadow, gradient, border radius, clamp, flexbox, grid.
 - **Colour (2)** — format converter, WCAG contrast checker.
 - **Calculators (6)** — percentage, EMI, GST, SIP, compound interest, discount.
-- **Converters (7)** — length, weight, temperature, area, speed, volume, currency.
+- **Converters (3)** — unit converter (length, weight, area, volume, speed), temperature, currency.
 - **Date & time (4)** — age, date difference, working days, time zones.
 
 Plus: global Ctrl/Cmd+K command palette, ranked search, favourites and recents in `localStorage`,

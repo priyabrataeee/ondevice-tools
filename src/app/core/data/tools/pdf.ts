@@ -9,6 +9,7 @@ export const PDF_TOOLS: Tool[] = [
     icon: 'file-plus',
     keywords: ['combine pdf', 'join', 'append', 'concatenate'],
     added: '2026-04-02',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -29,6 +30,7 @@ export const PDF_TOOLS: Tool[] = [
     icon: 'scissors',
     keywords: ['extract pages', 'separate', 'page range', 'delete pages'],
     added: '2026-04-02',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do I specify pages?', a: 'Use a range list such as 1-3, 7, 10-12. Pages are numbered from one.' },
       { q: 'Can I remove pages instead?', a: 'Yes, switch to remove mode and the listed pages are dropped rather than kept.' },
@@ -47,6 +49,7 @@ export const PDF_TOOLS: Tool[] = [
     icon: 'rotate',
     keywords: ['turn pages', 'landscape', 'portrait', 'orientation', 'sideways'],
     added: '2026-04-08',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Why do scanned pages come out sideways?', a: 'Scanners record the orientation they fed the paper in, which often does not match how the document reads.' },
       { q: 'Can I rotate only some pages?', a: 'Yes, give a page range and only those pages are rotated.' },
@@ -65,6 +68,7 @@ export const PDF_TOOLS: Tool[] = [
     icon: 'file-image',
     keywords: ['jpg to pdf', 'png to pdf', 'photo to pdf', 'scan'],
     added: '2026-04-08',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which image formats work?', a: 'JPEG and PNG are embedded directly. Other formats are converted to PNG first by your browser.' },
       { q: 'Can I choose the page size?', a: 'Yes - fit each page to its image, or use A4 or US Letter with the image centred and scaled to fit.' },

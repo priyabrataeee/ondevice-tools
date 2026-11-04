@@ -1,0 +1,25 @@
+{
+  "examples": [
+    {
+      "title": "Find every email address in a block of text",
+      "settings": "Pattern [\\w.+-]+@[\\w-]+\\.[\\w.]+, flags gi",
+      "run": { "pattern": "[\\w.+-]+@[\\w-]+\\.[\\w.]+", "flags": "gi", "replacement": "" },
+      "input": "Contact sales@example.com or Support@Example.org.",
+      "output": "Matches: 2\n1. sales@example.com\n2. Support@Example.org.",
+      "explanation": "The global flag finds every match, not just the first. Notice the trailing full stop in the second match: [\\w.]+ also accepts dots, so a sentence-ending period is captured. Tighten the pattern to end on a letter, such as \\.[a-z]{2,}, when that matters."
+    },
+    {
+      "title": "Reorder dates with named groups",
+      "settings": "Pattern (?<d>\\d{2})/(?<m>\\d{2})/(?<y>\\d{4}), flags g, replacement $<y>-$<m>-$<d>",
+      "run": { "pattern": "(?<d>\\d{2})/(?<m>\\d{2})/(?<y>\\d{4})", "flags": "g", "replacement": "$<y>-$<m>-$<d>" },
+      "input": "Invoice 31/12/2025, paid 05/01/2026",
+      "output": "Invoice 2025-12-31, paid 2026-01-05",
+      "explanation": "Named groups make the replacement readable: $<y> inserts whatever the y group captured. The pattern does not check that the day or month is valid, so 99/99/2026 would also be rewritten."
+    }
+  ],
+  "limitations": [
+    "Patterns use JavaScript regular expression syntax. Lookbehind, named groups and the u and s flags work in current browsers, but syntax from PCRE, Python or .NET, such as possessive quantifiers or (?i) inline flags, does not.",
+    "Evaluation stops after one second and lists at most 500 matches, so a runaway pattern cannot freeze the page.",
+    "A pattern that works here can still behave differently in another engine. Test it in the language where it will run."
+  ]
+}

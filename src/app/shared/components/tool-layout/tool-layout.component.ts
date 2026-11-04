@@ -15,6 +15,8 @@ import { ToastService } from '../../../core/toast.service';
 import { ToolService } from '../../../core/tool.service';
 import { contentFor } from '../../../core/data/tool-content';
 import { TOOL_GUIDES } from '../../../core/data/tool-examples';
+import { guidesForTool } from '../../../core/data/guides';
+import { formatLongDate } from '../../../core/long-date';
 import { ADSENSE_SLOTS, canonicalUrl } from '../../../core/site.config';
 import { AdSlotComponent } from '../ad-slot/ad-slot.component';
 import { IconComponent } from '../icon/icon.component';
@@ -56,6 +58,10 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
               {{ t.name }}
             </h1>
             <p class="mt-2 text-lg leading-relaxed text-muted">{{ t.description }}</p>
+            <p class="mt-2 text-sm text-faint">
+              Updated <time [attr.datetime]="t.updated ?? t.added">{{ longDate(t.updated ?? t.added) }}</time>
+              · Examples checked by automated tests
+            </p>
           </div>
           <div class="flex shrink-0 items-center gap-2">
             <button
@@ -172,6 +178,19 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
           </section>
         }
 
+        @if (guides().length) {
+          <section class="mt-12" aria-labelledby="tool-guides-heading">
+            <h2 id="tool-guides-heading" class="mb-4 text-2xl font-bold tracking-tight text-fg">Guides</h2>
+            <ul class="space-y-2">
+              @for (guide of guides(); track guide.slug) {
+                <li>
+                  <a [routerLink]="['/guides', guide.slug]" class="text-brand underline underline-offset-2">{{ guide.title }}</a>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
         @if (related().length) {
           <section class="mt-12">
             <h2 class="mb-4 text-2xl font-bold tracking-tight text-fg">Related tools</h2>
@@ -223,6 +242,8 @@ export class ToolLayoutComponent implements OnInit {
     return t ? contentFor(t.id) : undefined;
   });
 
+  protected readonly guides = computed(() => guidesForTool(this.toolId()));
+  protected readonly longDate = formatLongDate;
   protected readonly slots = ADSENSE_SLOTS;
   protected readonly guide = computed(() => TOOL_GUIDES[this.toolId()]);
 

@@ -9,6 +9,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'qr',
     keywords: ['qr code generator', 'create qr code', 'qr code maker', 'free qr code', 'wifi qr code', 'vcard qr code', 'url to qr', 'qr code png', 'qr code svg', 'barcode'],
     added: '2026-09-23',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -32,7 +33,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'image',
     keywords: ['compress', 'optimize', 'reduce size', 'quality', 'compress image', 'reduce image size', 'image optimizer', 'compress jpeg', 'compress png', 'shrink photo'],
     added: '2026-02-24',
-    updated: '2026-10-31',
+    updated: '2026-11-04',
     popular: true,
     trending: true,
     faqs: [
@@ -55,6 +56,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'resize',
     keywords: ['scale', 'dimensions', 'pixels', 'aspect ratio', 'thumbnail', 'resize image', 'resize photo', 'change image size', 'image dimensions'],
     added: '2026-02-24',
+    updated: '2026-11-04',
     popular: true,
     faqs: [
       { q: 'Does it keep the aspect ratio?', a: 'By default yes - editing one dimension updates the other. Unlock the ratio to stretch the image deliberately.' },
@@ -96,6 +98,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'swap',
     keywords: ['jpg to png', 'png to webp', 'webp to jpg', 'format', 'png to jpg', 'webp to png', 'jpeg to png', 'convert image format', 'avif'],
     added: '2026-03-05',
+    updated: '2026-11-04',
     faqs: [
       { q: 'How do I convert JPG to PNG?', a: 'Choose PNG as the output format. The image is decoded and re-encoded in your browser. PNG is lossless, so the result will usually be larger than the JPEG.' },
       { q: 'Should I convert PNG to WebP?', a: 'Usually yes for the web. WebP files are typically 25-35% smaller at the same visual quality, and every current browser supports it.' },
@@ -116,6 +119,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'code',
     keywords: ['data url', 'inline image', 'embed', 'css background', 'image to data url', 'encode image', 'inline image css'],
     added: '2026-03-10',
+    updated: '2026-11-04',
     faqs: [
       { q: 'When should I inline an image?', a: 'For very small assets - icons, spacers, tiny logos - inlining saves a network request. Above a few kilobytes it usually hurts more than it helps.' },
       { q: 'Why is the output larger than the file?', a: 'Base64 encoding adds about a third to the byte count because it represents three bytes with four characters.' },
@@ -134,6 +138,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'download',
     keywords: ['data url decode', 'preview', 'save image', 'decode base64 image', 'data url to image', 'base64 png'],
     added: '2026-03-10',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Do I need the data URL prefix?', a: 'No. Paste the raw Base64 and the tool detects the image type from the first bytes, or paste a full data URL and it will use the declared type.' },
       { q: 'Why does nothing render?', a: 'Usually the string is truncated or contains stray whitespace or quotes from the surrounding code. The tool strips whitespace automatically but cannot recover missing data.' },
@@ -152,6 +157,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'palette',
     keywords: ['dominant color', 'swatches', 'theme', 'extract colors', 'color palette from image', 'extract colours', 'image colors'],
     added: '2026-03-18',
+    updated: '2026-11-04',
     trending: true,
     faqs: [
       { q: 'How are the colors chosen?', a: 'Pixels are quantised into buckets and the most populated buckets are returned, which approximates the colors a person would name when looking at the image.' },
@@ -171,6 +177,7 @@ export const IMAGE_TOOLS: Tool[] = [
     icon: 'star',
     keywords: ['app icon', 'apple touch icon', 'pwa icon', '16x16', '512x512', 'favicon', 'favicon from image', 'site icon', 'favicon ico'],
     added: '2026-03-18',
+    updated: '2026-11-04',
     faqs: [
       { q: 'Which sizes are produced?', a: '16, 32, 48, 96, 144, 180, 192, 256 and 512 pixel PNGs - covering browsers, Android, iOS and PWA install prompts.' },
       { q: 'Do I still need an ICO file?', a: 'Only for very old browsers. Modern browsers happily use PNG favicons declared in the page head.' },

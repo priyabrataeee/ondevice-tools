@@ -18,7 +18,36 @@ const PAGE_SIZES = {
   letter: { label: 'US Letter', width: 612, height: 792 },
 };
 
-type PageSizeId = keyof typeof PAGE_SIZES;
+export type PageSizeId = keyof typeof PAGE_SIZES;
+
+/** Margin around an image on a fixed-size page, in points. */
+const PAGE_MARGIN = 24;
+
+/**
+ * Where an image sits on its page. "fit" makes the page the image's own size;
+ * a fixed page size contains the image within a margin, centred, without
+ * stretching it.
+ */
+export function placeImage(imageWidth: number, imageHeight: number, pageSize: PageSizeId) {
+  const size = PAGE_SIZES[pageSize];
+  if (size.width === 0) {
+    return { pageWidth: imageWidth, pageHeight: imageHeight, x: 0, y: 0, width: imageWidth, height: imageHeight };
+  }
+  const scale = Math.min(
+    (size.width - PAGE_MARGIN * 2) / imageWidth,
+    (size.height - PAGE_MARGIN * 2) / imageHeight,
+  );
+  const width = imageWidth * scale;
+  const height = imageHeight * scale;
+  return {
+    pageWidth: size.width,
+    pageHeight: size.height,
+    x: (size.width - width) / 2,
+    y: (size.height - height) / 2,
+    width,
+    height,
+  };
+}
 
 @Component({
   selector: 'app-images-to-pdf',
@@ -179,27 +208,9 @@ export class ImagesToPdfComponent implements OnDestroy {
         const embedded =
           type === 'image/png' ? await doc.embedPng(bytes) : await doc.embedJpg(bytes);
 
-        const size = PAGE_SIZES[this.pageSize()];
-        if (size.width === 0) {
-          const page = doc.addPage([embedded.width, embedded.height]);
-          page.drawImage(embedded, { x: 0, y: 0, width: embedded.width, height: embedded.height });
-        } else {
-          const page = doc.addPage([size.width, size.height]);
-          // Contain the image within the page with a small margin.
-          const margin = 24;
-          const scale = Math.min(
-            (size.width - margin * 2) / embedded.width,
-            (size.height - margin * 2) / embedded.height,
-          );
-          const width = embedded.width * scale;
-          const height = embedded.height * scale;
-          page.drawImage(embedded, {
-            x: (size.width - width) / 2,
-            y: (size.height - height) / 2,
-            width,
-            height,
-          });
-        }
+        const place = placeImage(embedded.width, embedded.height, this.pageSize());
+        const page = doc.addPage([place.pageWidth, place.pageHeight]);
+        page.drawImage(embedded, { x: place.x, y: place.y, width: place.width, height: place.height });
       }
 
       const output = await doc.save();
