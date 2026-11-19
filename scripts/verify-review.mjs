@@ -58,7 +58,7 @@ for (const file of pages) {
     descriptions.add(description);
   }
   const graph = JSON.parse(document.querySelector('script[data-qt-ld]').textContent)['@graph'];
-  const tool = graph.find((node) => node['@type'] === 'SoftwareApplication');
+  const tool = graph.find((node) => node['@type'] === 'WebApplication' || node['@type'] === 'SoftwareApplication');
   const loader = document.querySelectorAll('#adsense-loader');
   check(loader.length === (tool && !noindex && adsEnabled ? 1 : 0), 'Wrong ad-loader eligibility');
   if (loader.length) adPages++;

@@ -7,7 +7,9 @@ import {
   LICENSE_NAME,
   SITE_AUTHOR,
   SITE_FOUNDED,
+  SITE_URL,
   SOURCE_URL,
+  canonicalUrl,
 } from '../../core/site.config';
 import { ToolService } from '../../core/tool.service';
 
@@ -182,6 +184,15 @@ export class AboutComponent implements OnInit {
       title: 'About',
       description: `Who builds OnDevice Tools, how ${this.toolCount} browser-based utilities run without a server, and how the site is funded.`,
       path: '/about',
+      structuredData: [
+        {
+          '@type': 'AboutPage',
+          '@id': `${SITE_URL}/about/#webpage`,
+          url: canonicalUrl('/about'),
+          name: 'About OnDevice Tools',
+          mainEntity: { '@id': `${SITE_URL}/#organization` },
+        },
+      ],
     });
   }
 }

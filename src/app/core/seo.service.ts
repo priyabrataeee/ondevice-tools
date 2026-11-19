@@ -160,7 +160,7 @@ export class SeoService {
       path,
       structuredData: [
         {
-          '@type': 'SoftwareApplication',
+          '@type': 'WebApplication',
           name: tool.name,
           url,
           description: tool.description,

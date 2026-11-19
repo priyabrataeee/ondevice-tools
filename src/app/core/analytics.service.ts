@@ -1,13 +1,13 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { CF_ANALYTICS_TOKEN, GA_MEASUREMENT_ID } from './site.config';
+import { CF_ANALYTICS_TOKEN, GTM_CONTAINER_ID } from './site.config';
 
 const BEACON_ID = 'cf-beacon';
 const BEACON_SRC = 'https://static.cloudflareinsights.com/beacon.min.js';
 
-const GA_LOADER_ID = 'ga-loader';
-const GA_CONFIG_ID = 'ga-config';
-const GA_SRC = 'https://www.googletagmanager.com/gtag/js';
+const GTM_LOADER_ID = 'gtm-loader';
+const GTM_CONFIG_ID = 'gtm-config';
+const GTM_SRC = 'https://www.googletagmanager.com/gtm.js';
 
 /** Assembled from a char code so the literal survives every editing pass. */
 const NEWLINE = String.fromCharCode(10);
@@ -25,7 +25,8 @@ const CONSENT_REGIONS = [
 ];
 
 /**
- * Site measurement: Cloudflare Web Analytics and Google Analytics 4.
+ * Site measurement: Cloudflare Web Analytics, and Google Analytics 4 through
+ * Google Tag Manager.
  *
  * Cloudflare is cookieless and aggregate-only. GA4 sets first-party cookies and
  * reports per-event, so the two are disclosed separately on the privacy page.
@@ -41,11 +42,11 @@ export class AnalyticsService {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   readonly enabled = CF_ANALYTICS_TOKEN.length > 0;
-  readonly gaEnabled = GA_MEASUREMENT_ID.startsWith('G-');
+  readonly gaEnabled = GTM_CONTAINER_ID.startsWith('GTM-');
 
   install(): void {
     this.installCloudflare();
-    this.installGoogleAnalytics();
+    this.installTagManager();
   }
 
   /**
@@ -79,19 +80,19 @@ export class AnalyticsService {
     head.appendChild(script);
   }
 
-  private installGoogleAnalytics(): void {
+  private installTagManager(): void {
     if (!this.gaEnabled) return;
 
     const head = this.document.head;
-    if (head.querySelector(`#${GA_CONFIG_ID}`)) return;
+    if (head.querySelector(`#${GTM_CONFIG_ID}`)) return;
 
     // The bootstrap is appended BEFORE the loader deliberately. Consent defaults
-    // have to be in dataLayer by the time gtag.js initialises, or the first hit
-    // leaves before the policy is known. Written as a real inline script rather
-    // than executed here, so it lands in the prerendered HTML and its hash goes
-    // into the CSP.
+    // have to be in dataLayer by the time GTM fires the Google tag, or the first
+    // hit leaves before the policy is known. Written as a real inline script
+    // rather than executed here, so it lands in the prerendered HTML and its
+    // hash goes into the CSP. The GA4 id itself is configured in the container.
     const config = this.document.createElement('script');
-    config.id = GA_CONFIG_ID;
+    config.id = GTM_CONFIG_ID;
     config.textContent = [
       'window.dataLayer = window.dataLayer || [];',
       'function gtag(){dataLayer.push(arguments);}',
@@ -106,15 +107,15 @@ export class AnalyticsService {
       "gtag('consent', 'default', {'ad_storage':'granted'," +
         "'ad_user_data':'granted','ad_personalization':'granted'," +
         "'analytics_storage':'granted'});",
-      "gtag('js', new Date());",
-      `gtag('config', '${GA_MEASUREMENT_ID}');`,
+      // The event GTM's own snippet pushes; its built-in page triggers wait for it.
+      "dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});",
     ].join(NEWLINE);
     head.appendChild(config);
 
     const loader = this.document.createElement('script');
-    loader.id = GA_LOADER_ID;
+    loader.id = GTM_LOADER_ID;
     loader.async = true;
-    loader.src = `${GA_SRC}?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+    loader.src = `${GTM_SRC}?id=${encodeURIComponent(GTM_CONTAINER_ID)}`;
     head.appendChild(loader);
   }
 }

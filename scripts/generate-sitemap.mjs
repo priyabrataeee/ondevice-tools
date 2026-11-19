@@ -48,7 +48,12 @@ function lastmodFor(path) {
   if (!script) return undefined;
   const nodes = JSON.parse(script[1])['@graph'] ?? [];
   // Tools and guides record a real modification date; other pages have none.
-  const date = nodes.find((node) => node['@type'] === 'SoftwareApplication' || node['@type'] === 'Article')?.dateModified;
+  const date = nodes.find(
+    (node) =>
+      node['@type'] === 'WebApplication' ||
+      node['@type'] === 'SoftwareApplication' ||
+      node['@type'] === 'Article'
+  )?.dateModified;
   if (!date) return undefined;
   // A calendar date may be the next UTC day in the publisher's time zone.
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date)) || Date.parse(date) > Date.now() + 86_400_000) {
@@ -90,8 +95,29 @@ writeFileSync(join(browserDir, 'sitemap.xml'), xml);
 // line always matches the origin the sitemap was actually built for.
 const robots = [
   '# Public pages may be crawled by search engines and AI retrieval crawlers.',
-  '# This includes Googlebot, Bingbot, GPTBot, OAI-SearchBot, ClaudeBot and PerplexityBot.',
   '# Private input stays in each visitor\'s browser; only public page content is crawlable.',
+  '',
+  'User-agent: GPTBot',
+  'Allow: /',
+  '',
+  'User-agent: ChatGPT-User',
+  'Allow: /',
+  '',
+  'User-agent: PerplexityBot',
+  'Allow: /',
+  '',
+  'User-agent: ClaudeBot',
+  'Allow: /',
+  '',
+  'User-agent: Google-Extended',
+  'Allow: /',
+  '',
+  'User-agent: Googlebot',
+  'Allow: /',
+  '',
+  'User-agent: Bingbot',
+  'Allow: /',
+  '',
   'User-agent: *',
   'Allow: /',
   '',

@@ -110,10 +110,25 @@ export const CF_ANALYTICS_TOKEN = '9e856e8367e44f9e82e6ba782845890c';
  * Google Analytics 4 measurement id.
  *
  * Unlike the Cloudflare beacon, GA4 sets first-party cookies (_ga, _ga_*) and
- * is a Google product, so the privacy page discloses it separately. Empty means
- * no gtag.js is loaded and no Google Analytics host is allowed by the CSP.
+ * is a Google product, so the privacy page discloses it separately. GA4 is not
+ * loaded from here: the Google tag for this id lives in the GTM container
+ * below. Keep the two in step; empty disables the privacy-page disclosure.
  */
-export const GA_MEASUREMENT_ID = 'G-42L42CSCG1';
+export const GA_MEASUREMENT_ID = 'G-0MCCQBDEYL';
+
+/**
+ * Google Tag Manager container. It carries the GA4 Google tag for the
+ * dedicated "OnDevice Tools" GA property (container version 3, published
+ * 19 November 2026); the older stream in the shared "Office tools" property is
+ * no longer fed. Form and file-download events are off in both GTM and the GA
+ * stream, as the privacy page states. Empty means no GTM is loaded and no
+ * Google Analytics host is allowed by the CSP.
+ *
+ * The CSP only admits Google's own hosts, so Custom HTML tags and most
+ * third-party templates added in GTM will be blocked until the CSP in
+ * scripts/prepare-cloudflare.mjs is widened for them.
+ */
+export const GTM_CONTAINER_ID = 'GTM-TPD3TH8G';
 
 /**
  * Ad unit ids from the AdSense dashboard (the `data-ad-slot` values).
